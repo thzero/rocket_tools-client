@@ -1,11 +1,11 @@
-#https://cloud.google.com/cloud-build/docs/deploying-builds/deploy-firebase
+#https://cloud.google.com/build/docs/deploying-builds/deploy-firebase
 steps:
   - name: 'gcr.io/cloud-builders/git'
     entrypoint: 'bash'
     args:
     - '-c'
     - |
-      git config -f .gitmodules submodule."src/common".url https://source.developers.google.com/p/rockettools/r/github_thzero_rockettools-common
+      git config -f .gitmodules submodule."src/common".url https://source.developers.google.com/p/rocket-tools-299da/r/github_thzero_rocket_tools-common
       git submodule init
       git submodule update
       echo "one up..."
