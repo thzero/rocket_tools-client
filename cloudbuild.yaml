@@ -1,0 +1,89 @@
+#https://cloud.google.com/cloud-build/docs/deploying-builds/deploy-firebase
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    entrypoint: 'bash'
+    args:
+    - '-c'
+    - |
+      git config -f .gitmodules submodule."src/common".url https://source.developers.google.com/p/rockettools/r/github_thzero_rockettools-common
+      git submodule init
+      git submodule update
+      echo "one up..."
+      ls -a ../
+      echo "current..."
+      ls -a
+      echo "src..."
+      ls -a ./src
+      echo "src/common..."
+      ls -a ./src/common
+  # Firebase
+#   - name: 'gcr.io/cloud-builders/git'
+#     entrypoint: 'bash'
+#     args:
+#     - '-c'
+#     - |
+#       echo "one up..."
+#       ls -a ../
+#       echo "current..."
+#       ls -a
+#       echo "src..."
+#       ls -a ./src
+#       echo "src/common..."
+#       ls -a ./src/common
+#   - name: 'docker:stable'
+#     args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/firebase', '.' ]
+#   - name: 'node:lts'
+#     entrypoint: 'npm'
+#     args: ['install', '-g', 'firebase-tools']
+  # Install
+#   - name: 'gcr.io/cloud-builders/git'
+#     entrypoint: 'bash'
+#     args:
+#     - '-c'
+#     - |
+#       echo "one up..."
+#       ls -a ../
+#       echo "current..."
+#       ls -a
+#       echo "src..."
+#       ls -a ./src
+#       echo "src/common..."
+#       ls -a ./src/common
+  #- name: 'gcr.io/cloud-builders/npm:current'
+  - name: 'node:lts'
+    entrypoint: 'npm'
+    args: ['install']
+  # Test
+  #- name: 'gcr.io/cloud-builders/npm:current'
+  #- name: 'node:lts'
+  # entrypoint: 'npm'
+  #  args: ['run', 'test:unit']
+  # Build
+#   - name: 'gcr.io/cloud-builders/git'
+#     entrypoint: 'bash'
+#     args:
+#     - '-c'
+#     - |
+#       echo "one up..."
+#       ls -a ../
+#       echo "current..."
+#       ls -a
+#       echo "src..."
+#       ls -a ./src
+#       echo "src/common..."
+#       ls -a ./src/common
+  #- name: 'gcr.io/cloud-builders/npm:current'
+  - name: 'node:lts'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+    env:
+      - '_CONFIG=$_CONFIG'
+#   - name: 'docker:latest'
+#     args: [ 'build', '-t', 'gcr.io/$PROJECT_ID/firebase', '.' ]
+  - name: 'gcr.io/kaniko-project/executor:latest'
+    args:
+    - --destination=gcr.io/$PROJECT_ID/firebase
+    - --cache=true
+  # Deploy
+  - name: 'gcr.io/$PROJECT_ID/firebase'
+    args: [ 'deploy', '--project', '$PROJECT_ID', '--token', '$_FIREBASE_TOKEN' ]

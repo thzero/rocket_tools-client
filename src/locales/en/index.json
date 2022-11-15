@@ -1,0 +1,350 @@
+{
+	"admin": {
+	   "news": "News",
+	   "users": "Users"
+	},
+	"auth": {
+	   "google": "Google",
+	   "rememberMe": "Rembmer Me"
+	},
+	"buttons": {
+	   "cancel": "Cancel",
+	   "clear": "Clear",
+	   "collapseAll": "Collapse",
+	   "delete": "Delete",
+	   "edit": "Edit",
+	   "expandAll": "Expand",
+	   "export": "Export",
+	   "ok": "Ok",
+	   "process": "Process",
+	   "reset": "Reset",
+	   "save": "Save",
+	   "select": "Select",
+	   "submit": "Submit"
+	},
+	"charts": {
+		"flightInfo": {
+			"title": "Flight Info",
+			"acceleration": "Acceleration",
+			"altitude": {
+				"title": "Altitude",
+				"titleF": "Altitude (F)",
+				"max": "Max. Altitude",
+				"min": "Min. Altitude"
+			},
+			"ascent": "Ascent",
+			"avg": {
+				"title": "Average",
+				"abbr": "Avg."
+			},
+			"descent": "Descent",
+			"events": {
+				"title": "Events",
+				"apogee": "Apogee",
+				"drogue": "Drogue/Freefall",
+				"notDetected": "Event not detected",
+				"noseOver": "Nose Over",
+				"main": "Main"
+			},
+			"flightTime": "Flight Time",
+			"max": {
+				"title": "Maximum",
+				"abbr": "Max."
+			},
+			"min": {
+				"title": "Minimum",
+				"abbr": "Min."
+			},
+			"velocity": {
+				"title": "Velocity",
+				"titleF": "Velocity (F)"
+			}
+		}
+	},
+	"errors": {
+	   "adminNews": {
+		  "article": {
+			 "string": {
+				"empty": "Article content is required."
+			 }
+		  }
+	   },
+	   "copyToClipboard": "Failed to copy to the clipboard.",
+	   "description": "Invalid value, must be of the following ! @ # $ % ^ & * ( ) _ - + = [ ] { } | : ; \" \\' < > , . ? a-z A-Z 0-9",
+	   "duplicateName": "There is already a {objectType} with the name of \\'{name}\\'.",
+	   "duplicateNumber": "There is already a {objectType} with the number of \\'{number}\\'.",
+	   "duplicateOrder": "There is already a {objectType} with order \\'{order}\\'.",
+	   "error": "An error occured, plesae try again.",
+	   "invalidPermissions": "You do not have permission to perform the requested action.",
+	   "invalidRequest": "Invalid request.",
+	   "notFound": "You have been led astray.",
+	   "objectChanged": "The \\'{objectType}\\' has changed, please refresh and try again.",
+	   "params": {
+		  "news": "news"
+	   },
+	   "process": {
+		   "noInput": "No CSV provided for processor.",
+		   "noProcessor": "No processor available.",
+		   "required": "Required fields missing.",
+		   "unableToConvert": "Unable to convert the CSV data."
+	   },
+	   "quotaExceeded": "You have reached your quota of {quota} \\'{quotaType}\\'.",
+	   "type": "Type is required."
+	},
+	"extracts": {
+	   "csv": "CSV",
+	   "text": "Text"
+	},
+	"file": {
+		"title": "File",
+		"csv": "CSV"
+	},
+	"flightInfo": {
+		"title": "Flight Title",
+		"csv": "CSV Flight Data",
+		"dataTypes": {
+			"showActual": "Show Actual"
+		},
+		"date": "Flight Date",
+		"export": {
+			"image": "image",
+			"json": "json",
+			"text": "text"
+		},
+		"location": "Flight Location",
+		"measurementUnits": "Flight Measurement Units",
+		"processors": {
+			"title": "Flight Data Type",
+			"eggtimer": "Eggtimer"
+		},
+		"style": {
+			"title": "Chart Styles",
+			"altitude": {
+				"title": "Altitude",
+				"filtered": "Altitude (Filtered)"
+			},
+			"event": {
+				"apogee": {
+					"title": "Apogee",
+					"border": "Apogee Border"
+				},
+				"drogue": {
+					"title": "Drogue/Freefall",
+					"border": "Drogue/Freefall Border"
+				},
+				"main": {
+					"title": "Main",
+					"border": "Main Border"
+				}
+			},
+			"velocity": {
+				"title": "Velocity",
+				"filtered": "Velocity (Filtered)"
+			}
+		},
+		"resolution": "Resolution"
+	},
+	"flightPath": {
+		"title": "Flight Title",
+		"style": {
+			"title": "Flight Path Styles",
+			"flight": {
+				"color": "Flight Path Color"
+			},
+			"ground": {
+				"color": "Ground Path Color"
+			},
+			"launch": {
+				"color": "Launch Pin Color"
+			},
+			"touchdown": {
+				"color": "Touchdown Pin Color"
+			}
+		},
+		"csv": "CSV GPS Flight Data",
+		"date": "Flight Date",
+		"flightPath": "Flight Path",
+		"groundPath": "Ground Path",
+		"launch": "Launch",
+		"location": "Flight Location",
+		"measurementUnits": "Altitude Measurement Units",
+		"processors": {
+			"title": "Flight Data Type",
+			"eggtimer": "Eggtimer",
+			"featherweight": "Featherweight"
+		},
+		"touchdown": "Touchdown"
+	},
+	"forms": {
+	   "externalId": "External Id",
+	   "id": "Id",
+	   "link": "Link",
+	   "listing": "Listing",
+	   "minAbbr": "Min.",
+	   "maxAbbr": "Max.",
+	   "measurementUnits": "Measurement Units",
+	   "name": "Name",
+	   "news": {
+		  "article": "Article",
+		  "publishDate": "Publish Date",
+		  "requiresAuth": "Requires Authentication",
+		  "sticky": "Sticky"
+	   },
+	   "not": "Not",
+	   "number": "Number",
+	   "role": "Role",
+	   "roles": "Roles",
+	   "sorting": {
+		  "ascending": "Ascending",
+		  "ascendingAbbr": "Asc",
+		  "descending": "Descending",
+		  "descendingAbbr": "Desc",
+		  "name": "Sorting",
+		  "nameShort": "Sort"
+	   },
+	   "tagLine": "Tag Line",
+	   "title": "Title"
+	},
+	"home": {
+	   "welcome": "Hello {msg}!"
+	},
+	"measurements": {
+		"english": {
+			"acceleration": {
+				"abbr": "ft/s^s"
+			},
+			"altitude": {
+				"abbr": "ft",
+				"name": "Feet"
+			},
+			"time": {
+				"abbr": "s"
+			},
+			"velocity": {
+				"abbr": "ft/s"
+			}
+		},
+		"metric": {
+			"acceleration": {
+				"abbr": "m/s^s"
+			},
+			"altitude": {
+				"abbr": "m",
+				"name": "Meters"
+			},
+			"time": {
+				"abbr": "s"
+			},
+			"velocity": {
+				"abbr": "m/s"
+			}
+		}
+	},
+	"measurementUnits": {
+		"english": "English",
+		"metric": "Metrics"
+	},
+	"menu": {
+		"flightInfo": "Flight Info",
+		"flightPath": "Flight Path",
+		"settings": {
+			"title": "Settings"
+		}
+	},
+	"messages": {
+	   "clickOrHover": {
+		  "description": "Click or hover to see description..."
+	   },
+	   "failed": "Action failed",
+	   "loading": "Loading...",
+	   "success": "Action was successful",
+	   "processed": "Processed",
+	   "reset": "Reset",
+	   "saved": "Saved"
+	},
+	"news": {
+	   "actions": "Actions",
+	   "article": "Article",
+	   "name": "Name",
+	   "new": "News",
+	   "noData": "No news available...",
+	   "publishDate": "Publish Date",
+	   "requiresAuth": "Authenticated",
+	   "status": {
+		  "active": "Active"
+	   },
+	   "statusName": "Status",
+	   "sticky": "Sticky"
+	},
+	"openSource": {
+	   "client": "Client",
+	   "name": "Name",
+	   "license": "License",
+	   "resource": "Resource",
+	   "server": "Server"
+	},
+	"questions": {
+	   "areYouSure": "Are you sure?"
+	},
+	"strings": {
+	   "add": "Add",
+	   "clear": "Clear",
+	   "copyright": "Copyright",
+	   "copyToClipboard": "Copied to the clipboard!",
+	   "delete": "Delete",
+	   "edit": "Edit",
+	   "load": "Load",
+	   "new": "New",
+	   "no": "No",
+	   "save": "Save",
+	   "share": "Share",
+	   "yes": "Yes"
+	},
+	"tagLine": {
+	   "max": "Maximum of {max} tags."
+	},
+	"titles": {
+	   "about": "About",
+	   "application": "Rocket Tools",
+	   "edit": "Edit",
+	   "editType": "Edit {type}",
+	   "flightInfo": "Flight Info",
+	   "flightPath": "Flight Path",
+	   "help": "Help",
+	   "home": "Home",
+	   "issues": "Issues",
+	   "new": "New",
+	   "newType": "New {type}",
+	   "news": "News",
+	   "newsLatest": "Latest News",
+	   "openSource": "Open Source",
+	   "profile": "Profile",
+	   "settings": "Settings",
+	   "signIn": "Sign In",
+	   "signOut": "Sign Out",
+	   "statistics": "Stats",
+	   "support": "Support",
+	   "users": "Users",
+	   "welcome": "Welcome to"
+	},
+	"tooltips": {
+	   "clear": "Clear filters",
+	   "extract": "Extract list",
+	   "share": "Share the list"
+	},
+	"users": {
+	   "actions": "Actions",
+	   "externalId": "External Id",
+	   "id": "Id",
+	   "name": "Name",
+	   "role": "Role",
+	   "roles": "Roles"
+	},
+	"validation": {
+		"required": "Field is required."
+	},
+	"version": {
+	   "majorMinorDate": "{major}.{minor}.{patch} {date}",
+	   "label": "Version"
+	}
+ }
