@@ -30,7 +30,7 @@ import base from '@/library_vue/components/base';
 import QMarkdown from '@/library_vue_quasar/components/markup/QMarkdown';
 
 export default {
-	name: 'News',
+	name: 'AppNews',
 	components: {
 		QMarkdown
 	},

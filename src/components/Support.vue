@@ -20,7 +20,7 @@
 import baseSupport from '@/library_vue/components/baseSupport';
 
 export default {
-	name: 'Support',
+	name: 'AppSupport',
 	extends: baseSupport,
 	setup(props) {
 		return Object.assign(baseSupport.setup(props), {

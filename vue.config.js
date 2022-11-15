@@ -1,8 +1,9 @@
+
+const { defineConfig } = require('@vue/cli-service');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-// const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 let configEnv = process.env.NODE_ENV;
 console.log('vue.config.NODE_ENV', configEnv);
@@ -19,32 +20,7 @@ else
 	configEnv = 'development';
 console.log('vue.config.NODE_ENV', configEnv);
 
-module.exports = {
-	devServer: {
-		port: 8080
-	},
-
-	pages: {
-		index: {
-			entry: './src/main.js',
-			template: 'public/index.html',
-			title: 'Home',
-			chunks: ['chunk-vendors', 'chunk-common', 'index']
-		}
-	},
-
-	chainWebpack: config => {
-		config.module
-			.rule('vue')
-			.use('vue-loader')
-			.tap(options => ({
-				...options,
-				compilerOptions: {
-					// treat any tag that starts with mt- as custom elements
-					isCustomElement: tag => tag.startsWith('vue-') || tag.startsWith('mt-')
-				}
-			}))
-	},
+module.exports = defineConfig({
 
     configureWebpack: {
 		devtool: 'source-map',
@@ -59,13 +35,11 @@ module.exports = {
 			]
 		},
 		plugins: [
-			// new BundleAnalyzerPlugin(),
-			new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
+			// new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false }),
 			new webpack.ContextReplacementPlugin(
 				/highlight\.js\/lib\/languages$/,
 				new RegExp(`^./(${['javascript'].join('|')})$`)
 			)
-			// new VuetifyLoaderPlugin()
 		],
 		resolve: {
 			alias: {
@@ -77,16 +51,14 @@ module.exports = {
 	css: {
 		extract: { ignoreOrder: true }
 	},
+  transpileDependencies: [
+    'quasar'
+  ],
 
-	transpileDependencies: [
-		'vuetify',
-		'quasar'
-	],
-
-	pluginOptions: {
-		quasar: {
-			importStrategy: 'kebab',
-			rtlSupport: true
-		}
-	}
-};
+  pluginOptions: {
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false
+    }
+  }
+});

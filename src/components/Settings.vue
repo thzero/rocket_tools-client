@@ -23,7 +23,7 @@
 import baseSettings from '@/library_vue/components/base'; // TODO
 
 export default {
-	name: 'Settings',
+	name: 'AppSettings',
 	// components: {
 	// 	VConfirmationDialog,
 	// 	VFormControl,
