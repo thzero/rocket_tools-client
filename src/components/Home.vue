@@ -34,7 +34,7 @@ import News from '@/components/News';
 const DelayMs = 0; // 250
 
 export default {
-	name: 'Home',
+	name: 'AppHome',
 	setup(props) {
 		return Object.assign(base.setup(props), {
 		});
