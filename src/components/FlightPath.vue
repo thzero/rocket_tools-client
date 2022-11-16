@@ -10,7 +10,7 @@
 			</div>
 			<div class="row">
 				<div class="col-12 text-center text-h5 q-pb-sm">
-					{{ $t('titles.flightPath') }}
+					{{ $t('titles.tools.flightPath') }}
 				</div>
 			</div>
 			<div class="row">

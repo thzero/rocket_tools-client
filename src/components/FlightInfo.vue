@@ -10,7 +10,7 @@
 			</div>
 			<div class="row">
 				<div class="col-12 text-center text-h5 q-pb-sm">
-					{{ $t('titles.flightInfo') }}
+					{{ $t('titles.tools.flightInfo') }}
 				</div>
 			</div>
 			<div class="row">

@@ -27,13 +27,14 @@
 					color="secondary"
 					clickable
 					to="/flightInfo"
-					:label="$t('menu.flightInfo')"
+					:label="$t('menu.tools.flightInfo')"
 				/>
 				<q-btn
+					class="q-mr-sm"
 					color="secondary"
 					clickable
 					to="/flightPath"
-					:label="$t('menu.flightPath')"
+					:label="$t('menu.tools.flightPath')"
 				/>
 
 				<q-btn
@@ -64,7 +65,7 @@
 								</q-item-section>
 								<q-item-section>{{ $t('titles.openSource') }}</q-item-section>
 							</q-item>
-							<!-- <q-separator />
+							<q-separator />
 							<q-item
 								v-if="!isLoggedIn"
 								clickable
@@ -84,7 +85,7 @@
 									<q-avatar text-color="red" icon="power_settings_new" />
 								</q-item-section>
 								<q-item-section>{{ $t('titles.signOut') }}</q-item-section>
-							</q-item> -->
+							</q-item>
 						</q-list>
 					</q-menu>
 				</q-btn>

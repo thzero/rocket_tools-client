@@ -245,8 +245,11 @@
 		"metric": "Metrics"
 	},
 	"menu": {
-		"flightInfo": "Flight Info",
-		"flightPath": "Flight Path",
+		"tools": {
+			"flightInfo": "Flight Info",
+			"flightPath": "Flight Path",
+			"thrust2Weight": "Thrust 2 Weight"
+		},
 		"settings": {
 			"title": "Settings"
 		}
@@ -308,8 +311,6 @@
 	   "application": "Rocket Tools",
 	   "edit": "Edit",
 	   "editType": "Edit {type}",
-	   "flightInfo": "Flight Info",
-	   "flightPath": "Flight Path",
 	   "help": "Help",
 	   "home": "Home",
 	   "issues": "Issues",
@@ -325,7 +326,12 @@
 	   "statistics": "Stats",
 	   "support": "Support",
 	   "users": "Users",
-	   "welcome": "Welcome to"
+	   "welcome": "Welcome to",
+	   "tools": {
+		"flightInfo": "Flight Info",
+		"flightPath": "Flight Path",
+		"thrust2Weight": "Thrust 2 Weight"
+	   }
 	},
 	"tooltips": {
 	   "clear": "Clear filters",
