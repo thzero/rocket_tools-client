@@ -3,13 +3,31 @@
 		<q-header elevated>
 			<q-toolbar class="text-white">
 				<q-btn
+					:class="`${$q.screen.gt.sm ? 'hidden': ''}`"
 					flat
 					dense
 					round
 					@click="toggleDrawer"
 					aria-label="Menu"
 					icon="menu"
-				/>
+				>
+					<q-menu auto-close>
+						<q-list style="min-width: 100px">
+							<q-item clickable to="/flightInfo">
+								<q-item-section>{{ $t('menu.tools.flightInfo') }}</q-item-section>
+							</q-item>
+							<q-item clickable to="/flightPath">
+								<q-item-section>{{ $t('menu.tools.flightPath') }}</q-item-section>
+							</q-item>
+							<q-item clickable to="/thrust2Weight">
+								<q-item-section>{{ $t('menu.tools.thrust2Weight') }}</q-item-section>
+							</q-item>
+							<q-item href="https://www.thrustcurve.org" target="_blank">
+								<q-item-section>{{ $t('menu.thrustcurve') }}</q-item-section>
+							</q-item>
+						</q-list>
+					</q-menu>
+				</q-btn>
 
 				<q-toolbar-title class="text-left">
 					<router-link
@@ -23,18 +41,34 @@
 				<q-space />
 
 				<q-btn
-					class="q-mr-sm"
+					:class="`q-mr-sm ${$q.screen.lt.md ? 'hidden': ''}`"
 					color="secondary"
 					clickable
 					to="/flightInfo"
 					:label="$t('menu.tools.flightInfo')"
 				/>
 				<q-btn
+					:class="`q-mr-sm ${$q.screen.lt.md ? 'hidden': ''}`"
 					class="q-mr-sm"
 					color="secondary"
 					clickable
 					to="/flightPath"
 					:label="$t('menu.tools.flightPath')"
+				/>
+				<q-btn
+					:class="`q-mr-sm ${$q.screen.lt.md ? 'hidden': ''}`"
+					class="q-mr-sm"
+					color="secondary"
+					clickable
+					to="/thrust2Weight"
+					:label="$t('menu.tools.thrust2Weight')"
+				/>
+				<q-btn
+					:class="`q-mr-sm ${$q.screen.lt.md ? 'hidden': ''}`"
+					color="secondary"
+					href="https://www.thrustcurve.org"
+					target="_blank"
+					:label="$t('menu.thrustcurve')"
 				/>
 
 				<q-btn

@@ -1,26 +1,28 @@
 {
 	"admin": {
-	   "news": "News",
-	   "users": "Users"
+		"news": "News",
+		"users": "Users"
 	},
 	"auth": {
-	   "google": "Google",
-	   "rememberMe": "Rembmer Me"
+		"google": "Google",
+		"rememberMe": "Rembmer Me"
 	},
 	"buttons": {
-	   "cancel": "Cancel",
-	   "clear": "Clear",
-	   "collapseAll": "Collapse",
-	   "delete": "Delete",
-	   "edit": "Edit",
-	   "expandAll": "Expand",
-	   "export": "Export",
-	   "ok": "Ok",
-	   "process": "Process",
-	   "reset": "Reset",
-	   "save": "Save",
-	   "select": "Select",
-	   "submit": "Submit"
+		"calculate": "Calculate",
+		"cancel": "Cancel",
+		"clear": "Clear",
+		"collapseAll": "Collapse",
+		"delete": "Delete",
+		"edit": "Edit",
+		"expandAll": "Expand",
+		"export": "Export",
+		"ok": "Ok",
+		"process": "Process",
+		"reset": "Reset",
+		"save": "Save",
+		"search": "Search",
+		"select": "Select",
+		"submit": "Submit"
 	},
 	"charts": {
 		"flightInfo": {
@@ -176,6 +178,11 @@
 		"touchdown": "Touchdown"
 	},
 	"forms": {
+		"external": {
+		   "motorSearch": {
+				"impulseClass": "Impulse Class"
+		   }
+		},
 	   "externalId": "External Id",
 	   "id": "Id",
 	   "link": "Link",
@@ -252,7 +259,8 @@
 		},
 		"settings": {
 			"title": "Settings"
-		}
+		},
+		"thrustcurve": "ThrustCurve.org"
 	},
 	"messages": {
 	   "clickOrHover": {
@@ -264,6 +272,22 @@
 	   "processed": "Processed",
 	   "reset": "Reset",
 	   "saved": "Saved"
+	},
+	"motorSearch": {
+		"title": "Motor Search",
+		"guidance": "Search for thrust curves from ",
+		"guidance3": ".",
+		"motor": "Motor Info",
+		"motor_burnTimeS": "Burn Time (S)",
+		"motor_caseInfo": "Case",
+		"motor_commonName": "Common Name",
+		"motor_designation": "Designation",
+		"motor_propInfo": "Propellant",
+		"motor_sparky": "Sparky",
+		"motor_type": "Motor Type",
+		"motor_type_reload": "Reload",
+		"motor_type_singleuse": "Single Use",
+		"search": "Motor Search"
 	},
 	"news": {
 	   "actions": "Actions",
@@ -331,7 +355,34 @@
 		"flightInfo": "Flight Info",
 		"flightPath": "Flight Path",
 		"thrust2Weight": "Thrust 2 Weight"
+	   },
+	   "external": {
+		 "motorSearch": "Motor Search"
 	   }
+	},
+	"thrust2Weight": {
+		"title": "Thrust to Weight",
+		"calculated": "Calculated Thrust to Weight Ratio",
+		"calculation_max_launch_rod_timespan": "Max. Launch Rod Time",
+		"calculation_max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
+		"mass": "Rocket Weight",
+		"mass_hint": "Weight of the rocket fully loaded including engines.",
+		"motor": "Motor",
+		"mass_english": "Pounds",
+		"mass_english_abbr": "lb",
+		"mass_metric": "Kilograms",
+		"mass_metric_abbr": "kg",
+		"newtons": "Newtons",
+		"newtons_abbr": "N",
+		"results": "Results",
+		"thrust": "Thrust (Newtons)",
+		"thrust_initial": "Initial",
+		"thrust_initial_hint": "Initial thrust of the engine.",
+		"thrust_max": "Max",
+		"thrust_peak": "Peak",
+		"thrust_average": "Average",
+		"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
+		"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
 	},
 	"tooltips": {
 	   "clear": "Clear filters",
