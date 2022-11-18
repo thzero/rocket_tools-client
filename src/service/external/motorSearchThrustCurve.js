@@ -14,11 +14,11 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 
     async _search(correlationId, request) {
        const body = {
-			impulseClass: 'C',
+			impulseClass: request.impulseClass,
 			// type: 'SU',
 			// sparky: false,
 			availability: 'available',
-			maxResults: 100
+			maxResults: 200
 		};
 		const opts = {
 			ignoreCorrelationId: true,

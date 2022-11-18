@@ -161,12 +161,12 @@
 								</div>
 								<div
 									v-if="!calculationResults.success"
-									class="display-flex flex-direction-row justify-content-center"
+									class=""
 								>
 									failed
 								</div>
 							</div>
-							<div class="display-flex flex-direction-row justify-content-center">
+							<div class="">
 								{{ $t('thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
 								<div v-if="motor">
 									<br>

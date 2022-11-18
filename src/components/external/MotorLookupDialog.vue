@@ -33,26 +33,57 @@
 							:label="$t('forms.external.motorSearch.impulseClass')"
 						/>
 					</q-card-section>
+					<q-card-actions>
+						<q-space></q-space>
+						<div class="float-right q-mb-sm">
+							<q-btn
+								class="q-pa-sm q-mr-sm"
+								dense
+								color="primary"
+								:label="$t('buttons.search')"
+								@click="clickMotorSearch"
+							/>
+							<q-btn
+								class="q-pa-sm"
+								dense
+								color="primary"
+								:label="$t('buttons.reset')"
+								@click="clickMotorSearchReset"
+							/>
+						</div>
+					</q-card-actions>
 				</q-card>
-				<q-card-actions>
-					<q-space></q-space>
-					<div class="float-right q-mb-sm">
-						<q-btn
-							class="q-pa-sm q-mr-sm"
-							dense
-							color="primary"
-							:label="$t('buttons.search')"
-							@click="clickMotorSearch"
-						/>
-						<q-btn
-							class="q-pa-sm"
-							dense
-							color="primary"
-							:label="$t('buttons.reset')"
-							@click="clickMotorSearchReset"
-						/>
-					</div>
-				</q-card-actions>
+				<q-card
+					flat
+					bordered
+					dense
+					class="q-mt-sm"
+					v-if="results"
+				>
+					<q-card-section>
+						<div class="row">
+							<div class="col-3 text-center text-h7">
+								{{ resultsMax }}
+							</div>
+						</div>
+						<div class="row">
+							<div
+								class="col-9 text-left text-h7"
+								v-for="item in results" :key="item.motorId"
+							>
+								<div>
+									{{ item.manufacturer }} {{ item.commonName }}
+								</div>
+								<div>
+									{{ item.manufacturer }} {{ item.commonName }}
+								</div>
+							</div>
+							<div class="col-3 text-right">
+								button
+							</div>
+						</div>
+					</q-card-section>
+				</q-card>
 			</div>
 		</div>
 	</QFormDialog>
@@ -93,7 +124,9 @@ export default {
 	},
 	data: () => ({
 		impulseClass: null,
-		serviceExternalMotorSearch: null
+		serviceExternalMotorSearch: null,
+		results: [],
+		resultsMax: null
 	}),
 	computed: {
 		impulseClasses() {
@@ -117,11 +150,19 @@ export default {
 			this.reset();
 		},
 		async clickMotorSearch() {
+			this.results = null;
+			this.resultsMax = null;
+			this.resultsTotal = null;
+
 			const request = {
 				impulseClass: this.impulseClass
 			};
 			const response = await this.serviceExternalMotorSearch.search(this.correlationId(), request);
 			console.log(response);
+			if (response) {
+				this.results = response.results;
+				this.resultsMax = response.matches;
+			}
 		},
 		async close() {
 		},
@@ -142,6 +183,9 @@ export default {
 		// eslint-disable-next-line
 		async resetDialog(correlationId) {
 			this.impulseClass = null;
+			this.results = null;
+			this.resultsMax = null;
+			this.resultsTotal = null;
 		}
     },
 	validations () {
