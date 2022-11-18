@@ -10,6 +10,23 @@ class AppUtility {
 
 	static isDebug = false;
 
+	static dateFormat(locale) {
+		locale = !String.isNullOrEmpty(locale) ? locale : AppUtility.getLocale();
+		const formatObj = new Intl.DateTimeFormat(locale).formatToParts(new Date());
+		return formatObj.map(obj => {
+			switch (obj.type) {
+			case 'day':
+				return 'DD';
+			case 'month':
+				return 'MM';
+			case 'year':
+				return 'YYYY';
+			default:
+				return obj.value;
+			}
+		}).join('');
+	}
+
 	// TODO: move to library
 	static debug(args) {
 		if (!AppUtility.isDebug)
