@@ -1,6 +1,7 @@
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
+import CommonUtility from '@thzero/library_common/utility/index';
 
 import Results from '../results';
 
@@ -68,7 +69,7 @@ class FlightInfoProcessorService extends BaseService {
 
 		const results = new Results();
 
-		if (AppUtility.isNull(data)) {
+		if (CommonUtility.isNull(data)) {
 			results.errors.push('errors.process.noInput');
 			return results;
 		}

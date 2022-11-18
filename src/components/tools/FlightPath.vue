@@ -295,7 +295,9 @@ import Papa from 'papaparse';
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
+import CommonUtility from '@thzero/library_common/utility/index';
 import GlobalUtility from '@thzero/library_client/utility/global';
+import QuasarUtility from '@/library_vue_quasar/utility/index';
 
 import ToolBase from '@/components/tools/ToolBase';
 
@@ -351,8 +353,8 @@ export default defineComponent({
 		this.flightPathLocation = GlobalUtility.$store.getters.getFlightLocation();
 		this.flightPathTitle = GlobalUtility.$store.getters.getFlightTitle();
 
-		this.flightPathProcessors = AppUtility.selectOptions(this.serviceFlightPath.serviceProcessors, GlobalUtility.$trans.t, 'flightPath.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
-		this.flightPathMeasurementUnitsOptions = AppUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurements', null, (l) => { return l + '.altitude.name'; });
+		this.flightPathProcessors = QuasarUtility.selectOptions(this.serviceFlightPath.serviceProcessors, GlobalUtility.$trans.t, 'flightPath.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
+		this.flightPathMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurements', null, (l) => { return l + '.altitude.name'; });
 		this.flightPathMeasurementUnits = AppUtility.measurementUnitEnglish;
 	},
 	methods: {
@@ -414,7 +416,7 @@ export default defineComponent({
 			this.notify('messages.saved');
 		},
 		flightPathExport() {
-			if (AppUtility.isNull(this.flightPathData))
+			if (CommonUtility.isNull(this.flightPathData))
 				return;
 
 			const currentDate = this.flightInfoDate ? new Date(this.flightInfoDate) : new Date();

@@ -508,6 +508,7 @@ import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
+import QuasarUtility from '@/library_vue_quasar/utility/index';
 
 import flightInfoData from '@/components/tools/FlightInfoData';
 import flightInfoChart from '@/components/tools/charts/FlightInfo';
@@ -593,8 +594,8 @@ export default defineComponent({
 		this.flightInfoLocation = GlobalUtility.$store.getters.getFlightLocation();
 		this.flightInfoTitle = GlobalUtility.$store.getters.getFlightTitle();
 
-		this.flightInfoProcessors = AppUtility.selectOptions(this.serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
-		this.flightInfoMeasurementUnitsOptions = AppUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurementUnits');
+		this.flightInfoProcessors = QuasarUtility.selectOptions(this.serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
+		this.flightInfoMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurementUnits');
 		this.flightInfoMeasurementUnits = GlobalUtility.$store.state.measurementUnits;
 
 		this.resolution = GlobalUtility.$store.state.flightInfoResolution ?? Constants.FlightInfo.Resolution;

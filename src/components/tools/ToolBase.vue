@@ -1,7 +1,7 @@
 <script>
 import base from '@/library_vue/components/base';
 
-import AppUtility from '@/utility/app';
+import GlobalUtility from '@thzero/library_client/utility/global';
 
 export default {
 	name: 'ToolBase',
@@ -15,10 +15,10 @@ export default {
 	}),
 	computed: {
 		dateFormat() {
-			return AppUtility.dateFormat();
+			return GlobalUtility.dateFormat();
 		},
 		dateFormatMask() {
-			return AppUtility.dateFormat().replace(/[a-zA-Z0-9]/g, '#');
+			return GlobalUtility.dateFormat().replace(/[a-zA-Z0-9]/g, '#');
 		},
 		errors() {
 			return this.errorMessage;
