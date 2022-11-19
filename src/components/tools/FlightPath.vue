@@ -531,16 +531,6 @@ export default defineComponent({
 			this.buttons.process.disabled = true;
 
 			this.notify('messages.reset');
-		},
-		setError(message) {
-			this.buttons.export.disabled = true;
-			this.errorMessage = message;
-
-			this.errorTimer = setTimeout(() => {
-				this.errorMessage = null;
-				clearTimeout(this.errorTimer);
-			},
-			3000);
 		}
 	}
 });
