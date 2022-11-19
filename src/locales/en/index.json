@@ -12,6 +12,7 @@
 		"cancel": "Cancel",
 		"clear": "Clear",
 		"collapseAll": "Collapse",
+		"close": "Close",
 		"delete": "Delete",
 		"edit": "Edit",
 		"expandAll": "Expand",
@@ -180,7 +181,10 @@
 	"forms": {
 		"external": {
 		   "motorSearch": {
-				"impulseClass": "Impulse Class"
+				"diameter": "Diameter",
+				"impulseClass": "Impulse Class",
+				"singleUse": "Single Use",
+				"sparky": "Sparky"
 		   }
 		},
 	   "externalId": "External Id",
@@ -285,9 +289,11 @@
 		"motor_propInfo": "Propellant",
 		"motor_sparky": "Sparky",
 		"motor_type": "Motor Type",
+		"motor_type_hybrid": "Hybrid",
 		"motor_type_reload": "Reload",
 		"motor_type_singleuse": "Single Use",
-		"search": "Motor Search"
+		"search": "Motor Search",
+		"sparky": "Sparky"
 	},
 	"news": {
 	   "actions": "Actions",

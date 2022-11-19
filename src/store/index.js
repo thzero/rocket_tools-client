@@ -17,6 +17,7 @@ class AppStore extends BaseStore {
 			modules: {
 			},
 			state: {
+				checksumLastUpdate: [],
 				flightDate: '',
 				flightInfoResolution: Constants.FlightInfo.Resolution,
 				flightInfoStyle: [],
@@ -24,9 +25,10 @@ class AppStore extends BaseStore {
 				flightPathStyle: [],
 				flightTitle: '',
 				measurementUnits: AppUtility.measurementUnitEnglish,
-				checksumLastUpdate: [],
+				motorSearch: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
+				thrust2weight: {},
 				version: null
 			},
 			actions: {
@@ -50,6 +52,9 @@ class AppStore extends BaseStore {
 				},
 				async setMeasurementUnits({ commit }, value) {
 					commit('setMeasurementUnits', value);
+				},
+				async setMotorSearch({ commit }, value) {
+					commit('setMotorSearch', value);
 				},
 				async getPlans({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
@@ -97,6 +102,9 @@ class AppStore extends BaseStore {
 				getFlightTitle: (state) => () => {
 					return state.flightTitle;
 				},
+				getMotorSearch: (state) => () => {
+					return state.motorSearch;
+				},
 				getMeasurementUnit: (state) => () => {
 					return state.measurementUnits ?? AppUtility.measurementUnitEnglish;
 				},
@@ -135,6 +143,9 @@ class AppStore extends BaseStore {
 				},
 				setMeasurementUnits(state, value) {
 					state.measurementUnits = value;
+				},
+				setMotorSearch(state, value) {
+					state.motorSearch = value;
 				},
 				setCheckumLastUpdate(state, last) {
 					state.checksumLastUpdate = last;
@@ -180,6 +191,11 @@ class AppStore extends BaseStore {
 		return new VuexPersist({
 			storage: window.localStorage,
 			reducer: state => ({
+				flightInfoResolution: state.flightInfoResolution,
+				flightInfoStyle: state.flightInfoStyle,
+				flightPathStyle: state.flightPathStyle,
+				measurementUnits: state.measurementUnits,
+				motorSearch: state.motorSearch,
 				plans: state.plans,
 				settings: state.settings,
 				version: state.version

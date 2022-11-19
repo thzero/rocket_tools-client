@@ -20,7 +20,7 @@
 						flat
 						bordered
 						dense>
-						<q-card-section>
+						<q-card-section class="q-section-with-actions">
 							<q-input
 								ref="mass"
 								v-model.number="mass"
@@ -132,20 +132,6 @@
 							</div>
 							<div v-if="calculationResults.calculated">
 								<div class="display-flex flex-direction-row justify-content-center  q-pb-sm">
-									<!-- <table>
-										<tr>
-											<th class="buffer">{{ $t('thrust2Weight.thrust_initial') }}</th>
-											<td>{{ calculationResults.initial.toFixed(2) + ' '  + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</td>
-										</tr>
-										<tr v-if="calculationResults.peak">
-											<th class="buffer">{{ $t('thrust2Weight.thrust_peak') }}</th>
-											<td>{{ calculationResults.peak.toFixed(2) + ' ' + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</td>
-										</tr>
-										<tr v-if="calculationResults.average">
-											<th class="buffer">{{ $t('thrust2Weight.thrust_average') }}</th>
-											<td>{{ calculationResults.average.toFixed(2) + ' ' + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</td>
-										</tr>
-									</table> -->
 									<table style="width: 100%;">
 										<tr>
 											<th class="buffer">{{ $t('thrust2Weight.thrust_initial') }}</th>
@@ -184,14 +170,12 @@
 		ref="motorSearchDialog"
 		:signal="dialogMotorSearch.signal"
 		@cancel="dialogMotorSearch.cancel()"
-		@ok="dialogMotorSearch.ok()"
+		@ok="selectMotor"
 	/>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
-
-import Papa from 'papaparse';
 
 import Constants from '@/constants';
 
@@ -277,62 +261,6 @@ export default defineComponent({
 			this.$refs.mass.validate();
 			this.buttons.calculate.disabled = this.hasError();
 		},
-		flightPathProcess() {
-			this.reset();
-			this.output = '';
-
-			this.$refs.flightPathInput.validate();
-			this.$refs.flightPathProcessor.validate();
-			this.$refs.flightPathMeasurementUnits.validate();
-
-			if (this.hasError()) {
-				this.setError(GlobalUtility.$trans.t('errors.process.required'));
-				return;
-			}
-
-			if (String.isNullOrEmpty(this.flightPathInput)) {
-				this.setError(GlobalUtility.$trans.t('errors.process.noInput'));
-				return;
-			}
-
-			const data = Papa.parse(this.flightPathInput.trim());
-			if (data.errors && data.errors.length > 0) {
-				this.setError(GlobalUtility.$trans.t('errors.process.unableToConvert'));
-				return;
-			}
-
-			const flightInfo = {
-				date: this.flightPathDate,
-				style: {
-					path: {
-						flight: {
-							color: this.flightPathStylePathFlightColor ?? this.serviceFlightPath.styleDefault.path.flight.color
-						},
-						ground: {
-							color: this.flightPathStylePathGroundColor ?? this.serviceFlightPath.styleDefault.path.ground.color
-						}
-					},
-					pin: {
-						launch: {
-							color: this.flightPathColorLaunchPinColor ?? this.serviceFlightPath.styleDefault.pin.launch.color
-						},
-						touchdown: {
-							color: this.flightPathColorTouchdownPinColor ?? this.serviceFlightPath.styleDefault.pin.touchdown.color
-						}
-					}
-				},
-				location: this.flightPathLocation,
-				title: this.flightPathTitle
-			};
-			const flightPathResults = this.serviceFlightPath.process(data, this.flightPathProcessor, this.flightPathMeasurementUnits, flightInfo);
-			this.flightPathData = flightPathResults.info.flightPath;
-			// this.output = JSON.stringify(flightPathResults, null, 2);
-			this.output = flightPathResults.info.flightPath;
-
-			this.notify('messages.processed');
-
-			this.buttons.export.disabled = false;
-		},
 		hasError() {
 			return (this.$refs.mass.hasError || this.$refs.thrustAverage.hasError || this.$refs.thrustInitial.hasError || this.$refs.thrustPeak.hasError);
 		},
@@ -364,15 +292,12 @@ export default defineComponent({
 			if (this.errorTimer)
 				clearTimeout(this.errorTimer);
 		},
-		setError(message) {
-			this.buttons.calculate.disabled = true;
-			this.errorMessage = message;
+		selectMotor(item) {
+			this.motor = item.designation;
 
-			this.errorTimer = setTimeout(() => {
-				this.errorMessage = null;
-				clearTimeout(this.errorTimer);
-			},
-			3000);
+			this.notify('messages.processed');
+
+			this.dialogMotorSearch.ok();
 		}
 	}
 });

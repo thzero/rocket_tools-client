@@ -35,9 +35,18 @@ class MotorSearchExternalService extends BaseService {
 		}
 	}
 
-	url() {
+	urlHuman() {
 		const config = this._config.getBackend(this._urlKey());
 		return config.humanUrl;
+	}
+
+	urlMotor(motor) {
+		if (String.isNullOrEmpty(motor.manufacturerAbbrev) || String.isNullOrEmpty(motor.designation)) {
+			return null;
+		}
+
+		const uri = this.urlHuman() + '/motors/' + motor.manufacturerAbbrev + '/' + motor.designation;
+		return uri;
 	}
 
 	async _search(correlationId, request) {
