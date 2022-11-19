@@ -67,4 +67,8 @@ export default {
 		cursor: pointer;
 		text-decoration: underline;
 	}
+
+	.q-section-with-actions {
+		padding-bottom: 4px !important;
+	}
 </style>
