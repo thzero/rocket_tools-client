@@ -7,7 +7,7 @@
 		:button-ok="false"
 		:resetDialog="resetDialog"
 		:validation="validation"
-		max-width="700px"
+		max-width="70vh"
 		@close="close"
 		@cancel="cancel"
 	>
@@ -71,14 +71,12 @@
 							<div class="float-right">
 								<q-btn
 									class="q-pa-sm q-mr-sm"
-									dense
 									color="primary"
 									:label="$t('buttons.search')"
 									@click="clickMotorSearch"
 								/>
 								<q-btn
 									class="q-pa-sm"
-									dense
 									color="primary"
 									:label="$t('buttons.reset')"
 									@click="clickMotorSearchReset"
@@ -110,19 +108,19 @@
 							<td colspan="2" class="text-left text-h6 text-bold">{{ item.manufacturer }} {{ item.commonName }} {{ item.sparky ? '(' + $t('motorSearch.sparky') +  ')' : '' }}</td>
 						</tr>
 						<tr>
-							<td class="text-h7 text-bold" style="width: 30%">Designation</td><td>{{ item.designation }}</td>
+							<td class="text-h7 text-bold" style="width: 30%">{{ $t('motorSearch.motor_designation') }}</td><td>{{ item.designation }}</td>
 						</tr>
 						<tr>
-							<td class="text-h7 text-bold">Diameter</td><td>{{ item.diameter }}mm</td>
+							<td class="text-h7 text-bold">{{ $t('motorSearch.motor_diameter') }}</td><td>{{ item.diameter }}{{ $t('motorSearch.motor_diameter_measurement') }}</td>
 						</tr>
 						<tr>
-							<td class="text-h7 text-bold">Case Info</td><td>{{ motorCaseInfo(item) }}</td>
+							<td class="text-h7 text-bold">{{ $t('motorSearch.motor_caseInfo') }}</td><td>{{ motorCaseInfo(item) }}</td>
 						</tr>
 						<tr>
-							<td class="text-h7 text-bold">Average Thrust</td><td>{{ item.avgThrustN }}</td>
+							<td class="text-h7 text-bold">{{ $t('motorSearch.motor_thrust_average') }}</td><td>{{ item.avgThrustN }} {{ item.motor_thrust_newtons_abbr }}</td>
 						</tr>
 						<tr>
-							<td class="text-h7 text-bold">Peak Thrust</td><td>{{ item.maxThrustN }}</td>
+							<td class="text-h7 text-bold">{{ $t('motorSearch.motor_thrust_max') }}</td><td>{{ item.maxThrustN }} {{ item.motor_thrust_newtons_abbr }}</td>
 						</tr>
 						<tr>
 							<td colspan="2" class="text-right"><a :href="motorUrl(item)" target="_blank">{{ motorUrl(item) }}</a></td>
@@ -182,7 +180,8 @@ export default {
 	},
 	setup (props) {
 		return Object.assign(base.setup(props), {
-			validation: useVuelidate()
+			scope: 'MotorLookupDialog',
+			validation: useVuelidate({ $scope: 'MotorLookupDialog' })
 		});
 	},
 	data: () => ({

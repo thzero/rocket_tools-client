@@ -1,4 +1,3 @@
-// import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
 
 import MotorSearchExternalService from '@/service/external/motorSearch';

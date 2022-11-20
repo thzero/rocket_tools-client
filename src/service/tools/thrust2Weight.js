@@ -3,6 +3,8 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import BaseService from '@thzero/library_client/service/index';
 
+import CalculationData from './calculationData';
+
 class Thrust2WeightToolsService extends BaseService {
 	constructor() {
 		super();
@@ -14,23 +16,12 @@ class Thrust2WeightToolsService extends BaseService {
 		this._externalCommunicationService = injector.getService(LibraryConstants.InjectorKeys.SERVICE_COMMUNICATION_REST);
     }
 
-	search(item, maxLaunchRodTime, callback) {
-		this._selectCallback = callback;
+    async initialize(correlationId) {
+		return new CalculationData();
+    }
 
-		this._calculationData.thrustInitial = null;
-		this._calculationData.thrustAverage = item.avgThrustN;
-		this._calculationData.thrustPeak = item.maxThrustN;
-		this._calculationData.motor = `${item.manufacturer} ${item.designation} (${item.commonName})`;
-		this._selectCallback(this._calculationData);
-
-		if (!item.dataFiles) {
-			// TODO: notification - toast?
-			return;
-		}
-
-		(async () => {
-			this._thrust2WeightBackendService.requestMotorsMotorSearch({ motorId: item.motorId, maxLaunchRodTime: maxLaunchRodTime }, this._requestMotorsMotorSearchResults);
-		})();
+	async calculate(correlationId, data) {
+		return data.calculate(correlationId);
 	}
 
 	_requestMotorsMotorSearchResults = (request, response) => {
