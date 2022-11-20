@@ -32,6 +32,10 @@ const Constants = {
 		Favorites: true,
 		RememberMe: false,
 		Statistics: false
+	},
+	MeasurementUnits: {
+		English: 'english',
+		Metric: 'metric'
 	}
 };
 

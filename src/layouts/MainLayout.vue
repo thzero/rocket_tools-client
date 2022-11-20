@@ -81,12 +81,12 @@
 				>
 					<q-menu auto-close>
 						<q-list style="min-width: 100px">
-							<!-- <q-item clickable to="/settings">
+							<q-item clickable to="/settings">
 								<q-item-section avatar>
 									<q-avatar text-color="black" icon="settings" />
 								</q-item-section>
 								<q-item-section>{{ $t('titles.settings') }}</q-item-section>
-							</q-item> -->
+							</q-item>
 							<!-- <q-item clickable to="/support">
 								<q-item-section avatar>
 									<q-avatar text-color="black" icon="help" />

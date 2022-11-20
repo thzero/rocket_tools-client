@@ -205,6 +205,9 @@
 		"number": "Number",
 		"role": "Role",
 		"roles": "Roles",
+		"settings": {
+			"measurementUnits": "Measurement Units"
+		},
 		"sorting": {
 			"ascending": "Ascending",
 			"ascendingAbbr": "Asc",
@@ -267,7 +270,7 @@
 	},
 	"measurementUnits": {
 		"english": "English",
-		"metric": "Metrics"
+		"metric": "Metric"
 	},
 	"menu": {
 		"tools": {

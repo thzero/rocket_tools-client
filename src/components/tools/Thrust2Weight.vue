@@ -20,7 +20,7 @@
 						ref="frm"
 						:validation="validation"
 						:resetForm="resetForm"
-						buttonName="buttons.calculate"
+						buttonOkName="buttons.calculate"
 						@ok="calculationOk"
 					>
 						<template v-slot:default>

@@ -1,13 +1,11 @@
 import LibraryConstants from '@thzero/library_client/constants';
+import Constants from '@/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 import SettingsUser from '@/common/data/settingsUser';
 
 class AppUtility {
-	static measurementUnitEnglish = 'english';
-	static measurementUnitMetric = 'metric';
-
 	static isDebug = false;
 
 	// TODO: move to library
@@ -32,7 +30,9 @@ class AppUtility {
 	}
 
 	static initializeSettingsUser() {
-		return new SettingsUser();
+		const settings = new SettingsUser();
+		settings.measurementUnits = Constants.MeasurementUnits.English;
+		return settings;
 	}
 
 	static settings() {
@@ -46,10 +46,6 @@ class AppUtility {
 		const settings = user.settings ? user.settings : AppUtility.initializeSettingsUser();
 		const userName = settings && settings.gamerTag ? settings.gamerTag : user.external && user.external.name ? user.external.name : '******';
 		return userName;
-	}
-
-	static measurementUnits() {
-		return [AppUtility.measurementUnitEnglish, AppUtility.measurementUnitMetric];
 	}
 
 	static _injector = null;
