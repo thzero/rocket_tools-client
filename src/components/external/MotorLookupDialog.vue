@@ -34,6 +34,7 @@
 										vid="impulseClass"
 										:items="impulseClasses"
 										:validation="validation"
+										:dense="true"
 										:label="$t('forms.external.motorSearch.impulseClass')"
 									/>
 								</div>
@@ -45,6 +46,7 @@
 										vid="diameter"
 										:items="diameters"
 										:validation="validation"
+										:dense="true"
 										:label="$t('forms.external.motorSearch.diameter')"
 									/>
 								</div>
@@ -54,6 +56,7 @@
 									<q-checkbox
 										class="q-mr-sm"
 										v-model="singleUse"
+										dense
 										:label="$t('forms.external.motorSearch.singleUse')"
 									/>
 								</div>
@@ -61,6 +64,7 @@
 									<q-checkbox
 										class="q-mr-sm"
 										v-model="sparky"
+										dense
 										:label="$t('forms.external.motorSearch.sparky')"
 									/>
 								</div>
