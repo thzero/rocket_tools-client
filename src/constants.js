@@ -1,4 +1,7 @@
 const Constants = {
+	ExternalKeys: {
+		MotorSearch: 'motorSearch'
+	},
 	FlightInfo: {
 		Resolution: 1024
 	},
@@ -8,7 +11,9 @@ const Constants = {
 		SERVICE_FLIGHT_INFO_PROCESSOR: 'serviceFlightInfoProcessor',
 		SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER: 'serviceFlightInfoProcessorEggtimer',
 		SERVICE_FLIGHT_PATH_PROCESSOR: 'serviceFlightPathProcessor',
-		SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT: 'serviceFlightPathProcessorFeatherweight'
+		SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT: 'serviceFlightPathProcessorFeatherweight',
+		SERVICE_TOOLS_THRUST2WEIGHT: 'serviceToolsThrust2Weight',
+		SERVICE_EXTERNAL_MOTOR_SEARCH: 'serviceExternalMotorSearch'
 	},
 	DateTime: {
 		DEFAULT_DATE_FORMAT: 'MM/DD/YYYY',
@@ -27,6 +32,10 @@ const Constants = {
 		Favorites: true,
 		RememberMe: false,
 		Statistics: false
+	},
+	MeasurementUnits: {
+		English: 'english',
+		Metric: 'metric'
 	}
 };
 

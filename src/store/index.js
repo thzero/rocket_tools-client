@@ -17,16 +17,17 @@ class AppStore extends BaseStore {
 			modules: {
 			},
 			state: {
+				checksumLastUpdate: [],
 				flightDate: '',
 				flightInfoResolution: Constants.FlightInfo.Resolution,
 				flightInfoStyle: [],
 				flightLocation: '',
 				flightPathStyle: [],
 				flightTitle: '',
-				measurementUnits: AppUtility.measurementUnitEnglish,
-				checksumLastUpdate: [],
+				motorSearch: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
+				thrust2weight: {},
 				version: null
 			},
 			actions: {
@@ -48,8 +49,8 @@ class AppStore extends BaseStore {
 				async setFlightTitle({ commit }, value) {
 					commit('setFlightTitle', value);
 				},
-				async setMeasurementUnits({ commit }, value) {
-					commit('setMeasurementUnits', value);
+				async setMotorSearch({ commit }, value) {
+					commit('setMotorSearch', value);
 				},
 				async getPlans({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
@@ -97,13 +98,16 @@ class AppStore extends BaseStore {
 				getFlightTitle: (state) => () => {
 					return state.flightTitle;
 				},
-				getMeasurementUnit: (state) => () => {
-					return state.measurementUnits ?? AppUtility.measurementUnitEnglish;
+				getMotorSearch: (state) => () => {
+					return state.motorSearch;
 				},
 				getPlan: (state) => (id) => {
 					if (state.plans == null)
 						return null;
 					return state.plans.find(plan => plan.id === id);
+				},
+				getSettings: (state) => (id) => {
+					return state.settings ? state.settings : AppUtility.initializeSettingsUser();
 				}
 			},
 			mutations: {
@@ -133,8 +137,8 @@ class AppStore extends BaseStore {
 				setFlightTitle(state, value) {
 					state.flightTitle = value;
 				},
-				setMeasurementUnits(state, value) {
-					state.measurementUnits = value;
+				setMotorSearch(state, value) {
+					state.motorSearch = value;
 				},
 				setCheckumLastUpdate(state, last) {
 					state.checksumLastUpdate = last;
@@ -146,7 +150,7 @@ class AppStore extends BaseStore {
 					this.$logger.debug('store', 'setPlans', 'plans.c', state.plans, params.correlationId);
 				},
 				setSettings(state, params) {
-					state.settings = LibraryUtility.merge3({}, state.settings, params.settings);
+					state.settings = LibraryUtility.merge3({}, state.settings, params);
 				},
 				setVersion(state, params) {
 					this.$logger.debug('store', 'setVersion', 'version', params.version, params.correlationId);
@@ -180,6 +184,10 @@ class AppStore extends BaseStore {
 		return new VuexPersist({
 			storage: window.localStorage,
 			reducer: state => ({
+				flightInfoResolution: state.flightInfoResolution,
+				flightInfoStyle: state.flightInfoStyle,
+				flightPathStyle: state.flightPathStyle,
+				motorSearch: state.motorSearch,
 				plans: state.plans,
 				settings: state.settings,
 				version: state.version

@@ -36,7 +36,7 @@ const routes = [
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/FlightInfo.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/FlightInfo.vue'),
 				meta: {
 					requiresAuth: false
 				}
@@ -49,7 +49,20 @@ const routes = [
 		children: [
 			{
 				path: '',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/FlightPath.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/FlightPath.vue'),
+				meta: {
+					requiresAuth: false
+				}
+			}
+		]
+	},
+	{
+		path: '/thrust2Weight',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/Thrust2Weight.vue'),
 				meta: {
 					requiresAuth: false
 				}

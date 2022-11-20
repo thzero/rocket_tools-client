@@ -82,3 +82,50 @@ Compiles the application for deployment to cloud provider.
 ```
 npm run build
 ```
+
+## Google Cloud Hosting
+
+Login to Google Cloud hosting, select the same account that was setup for Firebase.
+
+Enable the following APIs
+
+* Cloud Build API
+* Firebase Management API
+* Firebase Hosting API
+* Cloud Resource Manager API
+
+#### Cloud Build Trigger
+
+##### Event
+* Push to branch
+
+##### Source
+* Select the repository
+* Select "^master$" branch
+
+##### Configuration
+
+###### Type
+* Cloud Build configuration file (yaml or json)
+
+###### Location
+* Repository
+* Cloud Build configuration file location
+ * / cloudbuild.yaml
+
+##### Subsitution variables
+
+Add these variables:
+
+* _CONFIG - <application configuration JSON>
+
+##### Application Configuration
+
+Update the following from the above configuration JSON
+
+* apiKey - Set to same value from the server
+* baseUrl - Set the value to be the server api's Cloud Run URL.
+
+##### Deploy
+
+Run the trigger to kick of a deploy.
