@@ -249,12 +249,6 @@ export default defineComponent({
 			// this.dialogMotorSearch.value.open(); // if using setup...
 			this.dialogMotorSearch.open();
 		},
-		hasError() {
-			return (this.$refs.mass.hasError || this.$refs.thrustAverage.hasError || this.$refs.thrustInitial.hasError || this.$refs.thrustPeak.hasError);
-		},
-		onChangeDate(value) {
-			GlobalUtility.$store.dispatch('setFlightDate', value);
-		},
 		reset(correlationId, notify) {
 			this.$refs.frm.reset();
 			this.buttons.calculate.disabled = true;
