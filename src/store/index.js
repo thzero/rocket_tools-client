@@ -57,7 +57,7 @@ class AppStore extends BaseStore {
 					const response = await service.plans(correlationId);
 					this.$logger.debug('store', 'getPlans', 'response', response, correlationId);
 					if (Response.hasSucceeded(response))
-				commit('setPlans', { correlationId: correlationId, plans: response.results ? response.results.data : [] });
+						commit('setPlans', { correlationId: correlationId, plans: response.results ? response.results.data : [] });
 				},
 				async getVersion({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_VERSION);
