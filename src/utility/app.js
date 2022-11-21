@@ -31,8 +31,27 @@ class AppUtility {
 
 	static initializeSettingsUser() {
 		const settings = new SettingsUser();
-		settings.measurementUnits = Constants.MeasurementUnits.English;
+		settings.measurementUnits = {
+			id: Constants.MeasurementUnits.english.id
+		};
+		settings.measurementUnits.id = Constants.MeasurementUnits.english.id;
+		settings.measurementUnits.acceleration = Constants.MeasurementUnits.english.acceleration.default;
+		settings.measurementUnits.area = Constants.MeasurementUnits.english.area.default;
+		settings.measurementUnits.distance = Constants.MeasurementUnits.english.distance.default;
+		settings.measurementUnits.velocity = Constants.MeasurementUnits.english.velocity.default;
+		settings.measurementUnits.volume = Constants.MeasurementUnits.english.volume.default;
+		settings.measurementUnits.weight = Constants.MeasurementUnits.english.weight.default;
 		return settings;
+	}
+
+	static measurementUnits() {
+		const settings = GlobalUtility.$store.getters.getSettings();
+		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
+	}
+
+	static measurementUnitsWeightPoundsDisplay(settings) {
+		const measurementUnits = settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
+		return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits + '.weight.pounds');
 	}
 
 	static settings() {

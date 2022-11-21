@@ -221,13 +221,21 @@ export default defineComponent({
 		thrustAverage: null,
 		thrustInitial: null,
 		thrustPeak: null,
-		serviceToolThrust2Weight: null
+		serviceToolThrust2Weight: null,
+		settings: null
 	}),
+	computed: {
+		measurementUnitsWeight() {
+			return GlobalUtility.$trans.t('measurementUnits.' + this.measurementUnits + '.weight');
+		}
+	},
 	created() {
 		this.serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 	},
 	mounted() {
 		this.resetForm();
+
+		this.settings = GlobalUtility.$store.getters.getSettings();
 	},
 	methods: {
 		async calculationOk() {
