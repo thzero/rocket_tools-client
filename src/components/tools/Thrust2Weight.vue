@@ -236,7 +236,7 @@ export default defineComponent({
 		this.serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 	},
 	mounted() {
-		this.resetForm();
+		this.reset(false);
 
 		this.settings = this.serviceStore.getters.getSettings();
 	},
