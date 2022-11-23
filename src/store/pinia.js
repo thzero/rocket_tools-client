@@ -59,7 +59,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightInfoStyle)
 						this.flightInfoStyle = [];
-					this.flightInfoStyle = AppUtility.updateArrayByObject(this.flightInfoStyle, value);
+					this.flightInfoStyle = LibraryUtility.updateArrayByObject(this.flightInfoStyle, value);
 				},
 				async setFlightLocation(correlationId, value) {
 					this.flightLocation = value;
@@ -69,7 +69,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightPathStyle)
 						this.flightPathStyle = [];
-					this.flightPathStyle = AppUtility.updateArrayByObject(this.flightPathStyle, value);
+					this.flightPathStyle = LibraryUtility.updateArrayByObject(this.flightPathStyle, value);
 				},
 				async setFlightTitle(correlationId, value) {
 					this.flightTitle = value;
@@ -169,6 +169,20 @@ class AppStore extends BaseStore {
 	}
 
 	_initPluginPersist() {
+		return {
+			root: {
+				key: 'rocket_tools',
+				includePaths: [
+					'flightInfoResolution',
+					'flightInfoStyle',
+					'flightPathStyle',
+					'motorSearch',
+					'plans',
+					'settings',
+					'version'
+				]
+			}
+		};
 	}
 }
 

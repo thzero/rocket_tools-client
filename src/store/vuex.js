@@ -122,7 +122,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!state.flightInfoStyle)
 						state.flightInfoStyle = [];
-					state.flightInfoStyle = AppUtility.updateArrayByObject(state.flightInfoStyle, value);
+					state.flightInfoStyle = LibraryUtility.updateArrayByObject(state.flightInfoStyle, value);
 				},
 				setFlightLocation(state, value) {
 					state.flightLocation = value;
@@ -132,7 +132,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!state.flightPathStyle)
 						state.flightPathStyle = [];
-					state.flightPathStyle = AppUtility.updateArrayByObject(state.flightPathStyle, value);
+					state.flightPathStyle = LibraryUtility.updateArrayByObject(state.flightPathStyle, value);
 				},
 				setFlightTitle(state, value) {
 					state.flightTitle = value;
