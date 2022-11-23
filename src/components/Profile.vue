@@ -12,6 +12,10 @@
 </template>
 
 <script>
+import LibraryConstants from '@thzero/library_client/constants';
+
+import GlobalUtility from '@thzero/library_client/utility/global';
+
 import base from '@/library_vue/components/base';
 
 export default {
@@ -22,6 +26,7 @@ export default {
 		});
 	},
 	data: () => ({
+		serviceStore: null,
 		signedIn: false
 	}),
 	computed: {
@@ -35,8 +40,11 @@ export default {
 			return (this.user != null && this.user.external.picture != null ? this.user.external.picture : null);
 		},
 		user() {
-			return this.$store.state.user.user;
+			return this.serviceStore.$store.state.user;
 		}
+	},
+	created() {
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 	}
 };
 </script>

@@ -45,8 +45,13 @@ class AppUtility {
 	}
 
 	static measurementUnits() {
-		const settings = GlobalUtility.$store.getters.getSettings();
+		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		const settings = serviceStore.getters.getSettings();
 		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
+	}
+
+	static measurementUnitsOptions() {
+		return [ Constants.MeasurementUnits.english.id, Constants.MeasurementUnits.metrics.id ];
 	}
 
 	static measurementUnitsWeightPoundsDisplay(settings) {

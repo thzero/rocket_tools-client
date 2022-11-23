@@ -205,15 +205,12 @@
 
 <script>
 import { getCurrentInstance, onMounted, ref } from 'vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 import { useQuasar } from 'quasar';
 
-// import LibraryConstants from '@thzero/library_client/constants';
+import LibraryConstants from '@thzero/library_client/constants';
 
-// import LibraryUtility from '@thzero/library_common/utility/index';
 import GlobalUtility from '@thzero/library_client/utility/global';
-
-// import Constants from '@/constants';
 
 import baseMainLayout from '@/library_vue/layouts/baseMainLayout';
 
@@ -221,7 +218,6 @@ import QLayoutFooter from '@/library_vue_quasar/components/QLayoutFooter';
 import QLoadingOverlay from '@/library_vue_quasar/components/QLoadingOverlay';
 
 import QConfirmationDialog from '@/library_vue_quasar/components/QConfirmationDialog';
-// import VDisplayDialog from '@/library_vue/components/VDisplayDialog';
 
 import DialogSupport from '@/library_vue/components/support/dialog';
 
@@ -231,8 +227,6 @@ export default {
 		QConfirmationDialog,
 		QLayoutFooter,
 		QLoadingOverlay
-		// VConfirmationDialog,
-		// VDisplayDialog
 	},
 	extends: baseMainLayout,
 	setup() {
@@ -249,12 +243,13 @@ export default {
 
 		const dialogNewGame = ref(new DialogSupport());
 
-		const store = useStore();
 		const instance = getCurrentInstance();
 
+		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+
 		const getVersion = async () => {
-			await store.dispatcher.root.getVersion(instance.ctx.correlationId());
-			version.value = store.state.version;
+			await serviceStore.dispatcher.getVersion(instance.ctx.correlationId());
+			version.value = serviceStore.state.version;
 		};
 
 		GlobalUtility.$EventBus.on('main-menu-toggle-drawer', () => {

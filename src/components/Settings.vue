@@ -105,10 +105,11 @@
 <script>
 import useVuelidate from '@vuelidate/core';
 
-import GlobalUtility from '@thzero/library_client/utility/global';
-import AppUtility from '@/utility/app';
-
 import Constants from '@/constants';
+import LibraryConstants from '@thzero/library_client/constants';
+
+import AppUtility from '@/utility/app';
+import GlobalUtility from '@thzero/library_client/utility/global';
 
 import QFormWrapper from '@/library_vue_quasar/components/form/QFormWrapper';
 import QSelectWithValidation from '@/library_vue_quasar/components/form/QSelectWithValidation';
@@ -138,6 +139,7 @@ export default {
 		measurementUnitVelocityId: null,
 		measurementUnitVolumeId: null,
 		measurementUnitWeightId: null,
+		serviceStore: null,
 		settings: null
 	}),
 	watch: {
@@ -190,6 +192,9 @@ export default {
 			return this.measurementUnitTrans(Constants.MeasurementUnits.metrics.weight, 'metrics', 'weight');
 		}
 	},
+	created() {
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+	},
 	mounted() {
 		this.reset(this.correlationId(), false);
 	},
@@ -198,7 +203,7 @@ export default {
 			return Object.getOwnPropertyNames(object).map((item) => { return { id: item, name: GlobalUtility.$trans.t('measurementUnits.' + key + '.' + subKey + '.' + item + 'Abbr') }; });
 		},
 		async ok() {
-			const settings = GlobalUtility.$store.getters.getSettings();
+			const settings = this.serviceStore.getters.getSettings();
 			if (!settings.measurementUnits)
 				settings.measurementUnits = {};
 
@@ -210,7 +215,7 @@ export default {
 			settings.measurementUnits.volume = this.measurementUnitVolumeId;
 			settings.measurementUnits.weight = this.measurementUnitWeightId;
 
-			GlobalUtility.$store.dispatch('setSettings', settings);
+			this.serviceStore.dispatcher.setSettings(this.correlationId(), settings);
 		},
 		reset(correlationId, notify) {
 			this.$refs.frm.reset();
@@ -224,7 +229,7 @@ export default {
 		},
 		// eslint-disable-next-line
 		async resetForm(correlationId) {
-			const settings = GlobalUtility.$store.getters.getSettings();
+			const settings = this.serviceStore.getters.getSettings();
 			if (!settings.measurementUnits)
 				settings.measurementUnits = {};
 

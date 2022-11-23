@@ -9,11 +9,11 @@ import LibraryUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
-import BaseStore from '@thzero/library_client_vue3/store';
+import BaseStore from '@thzero/library_client_vue3/store/vuex';
 
 class AppStore extends BaseStore {
 	_init() {
-		GlobalUtility.$store = {
+		return {
 			modules: {
 			},
 			state: {
@@ -31,26 +31,26 @@ class AppStore extends BaseStore {
 				version: null
 			},
 			actions: {
-				async setFlightDate({ commit }, value) {
-					commit('setFlightDate', value);
+				async setFlightDate({ commit }, params) {
+					commit('setFlightDate', params.value);
 				},
-				async setFlightInfoResolution({ commit }, value) {
-					commit('setFlightInfoResolution', value);
+				async setFlightInfoResolution({ commit }, params) {
+					commit('setFlightInfoResolution', params.value);
 				},
-				async setFlightInfoStyle({ commit }, value) {
-					commit('setFlightInfoStyle', value);
+				async setFlightInfoStyle({ commit }, params) {
+					commit('setFlightInfoStyle', params.value);
 				},
-				async setFlightLocation({ commit }, value) {
-					commit('setFlightLocation', value);
+				async setFlightLocation({ commit }, params) {
+					commit('setFlightLocation', params.value);
 				},
-				async setFlightPathStyle({ commit }, value) {
-					commit('setFlightPathStyle', value);
+				async setFlightPathStyle({ commit }, params) {
+					commit('setFlightPathStyle', params.value);
 				},
-				async setFlightTitle({ commit }, value) {
-					commit('setFlightTitle', value);
+				async setFlightTitle({ commit }, params) {
+					commit('setFlightTitle', params.value);
 				},
-				async setMotorSearch({ commit }, value) {
-					commit('setMotorSearch', value);
+				async setMotorSearch({ commit }, params) {
+					commit('setMotorSearch', params.value);
 				},
 				async getPlans({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
@@ -62,13 +62,13 @@ class AppStore extends BaseStore {
 				async getVersion({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_VERSION);
 					const version = await service.version(correlationId);
-					this.$logger.debug('store', 'getVersion', 'version', version, correlationId);
+					// this.$logger.debug('store', 'getVersion', 'version', version, correlationId);
 					commit('setVersion', { correlationId: correlationId, version: version });
 				},
 				async initialize({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_API);
 					const response = await service.initialize(correlationId);
-					this.$logger.debug('store', 'initialize', 'response', response);
+					// this.$logger.debug('store', 'initialize', 'response', response);
 					if (Response.hasSucceeded(response)) {
 						commit('setPlans', { correlationId: correlationId, plans: response.results.plans });
 						commit('setVersion', { correlationId: correlationId, version: response.results.version });
@@ -167,13 +167,32 @@ class AppStore extends BaseStore {
 				async initialize(correlationId) {
 					await GlobalUtility.$store.dispatch('initialize', correlationId);
 				},
+				async setFlightDate(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightDate', { correlationId: correlationId, value: value });
+				},
+				async setFlightInfoResolution(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightInfoResolution', { correlationId: correlationId, value: value });
+				},
+				async setFlightInfoStyle(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightInfoStyle', { correlationId: correlationId, value: value });
+				},
+				async setFlightLocation(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightLocation', { correlationId: correlationId, value: value });
+				},
+				async setFlightPathStyle(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightPathStyle', { correlationId: correlationId, value: value });
+				},
+				async setFlightTitle(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setFlightTitle', { correlationId: correlationId, value: value });
+				},
+				async setMotorSearch(correlationId, value) {
+					await GlobalUtility.$store.dispatch('setMotorSearch', { correlationId: correlationId, value: value });
+				},
 				async setSettings(correlationId, settings) {
 					await GlobalUtility.$store.dispatch('setSettings', { correlationId: correlationId, settings: settings });
 				}
 			}
 		};
-
-		return GlobalUtility.$store;
 	}
 
 	_initModules() {
