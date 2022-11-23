@@ -76,14 +76,14 @@
 								<q-btn
 									class="q-pa-sm q-mr-sm"
 									color="primary"
-									:label="$t('buttons.search')"
-									@click="clickMotorSearch"
-								/>
-								<q-btn
-									class="q-pa-sm"
-									color="primary"
 									:label="$t('buttons.reset')"
 									@click="clickMotorSearchReset"
+								/>
+								<q-btn
+									class="q-pa-sm q-mr-sm"
+									color="primary"
+									:label="$t('buttons.search')"
+									@click="clickMotorSearch"
 								/>
 							</div>
 						</q-card-actions>
