@@ -13,13 +13,6 @@ export default {
 			return [
 				{
 					category: 'client',
-					name: '@hscmap/vue-window',
-					url: 'https://github.com/michitaro/vue-window',
-					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/michitaro/vue-window/blob/master/LICENSE'
-				},
-				{
-					category: 'client',
 					name: '@thzero/library_client',
 					url: 'https://github.com/thzero/library_client',
 					licenseName: 'MIT',
@@ -45,6 +38,27 @@ export default {
 					url: 'https://github.com/thzero/library_common',
 					licenseName: 'MIT',
 					licenseUrl: 'https://github.com/thzero/library_common/blob/master/license.md'
+				},
+				{
+					category: 'client',
+					name: '@thzero/library_client_vue3',
+					url: 'https://github.com/thzero/library_client_vue3',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/library_client_vue3/blob/master/license.md'
+				},
+				{
+					category: 'client',
+					name: '@thzero/library_client_vue3_components',
+					url: 'https://github.com/thzero/library_client_vue3_components',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/library_client_vue3_components/blob/master/license.md'
+				},
+				{
+					category: 'client',
+					name: '@thzero/library_client_vue3_quasar',
+					url: 'https://github.com/thzero/library_client_vue3_quasar',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/library_client_vue3_quasar/blob/master/license.md'
 				},
 				{
 					category: 'client',
@@ -132,10 +146,17 @@ export default {
 				},
 				{
 					category: 'client',
-					name: 'object-hash',
-					url: 'https://github.com/puleos/object-hash',
+					name: 'pinia',
+					url: 'https://github.com/vuejs/pinia',
 					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/puleos/object-hash/blob/master/LICENSE'
+					licenseUrl: 'https://github.com/vuejs/pinia/blob/v2/LICENSE'
+				},
+				{
+					category: 'client',
+					name: 'pinia-plugin-persistedstate-2',
+					url: 'https://github.com/iendeavor/pinia-plugin-persistedstate-2',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/iendeavor/pinia-plugin-persistedstate-2/blob/main/LICENSE'
 				},
 				{
 					category: 'client',
@@ -146,17 +167,17 @@ export default {
 				},
 				{
 					category: 'client',
+					name: 'rocket_tools-client',
+					url: 'https://github.com/thzero/rocket_tools-client',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/rocket_tools-client/blob/master/license.md'
+				},
+				{
+					category: 'client',
 					name: 'thenBy.js',
 					url: 'https://github.com/Teun/thenBy.js',
 					licenseName: 'Apache License 2.0',
 					licenseUrl: 'https://github.com/Teun/thenBy.js/blob/master/LICENSE.TXT'
-				},
-				{
-					category: 'client',
-					name: 'vee-validate',
-					url: 'https://github.com/logaretm/vee-validate',
-					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/logaretm/vee-validate/blob/master/LICENSE'
 				},
 				{
 					category: 'client',
@@ -188,18 +209,25 @@ export default {
 				},
 				{
 					category: 'client',
-					name: 'veux',
-					url: 'https://github.com/vuejs/vuex',
+					name: 'vuelidate',
+					url: 'https://github.com/vuelidate/vuelidate',
 					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/vuejs/vuex/blob/dev/LICENSE'
-				},
-				{
-					category: 'client',
-					name: 'vuex-persist',
-					url: 'https://github.com/championswimmer/vuex-persist',
-					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/championswimmer/vuex-persist/blob/master/LICENSE.md'
+					licenseUrl: 'https://github.com/vuelidate/vuelidate/blob/next/LICENSE'
 				}
+				// {
+				// 	category: 'client',
+				// 	name: 'veux',
+				// 	url: 'https://github.com/vuejs/vuex',
+				// 	licenseName: 'MIT',
+				// 	licenseUrl: 'https://github.com/vuejs/vuex/blob/dev/LICENSE'
+				// },
+				// {
+				// 	category: 'client',
+				// 	name: 'vuex-persist',
+				// 	url: 'https://github.com/championswimmer/vuex-persist',
+				// 	licenseName: 'MIT',
+				// 	licenseUrl: 'https://github.com/championswimmer/vuex-persist/blob/master/LICENSE.md'
+				// }
 			];
 		},
 		initializeDependenciesServer() {
@@ -217,13 +245,6 @@ export default {
 					url: 'https://github.com/hapijs/joi-date',
 					licenseName: 'MIT',
 					licenseUrl: 'https://github.com/hapijs/joi-date/blob/master/LICENSE.md'
-				},
-				{
-					category: 'server',
-					name: 'fastify',
-					url: 'https://github.com/fastify/fastify',
-					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/fastify/fastify/blob/main/LICENSE'
 				},
 				{
 					category: 'server',
@@ -332,10 +353,10 @@ export default {
 				},
 				{
 					category: 'server',
-					name: 'esm',
-					url: 'https://github.com/standard-things/esm',
+					name: 'fastify',
+					url: 'https://github.com/fastify/fastify',
 					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/standard-things/esm/blob/master/LICENSE'
+					licenseUrl: 'https://github.com/fastify/fastify/blob/main/LICENSE'
 				},
 				{
 					category: 'server',
@@ -371,6 +392,13 @@ export default {
 					url: 'https://github.com/pinojs/pino',
 					licenseName: 'MIT',
 					licenseUrl: 'https://github.com/pinojs/pino/blob/master/LICENSE'
+				},
+				{
+					category: 'server',
+					name: 'rocket_tools-server',
+					url: 'https://github.com/thzero/rocket_tools-server',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/thzero/rocket_tools-server/blob/master/license.md'
 				},
 				{
 					category: 'server',

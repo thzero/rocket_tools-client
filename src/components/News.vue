@@ -24,7 +24,12 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+
+import LibraryConstants from '@thzero/library_client/constants';
+
 import LibraryUtility from '@thzero/library_common/utility';
+import GlobalUtility from '@thzero/library_client/utility/global';
 
 import base from '@/library_vue/components/base';
 import QMarkdown from '@/library_vue_quasar/components/markup/QMarkdown';
@@ -36,18 +41,27 @@ export default {
 	},
 	extends: base,
 	setup(props) {
-		return Object.assign(base.setup(props), {
-		});
-	},
-	computed: {
-		news() {
-			if (!this.$store.state.news.latest)
+		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		const news = computed(() => {
+			if (!serviceStore.state.news.latest)
 				return [];
-			const newsS = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => l.sticky));
-			const news = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => !l.sticky));
+			const newsS = LibraryUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => l.sticky));
+			const news = LibraryUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => !l.sticky));
 			return newsS.concat(news);
-		}
+		});
+		return Object.assign(base.setup(props), {
+			news
+		});
 	}
+	// computed: {
+	// 	news() {
+	// 		if (!this.$store.state.news.latest)
+	// 			return [];
+	// 		const newsS = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => l.sticky));
+	// 		const news = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => !l.sticky));
+	// 		return newsS.concat(news);
+	// 	}
+	// }
 };
 </script>
 

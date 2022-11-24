@@ -76,14 +76,14 @@
 								<q-btn
 									class="q-pa-sm q-mr-sm"
 									color="primary"
-									:label="$t('buttons.search')"
-									@click="clickMotorSearch"
-								/>
-								<q-btn
-									class="q-pa-sm"
-									color="primary"
 									:label="$t('buttons.reset')"
 									@click="clickMotorSearchReset"
+								/>
+								<q-btn
+									class="q-pa-sm q-mr-sm"
+									color="primary"
+									:label="$t('buttons.search')"
+									@click="clickMotorSearch"
 								/>
 							</div>
 						</q-card-actions>
@@ -153,10 +153,11 @@
 import useVuelidate from '@vuelidate/core';
 import { required } from '@vuelidate/validators';
 
+import Constants from '@/constants';
+import LibraryConstants from '@thzero/library_client/constants';
+
 import CommonUtility from '@thzero/library_common/utility/index';
 import GlobalUtility from '@thzero/library_client/utility/global';
-
-import Constants from '@/constants';
 
 import base from '@/library_vue/components/base';
 
@@ -191,10 +192,11 @@ export default {
 	data: () => ({
 		diameter: null,
 		impulseClass: null,
-		serviceExternalMotorSearch: null,
 		results: [],
 		resultsMax: null,
 		sparky: false,
+		serviceExternalMotorSearch: null,
+		serviceStore: null,
 		singleUse: false
 	}),
 	computed: {
@@ -212,7 +214,8 @@ export default {
 		}
 	},
 	created() {
-		this.initializeServices();
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		this.serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 	},
 	methods: {
 		motorCaseInfo(motor) {
@@ -231,9 +234,6 @@ export default {
 		},
 		motorUrl(motor) {
 			return this.serviceExternalMotorSearch.urlMotor(motor);
-		},
-		initializeServices() {
-			this.serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 		},
 		async clickMotorSearchReset() {
 			this.reset();
@@ -257,7 +257,7 @@ export default {
 				sparky: this.sparky
 			};
 
-			GlobalUtility.$store.dispatch('setMotorSearch', request);
+			this.serviceStore.dispatcher.setMotorSearch(this.correlationId(), request);
 
 			const response = await this.serviceExternalMotorSearch.search(correlationId, request);
 			console.log(response);
@@ -289,7 +289,7 @@ export default {
 			this.resultsMax = null;
 			this.resultsTotal = null;
 
-			const data = GlobalUtility.$store.getters.getMotorSearch();
+			const data = this.serviceStore.getters.getMotorSearch();
 			if (!data)
 				return;
 

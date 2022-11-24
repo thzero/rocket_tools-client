@@ -269,8 +269,90 @@
 		}
 	},
 	"measurementUnits": {
-		"english": "English",
-		"metric": "Metric"
+		"english": {
+			"title": "English",
+			"acceleration": {
+				"fts2": "Feet Per Second",
+				"fts2Abbr": "ft/s^2"
+			},
+			"area": {
+				"in2": "Inches Squared",
+				"in2Abbr": "in^2",
+				"ft2": "Feet Squared",
+				"ft2Abbr": "ft^2"
+			},
+			"distance": {
+				"in": "Inches",
+				"inAbbr": "in",
+				"ft": "Feet",
+				"ftAbbr": "ft",
+				"mi": "Miles",
+				"miAbbr": "mi"
+			},
+			"velocity": {
+				"fts": "Feet Per Second",
+				"ftsAbbr": "ft/s",
+				"mph": "Miles Per Hour",
+				"mphAbbr": "mph"
+			},
+			"volume": {
+				"in3": "Cubic Inches",
+				"in3Abbr": "in^3",
+				"ft3": "Cubic Feet",
+				"ft3Abbr": "ft^3"
+			},
+			"weight": {
+				"oz": "Ounces",
+				"ozAbbr": "oz",
+				"lb": "Pounds",
+				"lbAbbr": "lbs"
+			}
+		},
+		"metrics": {
+			"title": "Metric",
+			"acceleration": {
+				"ms2": "Meters Per Second",
+				"ms2Abbr": "m/s^2"
+			},
+			"area": {
+				"cm2": "Centimeters Squared",
+				"cm2Abbr": "cm^2",
+				"m2": "Meters Squared",
+				"m2Abbr": "m^2",
+				"mm2": "Millimeters Squared",
+				"mm2Abbr": "mm^2"
+			},
+			"distance": {
+				"cm": "Centimeters",
+				"cmAbbr": "cm",
+				"m": "Meters",
+				"mAbbr": "m",
+				"km": "Kilometers",
+				"kmAbbr": "km",
+				"mm": "Millimeters",
+				"mmAbbr": "mm"
+			},
+			"velocity": {
+				"ms": "Meters Per Second",
+				"msAbbr": "ms/s",
+				"kph": "Kilometers Per Hour",
+				"kphAbbr": "kph"
+			},
+			"volume": {
+				"cm3": "Cubic Centimeters",
+				"cm3Abbr": "cm^2",
+				"m3": "Cubic Meters",
+				"m3Abbr": "m^2",
+				"mm3": "Cubic Millimeters",
+				"mm3Abbr": "mm^2"
+			},
+			"weight": {
+				"g": "Grams",
+				"gAbbr": "g",
+				"kg": "Kilograms",
+				"kgAbbr": "kg"
+			}
+		}
 	},
 	"menu": {
 		"tools": {
@@ -373,6 +455,7 @@
 		"help": "Help",
 		"home": "Home",
 		"issues": "Issues",
+		"measurementUnits": "Measurement Units",
 		"new": "New",
 		"newType": "New {type}",
 		"news": "News",

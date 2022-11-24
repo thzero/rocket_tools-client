@@ -504,6 +504,7 @@ import { defineComponent } from 'vue';
 import Papa from 'papaparse';
 import html2canvas from 'html2canvas';
 
+import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
@@ -561,7 +562,8 @@ export default defineComponent({
 		resolution: Constants.FlightInfo.Resolution,
 		resolution2: Constants.FlightInfo.Resolution,
 		serviceDownload: null,
-		serviceFlightInfo: null
+		serviceFlightInfo: null,
+		serviceStore: null
 	}),
 	watch: {
 		flightInfoDataTypeActual: function (value) {
@@ -580,6 +582,7 @@ export default defineComponent({
 	created() {
 		this.serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
 		this.serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR);
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		this.flightInfoStyleReset(false);
 
@@ -590,15 +593,15 @@ export default defineComponent({
 		this.reset();
 		this.flightInfoStyleReset(false);
 
-		this.flightInfoDate = GlobalUtility.$store.getters.getFlightDate();
-		this.flightInfoLocation = GlobalUtility.$store.getters.getFlightLocation();
-		this.flightInfoTitle = GlobalUtility.$store.getters.getFlightTitle();
+		this.flightInfoDate = this.serviceStore.getters.getFlightDate();
+		this.flightInfoLocation = this.serviceStore.getters.getFlightLocation();
+		this.flightInfoTitle = this.serviceStore.getters.getFlightTitle();
 
 		this.flightInfoProcessors = QuasarUtility.selectOptions(this.serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
-		this.flightInfoMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurementUnits');
-		this.flightInfoMeasurementUnits = GlobalUtility.$store.state.measurementUnits;
+		this.flightInfoMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnitsOptions(), GlobalUtility.$trans.t, 'measurementUnits');
+		this.flightInfoMeasurementUnits = this.serviceStore.state.measurementUnits;
 
-		this.resolution = GlobalUtility.$store.state.flightInfoResolution ?? Constants.FlightInfo.Resolution;
+		this.resolution = this.serviceStore.state.flightInfoResolution ?? Constants.FlightInfo.Resolution;
 		this.resolution2 = this.resolution;
 	},
 	methods: {
@@ -614,7 +617,7 @@ export default defineComponent({
 		clickResolution(resolution) {
 			this.resolution = resolution;
 
-			GlobalUtility.$store.dispatch('setFlightInfoResolution', resolution);
+			this.serviceStore.dispatcher.setFlightInfoResolution(this.correlationId(), resolution);
 
 			if (this.processing)
 				this.flightInfoProcess();
@@ -623,7 +626,7 @@ export default defineComponent({
 			if (String.isNullOrEmpty(this.flightInfoProcessor))
 				return;
 
-			const style = GlobalUtility.$store.getters.getFlightInfoStyle(this.flightInfoProcessor);
+			const style = this.serviceStore.getters.getFlightInfoStyle(this.flightInfoProcessor);
 			if (!style)
 				return;
 
@@ -694,7 +697,7 @@ export default defineComponent({
 				}
 			};
 
-			GlobalUtility.$store.dispatch('setFlightInfoStyle', style);
+			this.serviceStore.setFlightInfoStyle(this.correlationId(), style);
 
 			this.notify('messages.saved');
 		},
@@ -869,13 +872,13 @@ export default defineComponent({
 			this.processing = false;
 		},
 		onChangeDate(value) {
-			GlobalUtility.$store.dispatch('setFlightDate', value);
+			this.serviceStore.dispatcher.setFlightDate(this.correlationId(), value);
 		},
 		onChangeLocation(value) {
-			GlobalUtility.$store.dispatch('setFlightLocation', value);
+			this.serviceStore.dispatcher.setFlightLocation(this.correlationId(), value);
 		},
 		onChangeTitle(value) {
-			GlobalUtility.$store.dispatch('setFlightTitle', value);
+			this.serviceStore.dispatcher.setFlightTitle(this.correlationId(), value);
 		},
 		resetInput() {
 			this.reset();

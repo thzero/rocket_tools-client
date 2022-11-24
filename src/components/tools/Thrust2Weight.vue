@@ -177,6 +177,7 @@ import useVuelidate from '@vuelidate/core';
 import { between, decimal, required } from '@vuelidate/validators';
 
 import Constants from '@/constants';
+import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
@@ -221,13 +222,23 @@ export default defineComponent({
 		thrustAverage: null,
 		thrustInitial: null,
 		thrustPeak: null,
-		serviceToolThrust2Weight: null
+		serviceStore: null,
+		serviceToolThrust2Weight: null,
+		settings: null
 	}),
+	computed: {
+		measurementUnitsWeight() {
+			return GlobalUtility.$trans.t('measurementUnits.' + this.measurementUnits + '.weight');
+		}
+	},
 	created() {
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		this.serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 	},
 	mounted() {
-		this.resetForm();
+		this.reset(false);
+
+		this.settings = this.serviceStore.getters.getSettings();
 	},
 	methods: {
 		async calculationOk() {

@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import LibraryConstants from '@thzero/library_client/constants';
+
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import LibraryUtility from '@thzero/library_common/utility';
@@ -48,30 +50,32 @@ export default {
 		sortKeys: [
 			{ id: 'name', name: 'Name' },
 			{ id: 'faction', name: 'Faction' }
-		]
+		],
+		serviceStore: null
 	}),
 	computed: {
 		isLoggedIn() {
-			return this.$store.state.user && this.$store.state.user.isLoggedIn;
+			return this.serviceStore.state.user && this.serviceStore.user.isLoggedIn;
 		},
 		newsCount() {
-			if (!this.$store.state.news.latest)
+			if (!this.serviceStore.state.news.latest)
 				return 0;
 
-			const news = this.$store.state.news.latest.slice(0);
+			const news = this.serviceStore.state.news.latest.slice(0);
 			return news.length;
 		},
 		user() {
-			return this.$store.state.user.user;
+			return this.serviceStore.state.user;
 		},
 		userDisplayName() {
-			const user = this.$store.state.user.user;
+			const user = this.serviceStore.state.user;
 			const settings = user.settings ? user.settings : AppUtility.initializeSettingsUser();
 			const userName = settings && settings.gamerTag ? settings.gamerTag : user.external && user.external.name ? user.external.name : '******';
 			return userName;
 		}
 	},
 	created() {
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const self = this;
 		GlobalUtility.$EventBus.on('initialize-completed', (value) => {
 			self.initializeCompleted = value;
@@ -88,7 +92,7 @@ export default {
 		updateSettingsUserTab(correlationId, user, newVal, func) {
 			const settings = user.settings ? user.settings : AppUtility.initializeSettingsUser();
 			func(settings.home, newVal);
-			this.$store.dispatcher.user.setUserSettings(correlationId, settings);
+			GlobalUtility.$store.dispatcher.user.setUserSettings(correlationId, settings);
 		}
 	},
 	// eslint-disable-next-line
@@ -134,7 +138,7 @@ export default {
 				const correlationId = this.correlationId();
 
 				await Promise.all([
-					this.$store.dispatcher.news.getLatest(correlationId)
+					GlobalUtility.$store.dispatcher.news.getLatest(correlationId)
 				]);
 			}
 			finally {

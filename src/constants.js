@@ -34,8 +34,75 @@ const Constants = {
 		Statistics: false
 	},
 	MeasurementUnits: {
-		English: 'english',
-		Metric: 'metric'
+		english: {
+			id: 'english',
+			acceleration: {
+				default: 'fts2',
+				fts2: 'ft/s^2'
+			},
+			area: {
+				default: 'in2',
+				in2: 'in^2',
+				ft2: 'ft^2'
+			},
+			distance: {
+				default: 'in',
+				in: 'in',
+				ft: 'ft',
+				mi: 'mi'
+			},
+			velocity: {
+				default: 'fts',
+				fts: 'ft/s',
+				mph: 'mph'
+			},
+			volume: {
+				default: 'in3',
+				in3: 'in^3',
+				ft3: 'ft^3'
+			},
+			weight: {
+				default: 'oz',
+				oz: 'oz',
+				lb: 'lb'
+			}
+		},
+		metrics: {
+			id: 'metrics',
+			acceleration: {
+				default: 'ms2',
+				ms2: 'm/s^2'
+			},
+			area: {
+				default: 'mm2',
+				cm2: 'cm^2',
+				m2: 'm^2',
+				mm2: 'mm^2'
+			},
+			distance: {
+				default: 'mm',
+				mm: 'mm',
+				cm: 'cm',
+				m: 'm',
+				km: 'km'
+			},
+			velocity: {
+				default: 'ms',
+				ms: 'm/s',
+				kmh: 'km/h'
+			},
+			volume: {
+				default: 'mm3',
+				cm3: 'cm^3',
+				m3: 'm^3',
+				mm3: 'mm^3'
+			},
+			weight: {
+				default: 'g',
+				g: 'g',
+				kg: 'kg'
+			}
+		}
 	}
 };
 

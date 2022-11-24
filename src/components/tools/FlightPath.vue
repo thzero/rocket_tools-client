@@ -292,6 +292,7 @@ import { defineComponent } from 'vue';
 
 import Papa from 'papaparse';
 
+import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
@@ -329,7 +330,8 @@ export default defineComponent({
 		flightPathStylePinTouchdownColor: null,
 		flightPathTitle: null,
 		output: null,
-		serviceFlightPath: null
+		serviceFlightPath: null,
+		serviceStore: null
 	}),
 	watch: {
 		flightPathProcessor: function (value) {
@@ -342,6 +344,7 @@ export default defineComponent({
 	created() {
 		this.serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
 		this.serviceFlightPath = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR);
+		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		this.flightPathStyleReset(false);
 	},
@@ -349,12 +352,12 @@ export default defineComponent({
 		this.reset();
 		this.flightPathStyleReset(false);
 
-		this.flightPathDate = GlobalUtility.$store.getters.getFlightDate();
-		this.flightPathLocation = GlobalUtility.$store.getters.getFlightLocation();
-		this.flightPathTitle = GlobalUtility.$store.getters.getFlightTitle();
+		this.flightPathDate = this.serviceStore.getters.getFlightDate();
+		this.flightPathLocation = this.serviceStore.getters.getFlightLocation();
+		this.flightPathTitle = this.serviceStore.getters.getFlightTitle();
 
 		this.flightPathProcessors = QuasarUtility.selectOptions(this.serviceFlightPath.serviceProcessors, GlobalUtility.$trans.t, 'flightPath.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
-		this.flightPathMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnits(), GlobalUtility.$trans.t, 'measurements', null, (l) => { return l + '.altitude.name'; });
+		this.flightPathMeasurementUnitsOptions = QuasarUtility.selectOptions(AppUtility.measurementUnitsOptions(), GlobalUtility.$trans.t, 'measurementUnits');
 		this.flightPathMeasurementUnits = AppUtility.measurementUnitEnglish;
 	},
 	methods: {
@@ -368,7 +371,7 @@ export default defineComponent({
 			if (String.isNullOrEmpty(this.flightPathProcessor))
 				return;
 
-			const style = GlobalUtility.$store.getters.getFlightPathStyle(this.flightPathProcessor);
+			const style = this.serviceStore.getters.getFlightPathStyle(this.flightPathProcessor);
 			if (!style)
 				return;
 
@@ -411,7 +414,7 @@ export default defineComponent({
 				}
 			};
 
-			GlobalUtility.$store.dispatch('setFlightPathStyle', style);
+			this.serviceStore.dispatcher.setFlightPathStyle(this.correlationId(), style);
 
 			this.notify('messages.saved');
 		},
@@ -505,13 +508,13 @@ export default defineComponent({
 			return (this.$refs.flightPathInput.hasError || this.$refs.flightPathProcessor.hasError || this.$refs.flightPathMeasurementUnits.hasError);
 		},
 		onChangeDate(value) {
-			GlobalUtility.$store.dispatch('setFlightDate', value);
+			this.serviceStore.dispatcher.setFlightDate(this.correlationId(), value);
 		},
 		onChangeLocation(value) {
-			GlobalUtility.$store.dispatch('setFlightLocation', value);
+			this.serviceStore.dispatcher.setFlightLocation(this.correlationId(), value);
 		},
 		onChangeTitle(value) {
-			GlobalUtility.$store.dispatch('setFlightTitle', value);
+			this.serviceStore.dispatcher.setFlightTitle(this.correlationId(), value);
 		},
 		reset() {
 			this.buttons.export.disabled = true;
