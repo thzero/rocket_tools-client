@@ -3,7 +3,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
-import LibraryUtility from '@thzero/library_common/utility';
+import CommonUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
@@ -71,7 +71,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightInfoStyle)
 						this.flightInfoStyle = [];
-					this.flightInfoStyle = LibraryUtility.updateArrayByObject(this.flightInfoStyle, value);
+					this.flightInfoStyle = CommonUtility.updateArrayByObject(this.flightInfoStyle, value);
 				},
 				async setFlightLocation(correlationId, value) {
 					this.flightLocation = value;
@@ -81,7 +81,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightPathStyle)
 						this.flightPathStyle = [];
-					this.flightPathStyle = LibraryUtility.updateArrayByObject(this.flightPathStyle, value);
+					this.flightPathStyle = CommonUtility.updateArrayByObject(this.flightPathStyle, value);
 				},
 				async setFlightTitle(correlationId, value) {
 					this.flightTitle = value;
@@ -97,7 +97,7 @@ class AppStore extends BaseStore {
 				},
 				async setSettings(correlationId, settings) {
 					// commit('setSettings', params);
-					this.settings = LibraryUtility.merge3({}, this.settings, settings);
+					this.settings = CommonUtility.merge3({}, this.settings, settings);
 				},
 				async setVersion(correlationId, version) {
 					// this.$logger.debug('store', 'getVersion', 'version', version, correlationId);

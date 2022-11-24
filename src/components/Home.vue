@@ -27,7 +27,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
-import LibraryUtility from '@thzero/library_common/utility';
+import CommonUtility from '@thzero/library_common/utility';
 
 import base from '@/library_vue/components/base';
 
@@ -104,7 +104,7 @@ export default {
 			try {
 				GlobalUtility.$EventBus.emit('initialize-completed', false);
 
-				const correlationId = LibraryUtility.generateId();
+				const correlationId = CommonUtility.generateId();
 
 				await Promise.all([
 					GlobalUtility.$store.dispatcher.news.getLatest(correlationId)

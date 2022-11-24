@@ -4,8 +4,8 @@ import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
+import CommonUtility from '@thzero/library_common/utility';
 import GlobalUtility from '@thzero/library_client/utility/global';
-import LibraryUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
@@ -123,7 +123,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!state.flightInfoStyle)
 						state.flightInfoStyle = [];
-					state.flightInfoStyle = LibraryUtility.updateArrayByObject(state.flightInfoStyle, value);
+					state.flightInfoStyle = CommonUtility.updateArrayByObject(state.flightInfoStyle, value);
 				},
 				setFlightLocation(state, value) {
 					state.flightLocation = value;
@@ -133,7 +133,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!state.flightPathStyle)
 						state.flightPathStyle = [];
-					state.flightPathStyle = LibraryUtility.updateArrayByObject(state.flightPathStyle, value);
+					state.flightPathStyle = CommonUtility.updateArrayByObject(state.flightPathStyle, value);
 				},
 				setFlightTitle(state, value) {
 					state.flightTitle = value;
@@ -151,7 +151,7 @@ class AppStore extends BaseStore {
 					this.$logger.debug('store', 'setPlans', 'plans.c', state.plans, params.correlationId);
 				},
 				setSettings(state, params) {
-					state.settings = LibraryUtility.merge3({}, state.settings, params);
+					state.settings = CommonUtility.merge3({}, state.settings, params);
 				},
 				setVersion(state, params) {
 					this.$logger.debug('store', 'setVersion', 'version', params.version, params.correlationId);

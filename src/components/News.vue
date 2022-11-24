@@ -28,7 +28,7 @@ import { computed } from 'vue';
 
 import LibraryConstants from '@thzero/library_client/constants';
 
-import LibraryUtility from '@thzero/library_common/utility';
+import CommonUtility from '@thzero/library_common/utility';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 import base from '@/library_vue/components/base';
@@ -45,8 +45,8 @@ export default {
 		const news = computed(() => {
 			if (!serviceStore.state.news.latest)
 				return [];
-			const newsS = LibraryUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => l.sticky));
-			const news = LibraryUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => !l.sticky));
+			const newsS = CommonUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => l.sticky));
+			const news = CommonUtility.sortByTimestamp(serviceStore.state.news.latest.filter(l => !l.sticky));
 			return newsS.concat(news);
 		});
 		return Object.assign(base.setup(props), {
@@ -57,8 +57,8 @@ export default {
 	// 	news() {
 	// 		if (!this.$store.state.news.latest)
 	// 			return [];
-	// 		const newsS = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => l.sticky));
-	// 		const news = LibraryUtility.sortByTimestamp(this.$store.state.news.latest.filter(l => !l.sticky));
+	// 		const newsS = Utility.sortByTimestamp(this.$store.state.news.latest.filter(l => l.sticky));
+	// 		const news = Utility.sortByTimestamp(this.$store.state.news.latest.filter(l => !l.sticky));
 	// 		return newsS.concat(news);
 	// 	}
 	// }

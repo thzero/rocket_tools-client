@@ -1,7 +1,7 @@
 import LibraryConstants from '@thzero/library_client/constants';
 // import Constants from '@/constants';
 
-import Utility from '@thzero/library_common/utility/index';
+import CommonUtility from '@thzero/library_common/utility/index';
 
 import BaseService from '@thzero/library_client/service/index';
 
@@ -30,8 +30,8 @@ class MotorSearchExternalService extends BaseService {
 
     async manufacturers(correlationId, cached) {
         try {
-			const now = Utility.getTimestamp();
-			let ttl = Utility.getTimestamp() + this._ttlManufacturers;
+			const now = CommonUtility.getTimestamp();
+			let ttl = CommonUtility.getTimestamp() + this._ttlManufacturers;
 			if (cached) {
 				if (!cached.ttl)
 					cached.ttl = ttl;
