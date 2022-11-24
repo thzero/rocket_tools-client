@@ -64,7 +64,7 @@ Install the submodule dependencies for the client.
 ```
 git submodule add https://github.com/thzero/rocket_tools-common "src/common" 
 git submodule add https://github.com/thzero/library_client_vue3_components "src/library_vue" 
-git submodule add https://github.com/thzero/library_client_vue3_quasar "src/library_vue_quasar" 
+git submodule add https://github.com/thzero/library_client_vue3_quasar_components "src/library_vue_quasar" 
 ```
 
 ### Compiles and hot-reloads for development
