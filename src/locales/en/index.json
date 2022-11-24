@@ -184,6 +184,7 @@
 				"diameter": "Diameter",
 				"impulseClass": "Impulse Class",
 				"manufacturer": "Manufacturer",
+				"manufacturer_hint": "Max. two selections",
 				"singleUse": "Single Use",
 				"sparky": "Sparky"
 			}

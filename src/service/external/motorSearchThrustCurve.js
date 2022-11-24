@@ -35,9 +35,9 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 			maxResults: 200
 		};
 
-		if (!String.isNullOrEmpty(request.manufacturer)) {
-			body.manufacturer = request.manufacturer;
-		}
+		// if (!String.isNullOrEmpty(request.manufacturer)) {
+		// 	body.manufacturer = request.manufacturer;
+		// }
 
 		if (request.singleUse != null && request.SingleUse) {
 			body.type = 'SU';
@@ -47,9 +47,26 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 			ignoreCorrelationId: true,
 			ignoreToken: true
 		};
-		const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
-		this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
-		return response;
+
+		if (!request.manufacturer || (request.manufacturer && Array.isArray(request.manufacturer) && request.manufacturer.length === 0)) {
+			const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+			this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
+			return response;
+		}
+
+		if (!Array.isArray(request.manufacturer))
+			request.manufacturer = [ request.manufacturer ];
+
+		const results = [];
+		let response;
+		for (const manufacturer of request.manufacturer) {
+			body.manufacturer = manufacturer;
+			response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+			this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
+			results.push(...response.results);
+		}
+
+		return this._successResponse(results, correlationId);
 	}
 
 	_urlKey() {

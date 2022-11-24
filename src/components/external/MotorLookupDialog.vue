@@ -76,10 +76,13 @@
 										ref="manufacturer"
 										v-model="manufacturer"
 										vid="manufacturer"
+										multiple
+										max-values="2"
 										:items="manufacturers"
 										:validation="validation"
 										:dense="true"
 										:label="$t('forms.external.motorSearch.manufacturer')"
+										:hint="$t('forms.external.motorSearch.manufacturer_hint')"
 									/>
 								</div>
 							</div>
@@ -232,11 +235,10 @@ export default {
 			return this.serviceExternalMotorSearch.urlHuman();
 		}
 	},
-	created() {
+	async created() {
 		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		this.serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
-	},
-	async mounted() {
+
 		this.manufacturersCache = await this.serviceStore.dispatcher.getMotorManufacturers(this.correlationId());
 	},
 	methods: {
@@ -284,7 +286,7 @@ export default {
 
 			const response = await this.serviceExternalMotorSearch.search(correlationId, request);
 			console.log(response);
-			if (response) {
+			if (response && response.success) {
 				this.results = response.results;
 				this.resultsMax = response.matches;
 			}
@@ -323,7 +325,9 @@ export default {
 			this.sparky = !CommonUtility.isNull(data.sparky) ? data.sparky : false;
 			this.singleUse = !CommonUtility.isNull(data.singleUse) ? data.singleUse : false;
 
-			this.clickMotorSearch();
+			(async (self) => {
+				self.clickMotorSearch();
+			})(this);
 		}
     },
 	validations () {
