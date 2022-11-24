@@ -24,7 +24,8 @@ class AppStore extends BaseStore {
 				flightLocation: '',
 				flightPathStyle: [],
 				flightTitle: '',
-				motorSearch: {},
+				motorManufacturers: [],
+				motorSearchCriteria: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
 				thrust2weight: {},
@@ -49,8 +50,8 @@ class AppStore extends BaseStore {
 				async setFlightTitle({ commit }, params) {
 					commit('setFlightTitle', params.value);
 				},
-				async setMotorSearch({ commit }, params) {
-					commit('setMotorSearch', params.value);
+				async setMotorSearchCriteria({ commit }, params) {
+					commit('setsetMotorSearchCriteria', params.value);
 				},
 				async getPlans({ commit }, correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
@@ -98,8 +99,8 @@ class AppStore extends BaseStore {
 				getFlightTitle: (state) => () => {
 					return state.flightTitle;
 				},
-				getMotorSearch: (state) => () => {
-					return state.motorSearch;
+				getsetMotorSearchCriteria: (state) => () => {
+					return state.motorSearchCriteria;
 				},
 				getPlan: (state) => (id) => {
 					if (state.plans == null)
@@ -137,8 +138,8 @@ class AppStore extends BaseStore {
 				setFlightTitle(state, value) {
 					state.flightTitle = value;
 				},
-				setMotorSearch(state, value) {
-					state.motorSearch = value;
+				setsetMotorSearchCriteria(state, value) {
+					state.motorSearchCriteria = value;
 				},
 				setCheckumLastUpdate(state, last) {
 					state.checksumLastUpdate = last;
@@ -206,7 +207,7 @@ class AppStore extends BaseStore {
 				flightInfoResolution: state.flightInfoResolution,
 				flightInfoStyle: state.flightInfoStyle,
 				flightPathStyle: state.flightPathStyle,
-				motorSearch: state.motorSearch,
+				motorSearchCriteria: state.motorSearchCriteria,
 				plans: state.plans,
 				settings: state.settings,
 				version: state.version

@@ -20,13 +20,25 @@ class AppStore extends BaseStore {
 				flightLocation: '',
 				flightPathStyle: [],
 				flightTitle: '',
-				motorSearch: {},
+				motorManufacturers: [],
+				motorSearchCriteria: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
 				thrust2weight: {},
 				version: null
 			}),
 			actions: {
+				async getMotorManufacturers(correlationId) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.manufacturers(correlationId, this.motorManufacturers);
+					this.$logger.debug('store', 'getMotorManufacturers', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorManufacturers = response.results;
+						return this.motorManufacturers.manufacturers;
+					}
+
+					return [];
+				},
 				async getPlans(correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
 					const response = await service.plans(correlationId);
@@ -74,8 +86,8 @@ class AppStore extends BaseStore {
 				async setFlightTitle(correlationId, value) {
 					this.flightTitle = value;
 				},
-				async setMotorSearch(correlationId, value) {
-					this.motorSearch = value;
+				async setMotorSearchCriteria(correlationId, value) {
+					this.motorSearchCriteria = value;
 				},
 				async setPlans(correlationId, plans) {
 					this.$logger.debug('store', 'setPlans', 'plans.a', plans, correlationId);
@@ -114,8 +126,8 @@ class AppStore extends BaseStore {
 				getFlightTitle: (state) => () => {
 					return state.flightTitle;
 				},
-				getMotorSearch: (state) => () => {
-					return state.motorSearch;
+				getMotorSearchCriteria: (state) => () => {
+					return state.motorSearchCriteria;
 				},
 				getPlan: (state) => (id) => {
 					if (state.plans == null)
@@ -127,6 +139,9 @@ class AppStore extends BaseStore {
 				}
 			},
 			dispatcher: {
+				async getMotorManufacturers(correlationId, results) {
+					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
+				},
 				async getPlans(correlationId) {
 					await GlobalUtility.$store.getPlans(correlationId);
 				},
@@ -154,8 +169,8 @@ class AppStore extends BaseStore {
 				async setFlightTitle(correlationId, value) {
 					await GlobalUtility.$store.setFlightTitle(correlationId, value);
 				},
-				async setMotorSearch(correlationId, value) {
-					await GlobalUtility.$store.setMotorSearch(correlationId, value);
+				async setMotorSearchCriteria(correlationId, value) {
+					await GlobalUtility.$store.setMotorSearchCriteria(correlationId, value);
 				},
 				async setSettings(correlationId, settings) {
 					await GlobalUtility.$store.setSettings(correlationId, settings);
@@ -176,7 +191,8 @@ class AppStore extends BaseStore {
 					'flightInfoResolution',
 					'flightInfoStyle',
 					'flightPathStyle',
-					'motorSearch',
+					'motorManufacturers',
+					'motorSearchCriteria',
 					'plans',
 					'settings',
 					'version'

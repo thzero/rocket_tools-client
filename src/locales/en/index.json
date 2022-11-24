@@ -183,6 +183,7 @@
 			"motorSearch": {
 				"diameter": "Diameter",
 				"impulseClass": "Impulse Class",
+				"manufacturer": "Manufacturer",
 				"singleUse": "Single Use",
 				"sparky": "Sparky"
 			}

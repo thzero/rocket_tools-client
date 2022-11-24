@@ -22,7 +22,7 @@
 						<q-card-section class="q-section-with-actions">
 							<div class="row">
 								<div class="col-12 text-center text-h7 q-pb-sm">
-									{{ $t('motorSearch.guidance') }} <a target="_blank" :href="$t(motorSearchUrl)">{{ $t(motorSearchLocaleName) }}</a>{{ $t('motorSearch.guidance3') }}
+									{{ $t('motorSearch.guidance') }} <a target="_blank" :href="$t(searchUrl)">{{ $t(searchLocaleName) }}</a>{{ $t('motorSearch.guidance3') }}
 								</div>
 							</div>
 							<div class="row">
@@ -66,6 +66,20 @@
 										v-model="sparky"
 										dense
 										:label="$t('forms.external.motorSearch.sparky')"
+									/>
+								</div>
+							</div>
+							<div class="row q-mt-sm">
+								<div class="col-sm-12">
+									<QSelectWithValidation
+										class="q-mr-sm"
+										ref="manufacturer"
+										v-model="manufacturer"
+										vid="manufacturer"
+										:items="manufacturers"
+										:validation="validation"
+										:dense="true"
+										:label="$t('forms.external.motorSearch.manufacturer')"
 									/>
 								</div>
 							</div>
@@ -192,6 +206,8 @@ export default {
 	data: () => ({
 		diameter: null,
 		impulseClass: null,
+		manufacturer: null,
+		manufacturersCache: null,
 		results: [],
 		resultsMax: null,
 		sparky: false,
@@ -206,16 +222,22 @@ export default {
 		impulseClasses() {
 			return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
 		},
-		motorSearchLocaleName() {
+		manufacturers() {
+			return this.manufacturersCache.map((item) => { return { id: item.abbrev, name: item.name }; });
+		},
+		searchLocaleName() {
 			return this.serviceExternalMotorSearch.nameLocale();
 		},
-		motorSearchUrl() {
+		searchUrl() {
 			return this.serviceExternalMotorSearch.urlHuman();
 		}
 	},
 	created() {
 		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		this.serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+	},
+	async mounted() {
+		this.manufacturersCache = await this.serviceStore.dispatcher.getMotorManufacturers(this.correlationId());
 	},
 	methods: {
 		motorCaseInfo(motor) {
@@ -253,11 +275,12 @@ export default {
 			const request = {
 				diameter: this.diameter,
 				impulseClass: this.impulseClass,
+				manufacturer: this.manufacturer,
 				singleUse: this.singleUse,
 				sparky: this.sparky
 			};
 
-			this.serviceStore.dispatcher.setMotorSearch(this.correlationId(), request);
+			this.serviceStore.dispatcher.setMotorSearchCriteria(this.correlationId(), request);
 
 			const response = await this.serviceExternalMotorSearch.search(correlationId, request);
 			console.log(response);
@@ -285,16 +308,18 @@ export default {
 		// eslint-disable-next-line
 		async resetDialog(correlationId) {
 			this.impulseClass = null;
+			this.manufacturer = null;
 			this.results = null;
 			this.resultsMax = null;
 			this.resultsTotal = null;
 
-			const data = this.serviceStore.getters.getMotorSearch();
+			const data = this.serviceStore.getters.getMotorSearchCriteria();
 			if (!data)
 				return;
 
 			this.diameter = data.diameter;
 			this.impulseClass = data.impulseClass;
+			this.manufacturer = data.manufacturer;
 			this.sparky = !CommonUtility.isNull(data.sparky) ? data.sparky : false;
 			this.singleUse = !CommonUtility.isNull(data.singleUse) ? data.singleUse : false;
 

@@ -1,6 +1,8 @@
 import LibraryConstants from '@thzero/library_client/constants';
 // import Constants from '@/constants';
 
+import Utility from '@thzero/library_common/utility/index';
+
 import BaseService from '@thzero/library_client/service/index';
 
 class MotorSearchExternalService extends BaseService {
@@ -8,6 +10,8 @@ class MotorSearchExternalService extends BaseService {
 		super();
 
 		this._serviceCommunicationRest = null;
+
+		this._ttlManufacturers = 7 * 24 * 60 * 60 * 1000;
 	}
 
     init(injector) {
@@ -22,6 +26,32 @@ class MotorSearchExternalService extends BaseService {
 
 	reset(correlationId) {
 		this._calculationData.reset();
+	}
+
+    async manufacturers(correlationId, cached) {
+        try {
+			const now = Utility.getTimestamp();
+			let ttl = Utility.getTimestamp() + this._ttlManufacturers;
+			if (cached) {
+				if (!cached.ttl)
+					cached.ttl = ttl;
+				ttl = cached.ttl;
+			}
+
+			if ((ttl > now) && (cached.manufacturers && cached.manufacturers.length > 0))
+				return this._successResponse(cached, correlationId);
+
+			const response = await this._manufacturers(correlationId);
+			this._logger.debug('MotorSearchExternalService', 'manufacturers', 'response', response, correlationId);
+
+			return this._successResponse({
+				manufacturers: response.results,
+				ttl: ttl
+			}, correlationId);
+		}
+		catch (err) {
+			this._logger.exception('MotorSearchExternalService', 'manufacturers', err, correlationId);
+		}
 	}
 
     async search(correlationId, request) {
@@ -47,6 +77,9 @@ class MotorSearchExternalService extends BaseService {
 
 		const uri = this.urlHuman() + '/motors/' + motor.manufacturerAbbrev + '/' + motor.designation;
 		return uri;
+	}
+
+	async _manufacturers(correlationId) {
 	}
 
 	async _search(correlationId, request) {

@@ -11,6 +11,21 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 		return 'menu.thrustcurve';
 	}
 
+	async _manufacturers(correlationId) {
+		const opts = {
+			ignoreCorrelationId: true,
+			ignoreToken: true
+		};
+		const response = await this._serviceCommunicationRest.get(correlationId, this._urlKey(), { url: 'metadata.json' }, opts);
+		this._logger.debug('EquipmentService', '_manufacturers', 'response', response, correlationId);
+		if (response) {
+			const manufacturers = response.manufacturers;
+			return this._successResponse(manufacturers, correlationId);
+		}
+
+		return response;
+	}
+
     async _search(correlationId, request) {
        const body = {
 			diameter: request.diameter,
@@ -19,6 +34,10 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 			availability: 'available',
 			maxResults: 200
 		};
+
+		if (!String.isNullOrEmpty(request.manufacturer)) {
+			body.manufacturer = request.manufacturer;
+		}
 
 		if (request.singleUse != null && request.SingleUse) {
 			body.type = 'SU';
