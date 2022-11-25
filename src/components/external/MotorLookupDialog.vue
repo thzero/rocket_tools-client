@@ -99,6 +99,12 @@
 								<q-btn
 									class="q-pa-sm q-mr-sm"
 									color="primary"
+									:label="$t('buttons.clear')"
+									@click="clickMotorSearchClear"
+								/>
+								<q-btn
+									class="q-pa-sm q-mr-sm"
+									color="primary"
 									:label="$t('buttons.search')"
 									@click="clickMotorSearch"
 								/>
@@ -164,6 +170,14 @@
 			</div>
 		</template>
 	</QFormListingDialog>
+	<QConfirmationDialog
+		ref="dlgConfirm"
+		:message="dlgConfirmMessage"
+		:non-recoverable="false"
+		:signal="dialogReset.signal"
+		@cancel="dialogReset.cancel()"
+		@ok="dialogResetOk"
+	/>
 </template>
 
 <script>
@@ -178,13 +192,17 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import base from '@/library_vue/components/base';
 
+import QConfirmationDialog from '@/library_vue_quasar/components/QConfirmationDialog';
 import QFormListingDialog from '@/library_vue_quasar/components/form/QFormListingDialog';
 import QSelectWithValidation from '@/library_vue_quasar/components/form/QSelectWithValidation';
 // import QTextFieldWithValidation from '@/library_vue_quasar/components/form/QTextFieldWithValidation';
 
+import DialogSupport from '@/library_vue/components/support/dialog';
+
 export default {
 	name: 'MotorLookupDialog',
 	components: {
+		QConfirmationDialog,
 		QFormListingDialog,
 		QSelectWithValidation //,
 		// QTextFieldWithValidation
@@ -207,6 +225,8 @@ export default {
 		});
 	},
 	data: () => ({
+		dlgConfirmMessage: null,
+		dialogReset: new DialogSupport(),
 		diameter: null,
 		impulseClass: null,
 		manufacturer: null,
@@ -241,6 +261,10 @@ export default {
 		this.manufacturersCache = await this.serviceStore.dispatcher.getMotorManufacturers(this.correlationId());
 	},
 	methods: {
+		async dialogResetOk() {
+			this.dialogReset.ok();
+			this.serviceStore.dispatcher.getMotorSearchReset(this.correlationId());
+		},
 		motorCaseInfo(motor) {
 			if (motor.type === 'SU') {
 				return this.$t('motorSearch.motor_type_singleuse');
@@ -257,9 +281,6 @@ export default {
 		},
 		motorUrl(motor) {
 			return this.serviceExternalMotorSearch.urlMotor(motor);
-		},
-		async clickMotorSearchReset() {
-			this.reset();
 		},
 		async clickMotorSearch() {
 			const correlationId = this.correlationId();
@@ -285,6 +306,46 @@ export default {
 			const response = await this.serviceStore.dispatcher.getMotorSearchResults(correlationId, request);
 			console.log(response);
 			this.results = response || [];
+		},
+		async clickMotorSearchClear() {
+			this.reset();
+		},
+		async clickMotorSearchReset() {
+			const last = this.serviceStore.state.motorSearchResults !== null ? this.serviceStore.state.motorSearchResults.last : 0;
+			const ttl = this.serviceStore.state.motorSearchResults !== null ? this.serviceStore.state.motorSearchResults.ttl : 0;
+
+			const now = CommonUtility.getTimestamp();
+			if (ttl < now) {
+				return;
+			}
+
+			const duration = now - last;
+
+			const spanInHours = 60 * 60 * 1000;
+			const spanInDays = 24 * 60 * 60 * 1000;
+			const spanInWeeks = 7 * 24 * 60 * 60 * 1000;
+
+			const durationInWeeks = duration / spanInWeeks;
+			const durationInDays = duration / spanInDays;
+			const durationInHours = duration / spanInHours;
+
+			let message = GlobalUtility.$trans.t('motorSearch.motor_reset_message') + '<br>';
+			if (durationInWeeks <= 1) {
+				let timespan = '';
+				if (durationInDays <= 1) {
+					if (durationInHours < 1)
+						timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_hour_less');
+					else
+						timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_duration', { duration: durationInHours, type: GlobalUtility.$trans.t('motorSearch.motor_reset_hours') });
+				}
+				else
+					timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_duration', { duration: durationInDays, type: GlobalUtility.$trans.t('motorSearch.motor_reset_days') });
+				message += GlobalUtility.$trans.t('motorSearch.motor_reset_message_warning', { timespan: timespan }) + '<br>' + GlobalUtility.$trans.t('motorSearch.motor_reset_message_warning2') + '<br>';
+			}
+			message = message + GlobalUtility.$trans.t('motorSearch.motor_reset_message_confirm');
+
+			this.dlgConfirmMessage = message;
+			this.dialogReset.open();
 		},
 		async clickMotorSelect(item) {
 			this.$emit('ok', item);

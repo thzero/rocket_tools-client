@@ -11,7 +11,7 @@ class MotorSearchExternalService extends BaseService {
 
 		this._serviceCommunicationRest = null;
 
-		this._ttlManufacturers = 7 * 24 * 60 * 60 * 1000;
+		this._ttlDefault = 7 * 24 * 60 * 60 * 1000;
 	}
 
     init(injector) {
@@ -31,7 +31,7 @@ class MotorSearchExternalService extends BaseService {
     async manufacturers(correlationId, cached) {
         try {
 			const now = CommonUtility.getTimestamp();
-			let ttl = CommonUtility.getTimestamp() + this._ttlManufacturers;
+			let ttl = CommonUtility.getTimestamp() + this._ttlDefault;
 			if (cached) {
 				if (!cached.ttl)
 					cached.ttl = ttl;
@@ -46,7 +46,8 @@ class MotorSearchExternalService extends BaseService {
 
 			return this._successResponse({
 				manufacturers: response.results,
-				ttl: ttl
+				ttl: ttl,
+				last: now
 			}, correlationId);
 		}
 		catch (err) {
@@ -57,14 +58,9 @@ class MotorSearchExternalService extends BaseService {
     async search(correlationId, criteria, cached) {
         try {
 			const now = CommonUtility.getTimestamp();
-			let ttl = CommonUtility.getTimestamp() + this._ttlManufacturers;
-			if (cached) {
-				if (!cached.ttl)
-					cached.ttl = ttl;
-				ttl = cached.ttl;
-			}
+			const ttl = CommonUtility.getTimestamp() + this._ttlDefault;
 
-			if ((ttl > now) && (cached && cached.data && cached.data.length > 0)) {
+			if (cached && (cached.ttl !== null && cached.ttl > now) && (cached.data && cached.data.length > 0)) {
 				const responseFilter = this._searchFilter(correlationId, criteria, cached.data);
 				// If there total for this impulse class is greater than zero, use the cached results....
 				if (responseFilter.results.total > 0) {
@@ -72,7 +68,8 @@ class MotorSearchExternalService extends BaseService {
 						filtered: this._hasSucceeded(responseFilter) ? responseFilter.results.output : [],
 						data: {
 							data: cached.data,
-							ttl: ttl
+							ttl: ttl,
+							last: cached.last
 						}
 					}, correlationId);
 				}
@@ -101,7 +98,8 @@ class MotorSearchExternalService extends BaseService {
 				filtered: this._hasSucceeded(responseFilter) ? responseFilter.results.output : [],
 				data: {
 					data: data,
-					ttl: ttl
+					ttl: ttl,
+					last: now
 				}
 			}, correlationId);
 		}

@@ -40,6 +40,12 @@ class AppStore extends BaseStore {
 
 					return [];
 				},
+				async getMotorSearchReset(correlationId) {
+					this.motorManufacturers.ttl = null;
+					this.motorManufacturers.last = null;
+					this.motorSearchResults.ttl = null;
+					this.motorSearchResults.last = null;
+				},
 				async getMotorSearchResults(correlationId, criteria) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 					const response = await service.search(correlationId, criteria, this.motorSearchResults);
@@ -156,6 +162,9 @@ class AppStore extends BaseStore {
 			dispatcher: {
 				async getMotorManufacturers(correlationId, results) {
 					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
+				},
+				async getMotorSearchReset(correlationId) {
+					return await GlobalUtility.$store.getMotorSearchReset(correlationId);
 				},
 				async getMotorSearchResults(correlationId, criteria) {
 					return await GlobalUtility.$store.getMotorSearchResults(correlationId, criteria);
