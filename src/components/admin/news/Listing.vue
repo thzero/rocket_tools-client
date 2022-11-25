@@ -73,7 +73,6 @@
 					@ok="dialogEditOk"
 				/>
 				<VConfirmationDialog
-					:non-recoverable="true"
 					:signal="dialogDeleteSignal.signal"
 					:pre-complete-ok="dialogDeletePreCompleteOk"
 					@cancel="dialogDeleteCancel"
