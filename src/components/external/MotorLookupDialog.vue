@@ -218,6 +218,7 @@ export default {
 			default: false
 		}
 	},
+	emits: ['cancel', 'ok'],
 	setup (props) {
 		return Object.assign(base.setup(props), {
 			scope: 'MotorLookupDialog',
