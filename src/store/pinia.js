@@ -7,7 +7,7 @@ import CommonUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
-import BaseStore from '@thzero/library_client_vue3_store_pinia/store/pinia';
+import BaseStore from '@thzero/library_client_vue3_store_pinia/store/index';
 
 class AppStore extends BaseStore {
 	_init() {
@@ -241,6 +241,21 @@ class AppStore extends BaseStore {
 					'version'
 				]
 			}
+			// pinia2
+			// root: {
+			// 	key: 'rocket_tools',
+			// 	includePaths: [
+			// 		'flightInfoResolution',
+			// 		'flightInfoStyle',
+			// 		'flightPathStyle',
+			// 		'motorManufacturers',
+			// 		'motorSearchCriteria',
+			// 		'motorSearchResults',
+			// 		'plans',
+			// 		'settings',
+			// 		'version'
+			// 	]
+			// }
 		};
 	}
 }

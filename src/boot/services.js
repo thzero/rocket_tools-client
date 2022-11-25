@@ -11,8 +11,7 @@ import restCommunicationService from '@thzero/library_client_service_rest_axios'
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
 import thrustCurveMotoSearchExternalService from '@/service/external/motorSearchThrustCurve';
 import settingsService from '@/service/settings';
-import storeService from '@thzero/library_client_vue3_store_pinia/service/store/pinia'; // STORE TYPE
-// import storeService from '@thzero/library_client_vue3_store_pinia/service/store/pinia2'; // STORE TYPE
+import storeService from '@thzero/library_client_vue3_store_pinia/service/store/index'; // STORE TYPE
 // import storeService from '@thzero/library_client_vue3/service/store/vuex'; // STORE TYPE
 import userService from '@/service/user';
 import versionService from '@/service/version';
@@ -20,7 +19,6 @@ import versionService from '@/service/version';
 import BaseServices from '@thzero/library_client_vue3/boot/baseServices';
 
 import storeSetup from '@/store/pinia'; // STORE TYPE
-// import storeSetup from '@/store/pinia2'; // STORE TYPE
 // import storeSetup from '@/store/vuex'; // STORE TYPE
 
 class Services extends BaseServices {
