@@ -7,7 +7,7 @@ import CommonUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
-import BaseStore from '@thzero/library_client_vue3/store/pinia';
+import BaseStore from '@thzero/library_client_vue3_store_pinia/store/pinia';
 
 class AppStore extends BaseStore {
 	_init() {
@@ -224,11 +224,12 @@ class AppStore extends BaseStore {
 		// Admin Update
 	}
 
-	_initPluginPersist() {
+	_initPluginPersistConfig() {
 		return {
 			root: {
 				key: 'rocket_tools',
-				includePaths: [
+				storage: localStorage,
+				paths: [
 					'flightInfoResolution',
 					'flightInfoStyle',
 					'flightPathStyle',
