@@ -195,7 +195,6 @@
 		/>
 
 		<QConfirmationDialog
-			:non-recoverable="false"
 			:signal="dialogSignOut.signal"
 			@cancel="dialogSignOut.cancel()"
 			@ok="dialogSignOutOk"

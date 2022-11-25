@@ -77,7 +77,7 @@
 										v-model="manufacturer"
 										vid="manufacturer"
 										multiple
-										max-values="2"
+										:max-values="2"
 										:items="manufacturers"
 										:validation="validation"
 										:dense="true"
@@ -173,8 +173,7 @@
 	<QConfirmationDialog
 		ref="dlgConfirm"
 		:message="dlgConfirmMessage"
-		messageRaw="true"
-		:non-recoverable="false"
+		:messageRaw=true
 		:signal="dialogReset.signal"
 		@cancel="dialogReset.cancel()"
 		@ok="dialogResetOk"
@@ -219,6 +218,7 @@ export default {
 			default: false
 		}
 	},
+	emits: ['cancel', 'ok'],
 	setup (props) {
 		return Object.assign(base.setup(props), {
 			scope: 'MotorLookupDialog',
