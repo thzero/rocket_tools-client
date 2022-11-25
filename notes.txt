@@ -1,0 +1,1 @@
+Think about being able to compare two or more motors side by side with thrust2weight
