@@ -173,6 +173,7 @@
 	<QConfirmationDialog
 		ref="dlgConfirm"
 		:message="dlgConfirmMessage"
+		messageRaw="true"
 		:non-recoverable="false"
 		:signal="dialogReset.signal"
 		@cancel="dialogReset.cancel()"
