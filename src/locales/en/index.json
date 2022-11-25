@@ -183,6 +183,8 @@
 			"motorSearch": {
 				"diameter": "Diameter",
 				"impulseClass": "Impulse Class",
+				"manufacturer": "Manufacturer",
+				"manufacturer_hint": "Max. two selections",
 				"singleUse": "Single Use",
 				"sparky": "Sparky"
 			}
@@ -403,6 +405,14 @@
 		"motor_type_hybrid": "Hybrid",
 		"motor_type_reload": "Reload",
 		"motor_type_singleuse": "Single Use",
+		"motor_reset_days": "days",
+		"motor_reset_hours": "hours",
+		"motor_reset_message": "Reset the internal motor cache.",
+		"motor_reset_message_confirm": "Are you sure?",
+		"motor_reset_message_time_duration": "{duration} {type}",
+		"motor_reset_message_time_hour_less": "less than an hour",
+		"motor_reset_message_warning": "It has been {timespan} since you last reset the cache.",
+		"motor_reset_message_warning2": "Please be courteous of ThrustCurve's resources; preference is no more than weekly.",
 		"search": "Motor Search",
 		"sparky": "Sparky"
 	},

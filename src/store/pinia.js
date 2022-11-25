@@ -3,7 +3,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
-import LibraryUtility from '@thzero/library_common/utility';
+import CommonUtility from '@thzero/library_common/utility';
 
 import Response from '@thzero/library_common/response';
 
@@ -20,13 +20,54 @@ class AppStore extends BaseStore {
 				flightLocation: '',
 				flightPathStyle: [],
 				flightTitle: '',
-				motorSearch: {},
+				motorManufacturers: [],
+				motorSearchCriteria: {},
+				motorSearchResults: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
 				thrust2weight: {},
 				version: null
 			}),
 			actions: {
+				async getMotor(correlationId, motorId) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.motor(correlationId, motorId, this.motorSearchResults);
+					this.$logger.debug('store', 'getMotor', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorSearchResults = response.results.data;
+						return response.results.motor;
+					}
+
+					return null;
+				},
+				async getMotorManufacturers(correlationId) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.manufacturers(correlationId, this.motorManufacturers);
+					this.$logger.debug('store', 'getMotorManufacturers', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorManufacturers = response.results;
+						return this.motorManufacturers.manufacturers;
+					}
+
+					return [];
+				},
+				async getMotorSearchReset(correlationId) {
+					this.motorManufacturers.ttl = null;
+					this.motorManufacturers.last = null;
+					this.motorSearchResults.ttl = null;
+					this.motorSearchResults.last = null;
+				},
+				async getMotorSearchResults(correlationId, criteria) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.search(correlationId, criteria, this.motorSearchResults);
+					this.$logger.debug('store', 'getMotorSearchResults', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorSearchResults = response.results.data;
+						return response.results.filtered;
+					}
+
+					return [];
+				},
 				async getPlans(correlationId) {
 					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
 					const response = await service.plans(correlationId);
@@ -59,7 +100,7 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightInfoStyle)
 						this.flightInfoStyle = [];
-					this.flightInfoStyle = LibraryUtility.updateArrayByObject(this.flightInfoStyle, value);
+					this.flightInfoStyle = CommonUtility.updateArrayByObject(this.flightInfoStyle, value);
 				},
 				async setFlightLocation(correlationId, value) {
 					this.flightLocation = value;
@@ -69,13 +110,16 @@ class AppStore extends BaseStore {
 						return;
 					if (!this.flightPathStyle)
 						this.flightPathStyle = [];
-					this.flightPathStyle = LibraryUtility.updateArrayByObject(this.flightPathStyle, value);
+					this.flightPathStyle = CommonUtility.updateArrayByObject(this.flightPathStyle, value);
 				},
 				async setFlightTitle(correlationId, value) {
 					this.flightTitle = value;
 				},
-				async setMotorSearch(correlationId, value) {
-					this.motorSearch = value;
+				async setMotorSearchCriteria(correlationId, value) {
+					this.motorSearchCriteria = value;
+				},
+				async setMotorSearchResults(correlationId, value) {
+					this.motorSearchResults = value;
 				},
 				async setPlans(correlationId, plans) {
 					this.$logger.debug('store', 'setPlans', 'plans.a', plans, correlationId);
@@ -85,7 +129,7 @@ class AppStore extends BaseStore {
 				},
 				async setSettings(correlationId, settings) {
 					// commit('setSettings', params);
-					this.settings = LibraryUtility.merge3({}, this.settings, settings);
+					this.settings = CommonUtility.merge3({}, this.settings, settings);
 				},
 				async setVersion(correlationId, version) {
 					// this.$logger.debug('store', 'getVersion', 'version', version, correlationId);
@@ -114,8 +158,8 @@ class AppStore extends BaseStore {
 				getFlightTitle: (state) => () => {
 					return state.flightTitle;
 				},
-				getMotorSearch: (state) => () => {
-					return state.motorSearch;
+				getMotorSearchCriteria: (state) => () => {
+					return state.motorSearchCriteria;
 				},
 				getPlan: (state) => (id) => {
 					if (state.plans == null)
@@ -127,6 +171,18 @@ class AppStore extends BaseStore {
 				}
 			},
 			dispatcher: {
+				async getMotor(correlationId, motorId) {
+					return await GlobalUtility.$store.getMotor(correlationId, motorId);
+				},
+				async getMotorManufacturers(correlationId, results) {
+					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
+				},
+				async getMotorSearchReset(correlationId) {
+					return await GlobalUtility.$store.getMotorSearchReset(correlationId);
+				},
+				async getMotorSearchResults(correlationId, criteria) {
+					return await GlobalUtility.$store.getMotorSearchResults(correlationId, criteria);
+				},
 				async getPlans(correlationId) {
 					await GlobalUtility.$store.getPlans(correlationId);
 				},
@@ -154,8 +210,8 @@ class AppStore extends BaseStore {
 				async setFlightTitle(correlationId, value) {
 					await GlobalUtility.$store.setFlightTitle(correlationId, value);
 				},
-				async setMotorSearch(correlationId, value) {
-					await GlobalUtility.$store.setMotorSearch(correlationId, value);
+				async setMotorSearchCriteria(correlationId, value) {
+					await GlobalUtility.$store.setMotorSearchCriteria(correlationId, value);
 				},
 				async setSettings(correlationId, settings) {
 					await GlobalUtility.$store.setSettings(correlationId, settings);
@@ -176,7 +232,9 @@ class AppStore extends BaseStore {
 					'flightInfoResolution',
 					'flightInfoStyle',
 					'flightPathStyle',
-					'motorSearch',
+					'motorManufacturers',
+					'motorSearchCriteria',
+					'motorSearchResults',
 					'plans',
 					'settings',
 					'version'

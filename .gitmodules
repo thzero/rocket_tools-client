@@ -6,4 +6,4 @@
 	url = https://github.com/thzero/library_client_vue3_components
 [submodule "src/library_vue_quasar"]
 	path = src/library_vue_quasar
-	url = https://github.com/thzero/library_client_vue3_quasar
+	url = https://github.com/thzero/library_client_vue3_quasar_components

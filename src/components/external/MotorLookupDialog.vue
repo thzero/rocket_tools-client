@@ -22,7 +22,7 @@
 						<q-card-section class="q-section-with-actions">
 							<div class="row">
 								<div class="col-12 text-center text-h7 q-pb-sm">
-									{{ $t('motorSearch.guidance') }} <a target="_blank" :href="$t(motorSearchUrl)">{{ $t(motorSearchLocaleName) }}</a>{{ $t('motorSearch.guidance3') }}
+									{{ $t('motorSearch.guidance') }} <a target="_blank" :href="$t(searchUrl)">{{ $t(searchLocaleName) }}</a>{{ $t('motorSearch.guidance3') }}
 								</div>
 							</div>
 							<div class="row">
@@ -69,6 +69,23 @@
 									/>
 								</div>
 							</div>
+							<div class="row q-mt-sm">
+								<div class="col-sm-12">
+									<QSelectWithValidation
+										class="q-mr-sm"
+										ref="manufacturer"
+										v-model="manufacturer"
+										vid="manufacturer"
+										multiple
+										max-values="2"
+										:items="manufacturers"
+										:validation="validation"
+										:dense="true"
+										:label="$t('forms.external.motorSearch.manufacturer')"
+										:hint="$t('forms.external.motorSearch.manufacturer_hint')"
+									/>
+								</div>
+							</div>
 						</q-card-section>
 						<q-card-actions>
 							<q-space></q-space>
@@ -78,6 +95,12 @@
 									color="primary"
 									:label="$t('buttons.reset')"
 									@click="clickMotorSearchReset"
+								/>
+								<q-btn
+									class="q-pa-sm q-mr-sm"
+									color="primary"
+									:label="$t('buttons.clear')"
+									@click="clickMotorSearchClear"
 								/>
 								<q-btn
 									class="q-pa-sm q-mr-sm"
@@ -147,6 +170,15 @@
 			</div>
 		</template>
 	</QFormListingDialog>
+	<QConfirmationDialog
+		ref="dlgConfirm"
+		:message="dlgConfirmMessage"
+		messageRaw="true"
+		:non-recoverable="false"
+		:signal="dialogReset.signal"
+		@cancel="dialogReset.cancel()"
+		@ok="dialogResetOk"
+	/>
 </template>
 
 <script>
@@ -161,13 +193,17 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import base from '@/library_vue/components/base';
 
+import QConfirmationDialog from '@/library_vue_quasar/components/QConfirmationDialog';
 import QFormListingDialog from '@/library_vue_quasar/components/form/QFormListingDialog';
 import QSelectWithValidation from '@/library_vue_quasar/components/form/QSelectWithValidation';
 // import QTextFieldWithValidation from '@/library_vue_quasar/components/form/QTextFieldWithValidation';
 
+import DialogSupport from '@/library_vue/components/support/dialog';
+
 export default {
 	name: 'MotorLookupDialog',
 	components: {
+		QConfirmationDialog,
 		QFormListingDialog,
 		QSelectWithValidation //,
 		// QTextFieldWithValidation
@@ -190,10 +226,13 @@ export default {
 		});
 	},
 	data: () => ({
+		dlgConfirmMessage: null,
+		dialogReset: new DialogSupport(),
 		diameter: null,
 		impulseClass: null,
+		manufacturer: null,
+		manufacturersCache: null,
 		results: [],
-		resultsMax: null,
 		sparky: false,
 		serviceExternalMotorSearch: null,
 		serviceStore: null,
@@ -206,18 +245,27 @@ export default {
 		impulseClasses() {
 			return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
 		},
-		motorSearchLocaleName() {
+		manufacturers() {
+			return this.manufacturersCache.map((item) => { return { id: item.abbrev, name: item.name }; });
+		},
+		searchLocaleName() {
 			return this.serviceExternalMotorSearch.nameLocale();
 		},
-		motorSearchUrl() {
+		searchUrl() {
 			return this.serviceExternalMotorSearch.urlHuman();
 		}
 	},
-	created() {
+	async created() {
 		this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		this.serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+
+		this.manufacturersCache = await this.serviceStore.dispatcher.getMotorManufacturers(this.correlationId());
 	},
 	methods: {
+		async dialogResetOk() {
+			this.dialogReset.ok();
+			this.serviceStore.dispatcher.getMotorSearchReset(this.correlationId());
+		},
 		motorCaseInfo(motor) {
 			if (motor.type === 'SU') {
 				return this.$t('motorSearch.motor_type_singleuse');
@@ -235,9 +283,6 @@ export default {
 		motorUrl(motor) {
 			return this.serviceExternalMotorSearch.urlMotor(motor);
 		},
-		async clickMotorSearchReset() {
-			this.reset();
-		},
 		async clickMotorSearch() {
 			const correlationId = this.correlationId();
 
@@ -247,24 +292,61 @@ export default {
 				return;
 
 			this.results = null;
-			this.resultsMax = null;
-			this.resultsTotal = null;
 
 			const request = {
 				diameter: this.diameter,
 				impulseClass: this.impulseClass,
+				manufacturer: this.manufacturer,
 				singleUse: this.singleUse,
 				sparky: this.sparky
 			};
 
-			this.serviceStore.dispatcher.setMotorSearch(this.correlationId(), request);
+			this.serviceStore.dispatcher.setMotorSearchCriteria(this.correlationId(), request);
 
-			const response = await this.serviceExternalMotorSearch.search(correlationId, request);
+			// const response = await this.serviceExternalMotorSearch.search(correlationId, request);
+			const response = await this.serviceStore.dispatcher.getMotorSearchResults(correlationId, request);
 			console.log(response);
-			if (response) {
-				this.results = response.results;
-				this.resultsMax = response.matches;
+			this.results = response || [];
+		},
+		async clickMotorSearchClear() {
+			this.reset();
+		},
+		async clickMotorSearchReset() {
+			const last = this.serviceStore.state.motorSearchResults !== null ? this.serviceStore.state.motorSearchResults.last : 0;
+			const ttl = this.serviceStore.state.motorSearchResults !== null ? this.serviceStore.state.motorSearchResults.ttl : 0;
+
+			const now = CommonUtility.getTimestamp();
+			if (ttl < now) {
+				return;
 			}
+
+			const duration = now - last;
+
+			const spanInHours = 60 * 60 * 1000;
+			const spanInDays = 24 * 60 * 60 * 1000;
+			const spanInWeeks = 7 * 24 * 60 * 60 * 1000;
+
+			const durationInWeeks = duration / spanInWeeks;
+			const durationInDays = duration / spanInDays;
+			const durationInHours = duration / spanInHours;
+
+			let message = GlobalUtility.$trans.t('motorSearch.motor_reset_message') + '<br>';
+			if (durationInWeeks <= 1) {
+				let timespan = '';
+				if (durationInDays <= 1) {
+					if (durationInHours < 1)
+						timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_hour_less');
+					else
+						timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_duration', { duration: durationInHours, type: GlobalUtility.$trans.t('motorSearch.motor_reset_hours') });
+				}
+				else
+					timespan = GlobalUtility.$trans.t('motorSearch.motor_reset_message_time_duration', { duration: durationInDays, type: GlobalUtility.$trans.t('motorSearch.motor_reset_days') });
+				message += GlobalUtility.$trans.t('motorSearch.motor_reset_message_warning', { timespan: timespan }) + '<br>' + GlobalUtility.$trans.t('motorSearch.motor_reset_message_warning2') + '<br>';
+			}
+			message = message + GlobalUtility.$trans.t('motorSearch.motor_reset_message_confirm');
+
+			this.dlgConfirmMessage = message;
+			this.dialogReset.open();
 		},
 		async clickMotorSelect(item) {
 			this.$emit('ok', item);
@@ -285,20 +367,22 @@ export default {
 		// eslint-disable-next-line
 		async resetDialog(correlationId) {
 			this.impulseClass = null;
+			this.manufacturer = null;
 			this.results = null;
-			this.resultsMax = null;
-			this.resultsTotal = null;
 
-			const data = this.serviceStore.getters.getMotorSearch();
+			const data = this.serviceStore.getters.getMotorSearchCriteria();
 			if (!data)
 				return;
 
 			this.diameter = data.diameter;
 			this.impulseClass = data.impulseClass;
+			this.manufacturer = data.manufacturer;
 			this.sparky = !CommonUtility.isNull(data.sparky) ? data.sparky : false;
 			this.singleUse = !CommonUtility.isNull(data.singleUse) ? data.singleUse : false;
 
-			this.clickMotorSearch();
+			(async (self) => {
+				self.clickMotorSearch();
+			})(this);
 		}
     },
 	validations () {

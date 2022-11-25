@@ -1,13 +1,6 @@
 <template>
 	<div>
 		<div>
-			<div class="q-pb-md q-gutter-sm"
-				v-if="errors"
-			>
-				<q-banner rounded inline-actions dense class="bg-red text-white">
-					<span v-html="errorMessage"></span>
-				</q-banner>
-			</div>
 			<div class="row">
 				<div class="col-12 text-center text-h5 q-pb-sm">
 					{{ $t('titles.tools.thrust2Weight') }}
@@ -206,11 +199,7 @@ export default defineComponent({
 		});
 	},
 	data: () => ({
-		buttons: {
-			calculate: {
-				disabled: true
-			}
-		},
+		calculationData: null,
 		calculationResults: {
 			calculated: false
 		},
@@ -219,6 +208,7 @@ export default defineComponent({
 		maxLaunchRodTime: null,
 		maxLaunchRodTimeDefault: 0.3,
 		motor: null,
+		motorId: null,
 		thrustAverage: null,
 		thrustInitial: null,
 		thrustPeak: null,
@@ -239,51 +229,68 @@ export default defineComponent({
 		this.reset(false);
 
 		this.settings = this.serviceStore.getters.getSettings();
+
+		this.calculationData = this.serviceToolThrust2Weight.initialize(this.correlationId());
 	},
 	methods: {
 		async calculationOk() {
 			this.calculationResults.calculated = false;
 			const correlationId = this.correlationId();
-			const data = await this.serviceToolThrust2Weight.initialize(correlationId);
-			data.mass = this.mass;
-			data.thrustAverage = this.thrustAverage;
-			data.thrustInitial = this.thrustInitial;
-			data.thrustPeak = this.thrustPeak;
-			this.calculationResults = await this.serviceToolThrust2Weight.calculate(correlationId, data);
-			console.log(this.calculationResults);
-			this.calculationResults.calculated = true;
-
-			this.notify('messages.thrust2Weight.calculated');
+			this.initCalculationData(correlationId);
+			const response = await this.serviceToolThrust2Weight.calculate(correlationId, this.calculationData);
+			if (response && response.success) {
+				this.calculationResults = response.results;
+				this.calculationResults.calculated = true;
+				this.notify('messages.thrust2Weight.calculated');
+			}
 		},
 		async clickMotorSearch() {
 			await this.$refs.motorSearchDialog.reset(this.correlationId(), {});
 			// this.dialogMotorSearch.value.open(); // if using setup...
 			this.dialogMotorSearch.open();
 		},
+		initCalculationData(correlationId) {
+			this.calculationData.mass = this.mass;
+			this.calculationData.maxLaunchRodTime = this.maxLaunchRodTime;
+			this.calculationData.thrustAverage = this.thrustAverage;
+			this.calculationData.thrustInitial = this.thrustInitial;
+			this.calculationData.thrustPeak = this.thrustPeak;
+		},
 		reset(correlationId, notify) {
 			this.$refs.frm.reset();
-			this.buttons.calculate.disabled = true;
-			this.calculationResults.calculated = false;
-			this.errorMessage = null;
-			if (this.errorTimer)
-				clearTimeout(this.errorTimer);
 
 			notify = (notify !== null && notify !== undefined) ? notify : true;
 			if (notify)
 				this.notify('messages.reset');
 		},
 		resetForm() {
+			this.calculationResults.calculated = false;
 			this.mass = null;
 			this.thrustAverage = null;
 			this.thrustInitial = null;
 			this.thrustPeak = null;
 			this.maxLaunchRodTime = this.maxLaunchRodTimeDefault;
 			this.motor = null;
+			this.motorId = null;
 		},
-		selectMotor(item) {
-			this.motor = item.designation;
+		async selectMotor(item) {
+			const correlationId = this.correlationId();
 
 			this.notify('messages.thrust2Weight.motor.selected');
+
+			const response = await this.serviceStore.dispatcher.getMotor(correlationId, item.motorId);
+			if (response) {
+				this.initCalculationData(correlationId);
+				const response2 = await this.serviceToolThrust2Weight.update(correlationId, response, this.calculationData);
+				if (response2 && response2.success) {
+					this.motor = item.designation;
+					this.motorId = item.motorId;
+					this.calculationData = response2.results;
+					this.thrustAverage = this.calculationData.thrustAverage;
+					this.thrustInitial = this.calculationData.thrustInitial;
+					this.thrustPeak = this.calculationData.thrustPeak;
+				}
+			}
 
 			this.dialogMotorSearch.ok();
 		}

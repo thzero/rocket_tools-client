@@ -9,7 +9,7 @@ import flightPathProcessorService from '@/service/flightPath/index';
 import flightPathProcessorFeatherweightService from '@/service/flightPath/processors/featherweight';
 import restCommunicationService from '@thzero/library_client_service_rest_axios';
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
-import thrustCurveMotoSearchExternalServics from '@/service/external/motorSearchThrustCurve';
+import thrustCurveMotoSearchExternalService from '@/service/external/motorSearchThrustCurve';
 import settingsService from '@/service/settings';
 import storeService from '@thzero/library_client_vue3/service/store/pinia'; // STORE TYPE
 // import storeService from '@thzero/library_client_vue3/service/store/vuex'; // STORE TYPE
@@ -35,7 +35,7 @@ class Services extends BaseServices {
 
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT, new thrust2WeightToolsService());
 
-		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotoSearchExternalServics());
+		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotoSearchExternalService());
 	}
 
 	_initializeAuth() {
