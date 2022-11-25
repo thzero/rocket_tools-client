@@ -78,13 +78,13 @@
 									/>
 								</div>
 								<div class="col-xs-12 col-sm-6">
-									<QTextField
+									<QTextFieldWithValidation
 										class="q-mr-sm"
 										ref="maxLaunchRodTime"
 										v-model="maxLaunchRodTime"
 										vid="maxLaunchRodTime"
+										:validation="validation"
 										:dense="true"
-										:readonly="true"
 										:label="$t('forms.thrust2Weight.max_launch_rod_timespan')"
 										:placeholder="$t('forms.thrust2Weight.max_launch_rod_timespan_hint')"
 									/>
