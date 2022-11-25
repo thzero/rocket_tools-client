@@ -1,5 +1,4 @@
 import LibraryConstants from '@thzero/library_client/constants';
-// import Constants from '@/constants';
 
 import CommonUtility from '@thzero/library_common/utility/index';
 
@@ -52,6 +51,41 @@ class MotorSearchExternalService extends BaseService {
 		}
 		catch (err) {
 			this._logger.exception('MotorSearchExternalService', 'manufacturers', err, correlationId);
+		}
+	}
+
+    async motor(correlationId, motorId, cache) {
+        try {
+			let motor = null;
+			for (const item of cache.data) {
+				if (item.motorId !== motorId)
+					continue;
+
+				motor = item;
+				break;
+			}
+
+			if (!motor)
+				return this._error('MotorSearchExternalService', 'motor', 'Invalid motor', null, null, null, correlationId);
+
+			if (!motor.samples) {
+				const response = await this._motor(correlationId, motorId);
+				this._logger.debug('MotorSearchExternalService', 'motor', 'response', response, correlationId);
+				if (this._hasFailed(response))
+					return response;
+
+				motor.samples = response.results.samples;
+			}
+
+			cache.last = CommonUtility.getTimestamp();
+
+			return this._successResponse({
+				motor: motor,
+				data: cache
+			}, correlationId);
+		}
+		catch (err) {
+			this._logger.exception('MotorSearchExternalService', 'motor', err, correlationId);
 		}
 	}
 
@@ -123,6 +157,9 @@ class MotorSearchExternalService extends BaseService {
 	}
 
 	async _manufacturers(correlationId) {
+	}
+
+	async _motor(correlationId, motorId) {
 	}
 
 	async _search(correlationId, criteria) {

@@ -17,10 +17,39 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 			ignoreToken: true
 		};
 		const response = await this._serviceCommunicationRest.get(correlationId, this._urlKey(), { url: 'metadata.json' }, opts);
-		this._logger.debug('EquipmentService', '_manufacturers', 'response', response, correlationId);
+		this._logger.debug('ThrustCurveMotorSearchExternalService', '_manufacturers', 'response', response, correlationId);
 		if (response) {
 			const manufacturers = response.manufacturers;
 			return this._successResponse(manufacturers, correlationId);
+		}
+
+		return response;
+	}
+
+	async _motor(correlationId, motorId) {
+		const opts = {
+			ignoreCorrelationId: true,
+			ignoreToken: true
+		};
+		const body = {
+			motorId: motorId,
+			format: 'RASP',
+			data: 'samples',
+			maxResults: 200
+		};
+		const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'download.json' }, body, opts);
+		this._logger.debug('ThrustCurveMotorSearchExternalService', '_manufacturers', 'response', response, correlationId);
+		if (response && response.results) {
+			let motor = null;
+			for (const item of response.results) {
+				if (item.motorId !== motorId)
+					continue;
+
+				motor = item;
+				break;
+			}
+
+			return this._successResponse(motor, correlationId);
 		}
 
 		return response;
@@ -79,11 +108,11 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 					maxResults: 500
 			};
 			const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
-			this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
+			this._logger.debug('ThrustCurveMotorSearchExternalService', '_search', 'response', response, correlationId);
 			return this._successResponse(response.results, correlationId);
 		}
 		catch (err) {
-			this._logger.exception('MotorSearchExternalService', 'search', err, correlationId);
+			this._logger.exception('ThrustCurveMotorSearchExternalService', 'search', err, correlationId);
 			return this._hasFailed(correlationId);
 		}
 	}

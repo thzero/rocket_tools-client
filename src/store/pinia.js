@@ -29,6 +29,17 @@ class AppStore extends BaseStore {
 				version: null
 			}),
 			actions: {
+				async getMotor(correlationId, motorId) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.motor(correlationId, motorId, this.motorSearchResults);
+					this.$logger.debug('store', 'getMotor', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorSearchResults = response.results.data;
+						return response.results.motor;
+					}
+
+					return null;
+				},
 				async getMotorManufacturers(correlationId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 					const response = await service.manufacturers(correlationId, this.motorManufacturers);
@@ -160,6 +171,9 @@ class AppStore extends BaseStore {
 				}
 			},
 			dispatcher: {
+				async getMotor(correlationId, motorId) {
+					return await GlobalUtility.$store.getMotor(correlationId, motorId);
+				},
 				async getMotorManufacturers(correlationId, results) {
 					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
 				},
