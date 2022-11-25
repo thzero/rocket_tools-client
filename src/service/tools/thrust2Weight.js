@@ -45,20 +45,17 @@ class Thrust2WeightToolsService extends BaseService {
 		if (!motor || !motor.samples || (motor.samples.length <= 0) || !data)
             return;
 
-        let maxThrust = 0;
-        let maxThrustLaunchRod = 0;
+        let initialThrust = 0;
         for (const sample of motor.samples) {
             if (sample.time > data.maxLaunchRodTime)
                 break;
 
-            if (sample.thrust > maxThrust)
-				maxThrust = sample.thrust;
-			if (sample.thrust > maxThrustLaunchRod)
-				maxThrustLaunchRod = sample.thrust;
+			if (sample.thrust > initialThrust)
+			initialThrust = sample.thrust;
         }
-        data.thrustAverage = maxThrust / 2;
-        data.thrustInitial = maxThrustLaunchRod;
-        data.thrustPeak = maxThrust;
+        data.thrustAverage = motor.avgThrustN;
+        data.thrustInitial = initialThrust;
+        data.thrustPeak = motor.maxThrustN;
 		return this._successResponse(data, correlationId);
 	}
 }
