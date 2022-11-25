@@ -212,7 +212,6 @@ export default {
 		manufacturer: null,
 		manufacturersCache: null,
 		results: [],
-		resultsMax: null,
 		sparky: false,
 		serviceExternalMotorSearch: null,
 		serviceStore: null,
@@ -271,8 +270,6 @@ export default {
 				return;
 
 			this.results = null;
-			this.resultsMax = null;
-			this.resultsTotal = null;
 
 			const request = {
 				diameter: this.diameter,
@@ -284,12 +281,10 @@ export default {
 
 			this.serviceStore.dispatcher.setMotorSearchCriteria(this.correlationId(), request);
 
-			const response = await this.serviceExternalMotorSearch.search(correlationId, request);
+			// const response = await this.serviceExternalMotorSearch.search(correlationId, request);
+			const response = await this.serviceStore.dispatcher.getMotorSearchResults(correlationId, request);
 			console.log(response);
-			if (response && response.success) {
-				this.results = response.results;
-				this.resultsMax = response.matches;
-			}
+			this.results = response || [];
 		},
 		async clickMotorSelect(item) {
 			this.$emit('ok', item);
@@ -312,8 +307,6 @@ export default {
 			this.impulseClass = null;
 			this.manufacturer = null;
 			this.results = null;
-			this.resultsMax = null;
-			this.resultsTotal = null;
 
 			const data = this.serviceStore.getters.getMotorSearchCriteria();
 			if (!data)

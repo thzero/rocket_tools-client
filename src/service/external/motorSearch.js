@@ -54,11 +54,56 @@ class MotorSearchExternalService extends BaseService {
 		}
 	}
 
-    async search(correlationId, request) {
+    async search(correlationId, criteria, cached) {
         try {
-			const response = await this._search(correlationId, request);
+			const now = CommonUtility.getTimestamp();
+			let ttl = CommonUtility.getTimestamp() + this._ttlManufacturers;
+			if (cached) {
+				if (!cached.ttl)
+					cached.ttl = ttl;
+				ttl = cached.ttl;
+			}
+
+			if ((ttl > now) && (cached && cached.data && cached.data.length > 0)) {
+				const responseFilter = this._searchFilter(correlationId, criteria, cached.data);
+				// If there total for this impulse class is greater than zero, use the cached results....
+				if (responseFilter.results.total > 0) {
+					return this._successResponse({
+						filtered: this._hasSucceeded(responseFilter) ? responseFilter.results.output : [],
+						data: {
+							data: cached.data,
+							ttl: ttl
+						}
+					}, correlationId);
+				}
+
+				// Otherwise need to go get and cache the data from external...
+			}
+
+			cached = cached || {};
+			cached.data = cached.data || [];
+
+			let data = [ ...cached.data ];
+
+			const response = await this._search(correlationId, criteria);
 			this._logger.debug('MotorSearchExternalService', 'search', 'response', response, correlationId);
-			return response;
+
+			// If succeeded, then update data set.
+			if (this._hasSucceeded(response)) {
+				const responseUpdate = this._searchUpdateData(correlationId, response.results, data, cached.data);
+				if (this._successResponse(responseUpdate))
+					data = response.results;
+			}
+
+			// Filter the data set for results...
+			const responseFilter = this._searchFilter(correlationId, criteria, data);
+			return this._successResponse({
+				filtered: this._hasSucceeded(responseFilter) ? responseFilter.results.output : [],
+				data: {
+					data: data,
+					ttl: ttl
+				}
+			}, correlationId);
 		}
 		catch (err) {
 			this._logger.exception('MotorSearchExternalService', 'search', err, correlationId);
@@ -82,7 +127,76 @@ class MotorSearchExternalService extends BaseService {
 	async _manufacturers(correlationId) {
 	}
 
-	async _search(correlationId, request) {
+	async _search(correlationId, criteria) {
+	}
+
+	_searchFilter(correlationId, criteria, data) {
+		let total = 0;
+		const output = [];
+		for (const item of data) {
+			if (item.impulseClass !== criteria.impulseClass)
+				continue;
+
+			total++;
+
+			if (criteria.diameter) {
+				if (item.diameter !== parseInt(criteria.diameter))
+					continue;
+			}
+
+			if (criteria.diameter) {
+				if (item.diameter !== parseInt(criteria.diameter))
+					continue;
+			}
+
+			if (criteria.sparky !== null && criteria.sparky) {
+				if (item.sparky === null || (item.sparky !== null && item.sparky === false))
+					continue;
+			}
+
+			if (criteria.singleUse !== null && criteria.singleUse) {
+				if (item.type !== 'SU')
+					continue;
+			}
+
+			if (!String.isNullOrEmpty(criteria.manufacturer)) {
+				if (!criteria.manufacturer.includes(item.manufacturer))
+					continue;
+			}
+
+			output.push(item);
+		}
+
+		return this._successResponse({ output: output, total: total }, correlationId);
+	}
+
+	_searchUpdateData(correlationId, results, data, cached) {
+		let result;
+		let item;
+		const length = results.length;
+		const lengthCached = cached.length;
+		let difference = [ ...cached ];
+		for (let i = 0; i < length; i++) {
+			result = results[i];
+
+			for (let j = 0; j < lengthCached; j++) {
+				item = cached[j];
+				if (result.motorId !== item.motorId)
+					continue;
+
+					data[i] = result;
+					difference = difference.filter((l) => l.motorId === result.motorId);
+				break;
+			}
+
+			data.push(result);
+		}
+
+		for (const item of difference) {
+			data = data.filter((l) => l.motorId === item.motorId);
+		}
+
+		return this._successResponse(correlationId, data);
 	}
 
 	_urlKey() {

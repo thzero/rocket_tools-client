@@ -22,6 +22,7 @@ class AppStore extends BaseStore {
 				flightTitle: '',
 				motorManufacturers: [],
 				motorSearchCriteria: {},
+				motorSearchResults: {},
 				plans: [],
 				settings: AppUtility.initializeSettingsUser(),
 				thrust2weight: {},
@@ -35,6 +36,17 @@ class AppStore extends BaseStore {
 					if (Response.hasSucceeded(response)) {
 						this.motorManufacturers = response.results;
 						return this.motorManufacturers.manufacturers;
+					}
+
+					return [];
+				},
+				async getMotorSearchResults(correlationId, criteria) {
+					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
+					const response = await service.search(correlationId, criteria, this.motorSearchResults);
+					this.$logger.debug('store', 'getMotorSearchResults', 'response', response, correlationId);
+					if (Response.hasSucceeded(response)) {
+						this.motorSearchResults = response.results.data;
+						return response.results.filtered;
 					}
 
 					return [];
@@ -89,6 +101,9 @@ class AppStore extends BaseStore {
 				async setMotorSearchCriteria(correlationId, value) {
 					this.motorSearchCriteria = value;
 				},
+				async setMotorSearchResults(correlationId, value) {
+					this.motorSearchResults = value;
+				},
 				async setPlans(correlationId, plans) {
 					this.$logger.debug('store', 'setPlans', 'plans.a', plans, correlationId);
 					this.$logger.debug('store', 'setPlans', 'plans.b', this.plans, correlationId);
@@ -142,6 +157,9 @@ class AppStore extends BaseStore {
 				async getMotorManufacturers(correlationId, results) {
 					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
 				},
+				async getMotorSearchResults(correlationId, criteria) {
+					return await GlobalUtility.$store.getMotorSearchResults(correlationId, criteria);
+				},
 				async getPlans(correlationId) {
 					await GlobalUtility.$store.getPlans(correlationId);
 				},
@@ -193,6 +211,7 @@ class AppStore extends BaseStore {
 					'flightPathStyle',
 					'motorManufacturers',
 					'motorSearchCriteria',
+					'motorSearchResults',
 					'plans',
 					'settings',
 					'version'

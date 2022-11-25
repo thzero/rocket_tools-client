@@ -26,47 +26,66 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 		return response;
 	}
 
-    async _search(correlationId, request) {
-       const body = {
-			diameter: request.diameter,
-			impulseClass: request.impulseClass,
-			sparky: request.sparky != null ? request.sparky : true,
-			availability: 'available',
-			maxResults: 200
-		};
+    async _search(correlationId, criteria) {
+		try {
+			//    const body = {
+			// 		diameter: criteria.diameter,
+			// 		impulseClass: criteria.impulseClass,
+			// 		sparky: criteria.sparky != null ? criteria.sparky : true,
+			// 		availability: 'available',
+			// 		maxResults: 200
+			// 	};
 
-		// if (!String.isNullOrEmpty(request.manufacturer)) {
-		// 	body.manufacturer = request.manufacturer;
-		// }
+			// 	// if (!String.isNullOrEmpty(request.manufacturer)) {
+			// 	// 	body.manufacturer = request.manufacturer;
+			// 	// }
 
-		if (request.singleUse != null && request.SingleUse) {
-			body.type = 'SU';
-		}
+			// 	if (criteria.singleUse != null && criteria.SingleUse) {
+			// 		body.type = 'SU';
+			// 	}
 
-		const opts = {
-			ignoreCorrelationId: true,
-			ignoreToken: true
-		};
+			// 	const opts = {
+			// 		ignoreCorrelationId: true,
+			// 		ignoreToken: true
+			// 	};
 
-		if (!request.manufacturer || (request.manufacturer && Array.isArray(request.manufacturer) && request.manufacturer.length === 0)) {
+			// 	if (!criteria.manufacturer || (criteria.manufacturer && Array.isArray(criteria.manufacturer) && criteria.manufacturer.length === 0)) {
+			// 		const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+			// 		this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
+			// 		return response;
+			// 	}
+
+			// 	if (!Array.isArray(criteria.manufacturer))
+			// 		criteria.manufacturer = [ criteria.manufacturer ];
+
+			// 	const results = [];
+			// 	let response;
+			// 	for (const manufacturer of criteria.manufacturer) {
+			// 		body.manufacturer = manufacturer;
+			// 		response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+			// 		this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
+			// 		results.push(...response.results);
+			// 	}
+
+			// 	return this._successResponse(results, correlationId);
+
+			const opts = {
+					ignoreCorrelationId: true,
+					ignoreToken: true
+				};
+			const body = {
+					impulseClass: criteria.impulseClass,
+					availability: 'available',
+					maxResults: 500
+			};
 			const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
 			this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
-			return response;
+			return this._successResponse(response.results, correlationId);
 		}
-
-		if (!Array.isArray(request.manufacturer))
-			request.manufacturer = [ request.manufacturer ];
-
-		const results = [];
-		let response;
-		for (const manufacturer of request.manufacturer) {
-			body.manufacturer = manufacturer;
-			response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
-			this._logger.debug('EquipmentService', '_search', 'response', response, correlationId);
-			results.push(...response.results);
+		catch (err) {
+			this._logger.exception('MotorSearchExternalService', 'search', err, correlationId);
+			return this._hasFailed(correlationId);
 		}
-
-		return this._successResponse(results, correlationId);
 	}
 
 	_urlKey() {
