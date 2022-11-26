@@ -371,6 +371,7 @@
 		"clickOrHover": {
 			"description": "Click or hover to see description..."
 		},
+		"dev": "DEV",
 		"failed": "Action failed",
 		"loading": "Loading...",
 		"success": "Action was successful",

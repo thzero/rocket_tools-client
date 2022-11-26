@@ -6,7 +6,9 @@
   "version_patch": 6,
   "version_date": "11/25/2022",
   "description": "A web application with some tools for rocketry",
-  "author": "thZero",
+  "author": "thZero.com",
+  "author_url": "https://www.thzero.com",
+  "copyright": "2020-2022",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -27,7 +29,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.15.6",
-    "@thzero/library_client": "^0.16.9",
+    "@thzero/library_client": "^0.16.10",
     "@thzero/library_client_firebase": "^0.16.6",
     "@thzero/library_client_service_rest_axios": "^0.16.6",
     "@thzero/library_client_vue3": "^0.16.19",
