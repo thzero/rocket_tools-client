@@ -24,10 +24,6 @@ export default {
 	},
 	methods: {
 		initialize(correlationId) {
-			console.debug(GlobalUtility);
-			Object.entries(GlobalUtility).forEach(([key, value]) => {
-				console.log(key, value); // "someKey" "some value", "hello" "world", "js javascript foreach object"
-			});
 			return [
 				GlobalUtility.$store.dispatcher.initialize(correlationId)
 			];

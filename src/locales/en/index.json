@@ -208,7 +208,14 @@
 		"role": "Role",
 		"roles": "Roles",
 		"settings": {
-			"measurementUnits": "Measurement Units"
+			"measurementUnits": {
+				"title": "Measurement Units",
+				"acceleration": "Acceleration",
+				"area": "Area",
+				"distance": "Distance",
+				"velocity": "Velocity",
+				"volume": "Volume"
+			}
 		},
 		"sorting": {
 			"ascending": "Ascending",
