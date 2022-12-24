@@ -1,6 +1,7 @@
 <template>
 	<v-select
 		v-model="innerValue"
+		:error="errorI"
 		:item-title="itemTitle"
 		:item-value="itemValue"
 		:items="innerItems"
@@ -11,7 +12,6 @@
 		@update:modelValue="change"
 	>
 		<template v-slot:details>
-			{{ errorsI.length }}
 			<div
 				v-for="error of errorsI"
 				:key="error.$uid"

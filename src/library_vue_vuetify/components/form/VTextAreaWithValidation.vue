@@ -1,6 +1,7 @@
 <template>
 	<v-textarea
 		v-model="innerValue"
+		:error="errorI"
 		:hide-details="hideDetails"
 		v-bind="$attrs"
 		auto-grow

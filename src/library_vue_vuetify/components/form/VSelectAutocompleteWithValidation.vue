@@ -1,11 +1,12 @@
 <template>
 	<v-select
 		v-model="innerValue"
-		:success="valid"
+		:error="errorI"
 		:items="innerItems"
-		:label="label"
+		:success="valid"
 		item-text="name"
 		item-value="id"
+		:label="label"
 		density="compact"
 		@update:modelValue="change"
 	>

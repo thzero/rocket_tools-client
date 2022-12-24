@@ -87,8 +87,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnit"
-										vid="measurementUnit"
+										ref="measurementUnitRef"
+										vid="measurementUnitsId"
 										v-model="measurementUnitsId"
 										:items="measurementUnitsSelect"
 										:validation="validation"
@@ -101,8 +101,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitAcceleration"
-										vid="measurementUnitAcceleration"
+										ref="measurementUnitAccelerationRef"
+										vid="measurementUnitAccelerationId"
 										v-model="measurementUnitAccelerationId"
 										:items="measurementUnitsAcceleration"
 										:validation="validation"
@@ -115,8 +115,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitArea"
-										vid="measurementUnitArea"
+										ref="measurementUnitAreaRef"
+										vid="measurementUnitAreaId"
 										v-model="measurementUnitAreaId"
 										:items="measurementUnitsArea"
 										:validation="validation"
@@ -129,8 +129,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitDistance"
-										vid="measurementUnitDistance"
+										ref="measurementUnitDistanceRef"
+										vid="measurementUnitDistanceId"
 										v-model="measurementUnitDistanceId"
 										:items="measurementUnitsDistance"
 										:validation="validation"
@@ -143,8 +143,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitVelocity"
-										vid="measurementUnitVelocity"
+										ref="measurementUnitVelocityRef"
+										vid="measurementUnitVelocityId"
 										v-model="measurementUnitVelocityId"
 										:items="measurementUnitsVelocity"
 										:validation="validation"
@@ -157,8 +157,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitVolume"
-										vid="measurementUnitVolume"
+										ref="measurementUnitVolumeRef"
+										vid="measurementUnitVolumeId"
 										v-model="measurementUnitVolumeId"
 										:items="measurementUnitsVolume"
 										:validation="validation"
@@ -171,8 +171,8 @@
 									md="3"
 								>
 									<VSelectWithValidation
-										ref="measurementUnitWeight"
-										vid="measurementUnitWeight"
+										ref="measurementUnitWeightRef"
+										vid="measurementUnitWeightId"
 										v-model="measurementUnitWeightId"
 										:items="measurementUnitsVolume"
 										:validation="validation"
@@ -255,33 +255,33 @@ export default {
 		const measurementUnitsSelect = computed(() => {
 			return [Constants.MeasurementUnits.english.id, Constants.MeasurementUnits.metrics.id].map((item) => { return { id: item, name: GlobalUtility.$trans.t('measurementUnits.' + item + '.title') }; });
 		});
-		const measurementUnitsArea = computed(() => {
-			if (measurementUnits === Constants.MeasurementUnits.english.id)
-				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.area, 'english', 'area');
-			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.area, 'metrics', 'area');
-		});
 		const measurementUnitsAcceleration = computed(() => {
-			if (instance.ctx.measurementUnits === Constants.MeasurementUnits.english.id)
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.acceleration, 'english', 'acceleration');
 			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.acceleration, 'metrics', 'acceleration');
 		});
+		const measurementUnitsArea = computed(() => {
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
+				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.area, 'english', 'area');
+			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.area, 'metrics', 'area');
+		});
 		const measurementUnitsDistance = computed(() => {
-			if (instance.ctx.measurementUnits === Constants.MeasurementUnits.english.id)
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.distance, 'english', 'distance');
 			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.distance, 'metrics', 'distance');
 		});
 		const measurementUnitsVelocity = computed(() => {
-			if (instance.ctx.measurementUnits === Constants.MeasurementUnits.english.id)
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.velocity, 'english', 'velocity');
 			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.velocity, 'metrics', 'velocity');
 		});
 		const measurementUnitsVolume = computed(() => {
-			if (instance.ctx.measurementUnits === Constants.MeasurementUnits.english.id)
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.volume, 'english', 'volume');
 			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.volume, 'metrics', 'volume');
 		});
 		const measurementUnitsWeight = computed(() => {
-			if (instance.ctx.measurementUnits === Constants.MeasurementUnits.english.id)
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.english.weight, 'english', 'weight');
 			return instance.ctx.measurementUnitTrans(Constants.MeasurementUnits.metrics.weight, 'metrics', 'weight');
 		});
@@ -326,12 +326,30 @@ export default {
 			// measurementUnitVolumeId.value = settings.measurementUnits.volume;
 			// measurementUnitWeightId.value = settings.measurementUnits.weight;
 			measurementUnitsId.value = settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english.id;
-			measurementUnitAccelerationId.value = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
-			measurementUnitAreaId.value = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
-			measurementUnitDistanceId.value = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
-			measurementUnitVelocityId.value = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
-			measurementUnitVolumeId.value = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
-			measurementUnitWeightId.value = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
+
+			const measurementUnitAccelerationIdT = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
+			measurementUnitAccelerationId.value = instance.ctx.resetFormIdCheck(measurementUnitAccelerationIdT, measurementUnitsAcceleration.value);
+			const measurementUnitAreaIdT = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
+			measurementUnitAreaId.value = instance.ctx.resetFormIdCheck(measurementUnitAreaIdT, measurementUnitsArea.value);
+			const measurementUnitDistanceIdT = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
+			measurementUnitDistanceId.value = instance.ctx.resetFormIdCheck(measurementUnitDistanceIdT, measurementUnitsDistance.value);
+			const measurementUnitVelocityIdT = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
+			measurementUnitVelocityId.value = instance.ctx.resetFormIdCheck(measurementUnitVelocityIdT, measurementUnitsVelocity.value);
+			const measurementUnitVolumeIdT = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
+			measurementUnitVolumeId.value = instance.ctx.resetFormIdCheck(measurementUnitVolumeIdT, measurementUnitsVolume.value);
+			const measurementUnitWeightIdT = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
+			measurementUnitWeightId.value = instance.ctx.resetFormIdCheck(measurementUnitWeightIdT, measurementUnitsWeight.value);
+
+			// measurementUnitAccelerationId.value = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
+			// measurementUnitAreaId.value = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
+			// measurementUnitDistanceId.value = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
+			// measurementUnitVelocityId.value = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
+			// measurementUnitVolumeId.value = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
+			// measurementUnitWeightId.value = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
+		};
+		const resetFormIdCheck = (id, values) => {
+			const temp = values.find(l => l.id === id);
+			return !String.isNullOrEmpty(temp) ? temp : null;
 		};
 
 		return Object.assign(baseSettings.setup(props), {
@@ -345,14 +363,15 @@ export default {
 			measurementUnitVolumeId,
 			measurementUnitWeightId,
 			measurementUnitsSelect,
-			measurementUnitsArea,
 			measurementUnitsAcceleration,
+			measurementUnitsArea,
 			measurementUnitsDistance,
 			measurementUnitsVelocity,
 			measurementUnitsVolume,
 			measurementUnitsWeight,
 			preCompleteOk,
 			resetForm,
+			resetFormIdCheck,
 			serviceStore,
 			scope: 'AppSettings',
 			validation: useVuelidate({ $scope: 'AppSettings' }),
