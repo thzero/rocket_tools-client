@@ -115,6 +115,7 @@
 									</v-card-text>
 								</v-card>
 							</v-col>
+							<!-- 
 							<v-col
 								cols="12"
 								class="text-center"
@@ -129,7 +130,8 @@
 									<a :href="externalGithub" target="_blank">{{ externalGithub }}</a>
 									{{ $t('strings.tools.welcome1b') }}
 								</p>
-							</v-col>
+							</v-col> 
+							-->
 						</v-row>
 					</v-card-item>
 				</v-card>
