@@ -1,7 +1,5 @@
 import Constants from '@/constants';
-import LibraryConstants from '@thzero/library_client/constants';
 
-import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import CommonUtility from '@thzero/library_common/utility';
 
@@ -10,7 +8,40 @@ import Response from '@thzero/library_common/response';
 import BaseStore from '@thzero/library_client_vue3_store_pinia/store/index';
 
 class AppStore extends BaseStore {
-	_init() {
+	_initModules() {
+		// Admin Update
+	}
+
+	_initPluginPersistConfig() {
+		return {
+			root: {
+				key: 'rocket_tools',
+				storage: localStorage,
+				paths: [
+					'flightInfoResolution',
+					'flightInfoStyle',
+					'flightPathStyle',
+					'motorManufacturers',
+					'motorSearchCriteria',
+					'motorSearchResults'
+				]
+			}
+			// pinia2
+			// root: {
+			// 	key: 'rocket_tools',
+			// 	includePaths: [
+			// 		'flightInfoResolution',
+			// 		'flightInfoStyle',
+			// 		'flightPathStyle',
+			// 		'motorManufacturers',
+			// 		'motorSearchCriteria',
+			// 		'motorSearchResults',
+			// 	]
+			// }
+		};
+	}
+
+	_initStoreConfig() {
 		return {
 			state: () => ({
 				checksumLastUpdate: [],
@@ -23,16 +54,18 @@ class AppStore extends BaseStore {
 				motorManufacturers: [],
 				motorSearchCriteria: {},
 				motorSearchResults: {},
-				plans: [],
-				settings: AppUtility.initializeSettingsUser(),
 				thrust2weight: {},
-				version: null
+				tools: [],
+				toolSettings: []
 			}),
 			actions: {
-				async getMotor(correlationId, motorId) {
+				async _initialize(correlationId, results) {
+					await this.setTools(correlationId, results.tools);
+				},
+				async requestMotor(correlationId, motorId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 					const response = await service.motor(correlationId, motorId, this.motorSearchResults);
-					this.$logger.debug('store', 'getMotor', 'response', response, correlationId);
+					this.$logger.debug('store', 'requestMotor', 'response', response, correlationId);
 					if (Response.hasSucceeded(response)) {
 						this.motorSearchResults = response.results.data;
 						return response.results.motor;
@@ -40,10 +73,10 @@ class AppStore extends BaseStore {
 
 					return null;
 				},
-				async getMotorManufacturers(correlationId) {
+				async requestMotorManufacturers(correlationId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 					const response = await service.manufacturers(correlationId, this.motorManufacturers);
-					this.$logger.debug('store', 'getMotorManufacturers', 'response', response, correlationId);
+					this.$logger.debug('store', 'requestMotorManufacturers', 'response', response, correlationId);
 					if (Response.hasSucceeded(response)) {
 						this.motorManufacturers = response.results;
 						return this.motorManufacturers.manufacturers;
@@ -51,43 +84,22 @@ class AppStore extends BaseStore {
 
 					return [];
 				},
-				async getMotorSearchReset(correlationId) {
+				async requestMotorSearchReset(correlationId) {
 					this.motorManufacturers.ttl = null;
 					this.motorManufacturers.last = null;
 					this.motorSearchResults.ttl = null;
 					this.motorSearchResults.last = null;
 				},
-				async getMotorSearchResults(correlationId, criteria) {
+				async requestMotorSearchResults(correlationId, criteria) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 					const response = await service.search(correlationId, criteria, this.motorSearchResults);
-					this.$logger.debug('store', 'getMotorSearchResults', 'response', response, correlationId);
+					this.$logger.debug('store', 'requestMotorSearchResults', 'response', response, correlationId);
 					if (Response.hasSucceeded(response)) {
 						this.motorSearchResults = response.results.data;
 						return response.results.filtered;
 					}
 
 					return [];
-				},
-				async getPlans(correlationId) {
-					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_PLANS);
-					const response = await service.plans(correlationId);
-					this.$logger.debug('store', 'getPlans', 'response', response, correlationId);
-					if (Response.hasSucceeded(response)) {
-						this.setPlans(correlationId, response.results ? response.results.data : []);
-					}
-				},
-				async getVersion(correlationId) {
-					const service = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_VERSION);
-					const version = await service.version(correlationId);
-					this.setVersion(correlationId, version);
-				},
-				async initialize(correlationId) {
-					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_API);
-					const response = await service.initialize(correlationId);
-					if (Response.hasSucceeded(response)) {
-						this.setPlans(correlationId, response.results.plans);
-						this.setVersion(correlationId, response.results.version);
-					}
 				},
 				async setFlightDate(correlationId, value) {
 					this.flightDate = value;
@@ -121,76 +133,30 @@ class AppStore extends BaseStore {
 				async setMotorSearchResults(correlationId, value) {
 					this.motorSearchResults = value;
 				},
-				async setPlans(correlationId, plans) {
-					this.$logger.debug('store', 'setPlans', 'plans.a', plans, correlationId);
-					this.$logger.debug('store', 'setPlans', 'plans.b', this.plans, correlationId);
-					this.plans = plans;
-					this.$logger.debug('store', 'setPlans', 'plans.c', this.plans, correlationId);
-				},
-				async setSettings(correlationId, settings) {
-					// commit('setSettings', params);
-					this.settings = CommonUtility.merge3({}, this.settings, settings);
-				},
-				async setVersion(correlationId, version) {
-					// this.$logger.debug('store', 'getVersion', 'version', version, correlationId);
-					// commit('setVersion', { correlationId: correlationId, version: version });
-					this.$logger.debug('store', 'setVersion', 'version', version, correlationId);
-					this.version = version;
+				async setTools(correlationId, tools) {
+					this.$logger.debug('store', 'setTools', 'tools.a', tools, correlationId);
+					this.$logger.debug('store', 'setTools', 'tools.b', this.tools, correlationId);
+					this.tools = tools;
+					this.$logger.debug('store', 'setTools', 'tools.c', this.tools, correlationId);
 				}
 			},
 			getters: {
-				getFlightDate: (state) => () => {
-					return state.flightDate;
-				},
-				getFlightInfoStyle: (state) => (id) => {
-					if (!state.flightInfoStyle)
-						return null;
-					return state.flightInfoStyle.find(l => l.id);
-				},
-				getFlightLocation: (state) => () => {
-					return state.flightLocation;
-				},
-				getFlightPathStyle: (state) => (id) => {
-					if (!state.flightPathStyle)
-						return null;
-					return state.flightPathStyle.find(l => l.id);
-				},
-				getFlightTitle: (state) => () => {
-					return state.flightTitle;
-				},
-				getMotorSearchCriteria: (state) => () => {
-					return state.motorSearchCriteria;
-				},
-				getPlan: (state) => (id) => {
-					if (state.plans == null)
-						return null;
-					return state.plans.find(plan => plan.id === id);
-				},
-				getSettings: (state) => (id) => {
-					return state.settings ? state.settings : AppUtility.initializeSettingsUser();
+				async getMotorSearchCriteria() {
+					return GlobalUtility.$store.motorSearchCriteria;
 				}
 			},
 			dispatcher: {
-				async getMotor(correlationId, motorId) {
-					return await GlobalUtility.$store.getMotor(correlationId, motorId);
+				async requestMotor(correlationId, motorId) {
+					return await GlobalUtility.$store.requestMotor(correlationId, motorId);
 				},
-				async getMotorManufacturers(correlationId, results) {
-					return await GlobalUtility.$store.getMotorManufacturers(correlationId, results);
+				async requestMotorManufacturers(correlationId, results) {
+					return await GlobalUtility.$store.requestMotorManufacturers(correlationId, results);
 				},
-				async getMotorSearchReset(correlationId) {
-					return await GlobalUtility.$store.getMotorSearchReset(correlationId);
+				async requestMotorSearchReset(correlationId) {
+					return await GlobalUtility.$store.requestMotorSearchReset(correlationId);
 				},
-				async getMotorSearchResults(correlationId, criteria) {
-					return await GlobalUtility.$store.getMotorSearchResults(correlationId, criteria);
-				},
-				async getPlans(correlationId) {
-					await GlobalUtility.$store.getPlans(correlationId);
-				},
-				async getVersion(correlationId) {
-					await GlobalUtility.$store.getVersion(correlationId);
-				},
-				async initialize(correlationId) {
-					await GlobalUtility.$store.initialize(correlationId);
+				async requestMotorSearchResults(correlationId, criteria) {
+					return await GlobalUtility.$store.requestMotorSearchResults(correlationId, criteria);
 				},
 				async setFlightDate(correlationId, value) {
 					await GlobalUtility.$store.setFlightDate(correlationId, value);
@@ -212,50 +178,8 @@ class AppStore extends BaseStore {
 				},
 				async setMotorSearchCriteria(correlationId, value) {
 					await GlobalUtility.$store.setMotorSearchCriteria(correlationId, value);
-				},
-				async setSettings(correlationId, settings) {
-					await GlobalUtility.$store.setSettings(correlationId, settings);
 				}
 			}
-		};
-	}
-
-	_initModules() {
-		// Admin Update
-	}
-
-	_initPluginPersistConfig() {
-		return {
-			root: {
-				key: 'rocket_tools',
-				storage: localStorage,
-				paths: [
-					'flightInfoResolution',
-					'flightInfoStyle',
-					'flightPathStyle',
-					'motorManufacturers',
-					'motorSearchCriteria',
-					'motorSearchResults',
-					'plans',
-					'settings',
-					'version'
-				]
-			}
-			// pinia2
-			// root: {
-			// 	key: 'rocket_tools',
-			// 	includePaths: [
-			// 		'flightInfoResolution',
-			// 		'flightInfoStyle',
-			// 		'flightPathStyle',
-			// 		'motorManufacturers',
-			// 		'motorSearchCriteria',
-			// 		'motorSearchResults',
-			// 		'plans',
-			// 		'settings',
-			// 		'version'
-			// 	]
-			// }
 		};
 	}
 }

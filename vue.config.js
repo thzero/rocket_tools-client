@@ -20,6 +20,40 @@ else
 	configEnv = 'development';
 console.log('vue.config.NODE_ENV', configEnv);
 
+const dir = path.join(__dirname, 'node_modules', '@thzero');
+const dirs = fs.readdirSync(dir);
+
+console.log('\tOpenSource...');
+
+let file;
+const items = [];
+let data;
+for (const item of dirs) {
+  try {
+    file = path.join(dir, item, 'openSource.js');
+    console.log(`\t${file}...`);
+    if (!fs.existsSync(file)) {
+      console.log('\t...not found.');
+      continue;
+    }
+
+    data = fs.readFileSync(file, { encoding: 'utf8', flag: 'r' });
+    // items.push(['@thzero', item, 'openSource.js'].join('/'));
+    items.push(data.replace('export default', ''));
+    console.log('\t...processed.');
+  }
+  catch (err) {
+    console.log('\t...failed.', err);
+  }
+}
+
+try {
+  const openSourceJs = `/* eslint-disable */\n/* GENERATED FILE - DO NOT EDIT */\nexport default () => { return [ ${items.join(`, `)} ]; }`;
+  fs.writeFileSync(path.join(__dirname, 'src', 'openSource.js'), openSourceJs);
+} catch (err) {
+  console.log(err);
+}
+
 module.exports = defineConfig({
 
     configureWebpack: {
@@ -43,7 +77,8 @@ module.exports = defineConfig({
 		],
 		resolve: {
 			alias: {
-				'local-config': path.join(__dirname, `./src/config/${configEnv}.json`)
+				'local-config': path.join(__dirname, `./src/config/${configEnv}.json`),
+				'open-source-config': path.join(__dirname, './src/openSource.js')
 			}
 		}
 	},
