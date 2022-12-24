@@ -1,4 +1,12 @@
 const Constants = {
+	External: {
+		github: 'https://github.com/thzero/rocket_tools-client',
+		store: {
+			android: null,
+			ios: null,
+		},
+		thrustCurve: 'https://thrustcurve.org'
+	},
 	ExternalKeys: {
 		MotorSearch: 'motorSearch'
 	},
@@ -89,7 +97,7 @@ const Constants = {
 			velocity: {
 				default: 'ms',
 				ms: 'm/s',
-				kmh: 'km/h'
+				kph: 'km/h'
 			},
 			volume: {
 				default: 'mm3',

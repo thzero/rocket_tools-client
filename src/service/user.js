@@ -1,5 +1,7 @@
 import LibraryConstants from '@thzero/library_client/constants';
 
+import AppUtility from '@/utility/app';
+
 import VueBaseUserService from '@thzero/library_client_vue3/service/baseUser';
 
 class UserService extends VueBaseUserService {
@@ -69,6 +71,10 @@ class UserService extends VueBaseUserService {
 		}
 
 		return this._error('UserService', 'fetchByGamerTag', null, null, null, null, correlationId);
+	}
+
+	initializeSettings(correlationId) {
+		return AppUtility.initializeSettingsUser();
 	}
 }
 

@@ -46,7 +46,7 @@ class AppUtility {
 
 	static measurementUnits() {
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-		const settings = serviceStore.getters.getSettings();
+		const settings = serviceStore.getters.user.getUserSettings();
 		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
 	}
 
@@ -59,15 +59,11 @@ class AppUtility {
 		return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits + '.weight.pounds');
 	}
 
-	static settings() {
-		return GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_SETTINGS);
-	}
-
-	static userDisplayName(user) {
+	static userDisplayName(correlationId, user) {
 		if (!user || !user.settings)
 			return '';
 
-		const settings = user.settings ? user.settings : AppUtility.initializeSettingsUser();
+		const settings = user.settings ? user.settings : null;
 		const userName = settings && settings.gamerTag ? settings.gamerTag : user.external && user.external.name ? user.external.name : '******';
 		return userName;
 	}
