@@ -340,6 +340,10 @@
 		"checklists": {
 			"title": "Checklists"
 		},
+		"content": {
+			"app": "Mobile App",
+			"title": "Content"
+		},
 		"info": {
 			"epoxy": "Epoxy",
 			"title": "Info"
@@ -359,13 +363,12 @@
 			"title": "Rockets"
 		},
 		"tools": {
-			"app": "Mobile App",
 			"ejectionCharges": "Ejection Charges",
 			"flightInfo": "Flight Info",
 			"flightPath": "Flight Path",
 			"foam": "Foam",
 			"staticPortHoles": "Static Port Holes",
-			"title": "Tools", 
+			"title": "Content", 
 			"thrust2Weight": "Thrust 2 Weight"
 		},
 		"settings": {
@@ -455,6 +458,12 @@
 	"strings": {
 		"add": "Add",
 		"clear": "Clear",
+		"content": {
+			"welcome": "RocketSidekick hosts a variety of tools in once place.  Some of the tools are custom build, others are based on formulas found in variety of rocketry forums and sites, as well as some sections having links or information.",
+			"welcome1a": "Contributions for additional tools are welcome via Pull Requests on the site's GitHub repo (",
+			"welcome1b": ").  See the documentation on the repo.",
+			"welcome2": "The following is the selection of tools currently available."
+		},
 		"copyright": "Copyright",
 		"copyToClipboard": "Copied to the clipboard!",
 		"delete": "Delete",
@@ -464,12 +473,6 @@
 		"no": "No",
 		"save": "Save",
 		"share": "Share",
-		"tools": {
-			"welcome": "RocketSidekick hosts a variety of tools in once place.  Some of the tools are custom build, others are based on formulas found in variety of rocketry forums and sites, as well as some sections having links or information.",
-			"welcome1a": "Contributions for additional tools are welcome via Pull Requests on the site's GitHub repo (",
-			"welcome1b": ").  See the documentation on the repo.",
-			"welcome2": "The following is the selection of tools currently available."
-		},
 		"yes": "Yes",
 		"welcome": "Welcome to"
 	},

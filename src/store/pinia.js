@@ -28,7 +28,7 @@ class AppStore extends BaseStore {
 			}
 			// pinia2
 			// root: {
-			// 	key: 'rocket_tools',
+			// 	key: 'rocket_sidekick',
 			// 	includePaths: [
 			// 		'flightInfoResolution',
 			// 		'flightInfoStyle',
@@ -45,6 +45,7 @@ class AppStore extends BaseStore {
 		return {
 			state: () => ({
 				checksumLastUpdate: [],
+				content: [],
 				flightDate: '',
 				flightInfoResolution: Constants.FlightInfo.Resolution,
 				flightInfoStyle: [],
@@ -55,12 +56,11 @@ class AppStore extends BaseStore {
 				motorSearchCriteria: {},
 				motorSearchResults: {},
 				thrust2weight: {},
-				tools: [],
 				toolSettings: []
 			}),
 			actions: {
 				async _initialize(correlationId, results) {
-					await this.setTools(correlationId, results.tools);
+					await this.setContent(correlationId, results.content);
 				},
 				async requestMotor(correlationId, motorId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
@@ -133,11 +133,11 @@ class AppStore extends BaseStore {
 				async setMotorSearchResults(correlationId, value) {
 					this.motorSearchResults = value;
 				},
-				async setTools(correlationId, tools) {
-					this.$logger.debug('store', 'setTools', 'tools.a', tools, correlationId);
-					this.$logger.debug('store', 'setTools', 'tools.b', this.tools, correlationId);
-					this.tools = tools;
-					this.$logger.debug('store', 'setTools', 'tools.c', this.tools, correlationId);
+				async setContent(correlationId, content) {
+					this.$logger.debug('store', 'setContent', 'content.a', content, correlationId);
+					this.$logger.debug('store', 'setContent', 'content.b', this.content, correlationId);
+					this.content = content;
+					this.$logger.debug('store', 'setContent', 'content.c', this.content, correlationId);
 				}
 			},
 			getters: {

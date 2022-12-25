@@ -1,6 +1,6 @@
 const Constants = {
 	External: {
-		github: 'https://github.com/thzero/rocket_tools-client',
+		github: 'https://github.com/thzero/rocket_sidekick-client',
 		store: {
 			android: null,
 			ios: null,

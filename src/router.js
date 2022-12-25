@@ -195,12 +195,12 @@ const routes = [
 	},
 	{
 		path: '/landing',
-		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-mobile-app" */ './layouts/MainLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',
 				name: 'mobileapp',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-mobile-app" */ './layouts/ContentLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
@@ -219,17 +219,17 @@ const routes = [
 	},
 	{
 		path: '/tools/thrust2Weight',
-		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-tools" */ './layouts/MainLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',
 				name: 'thrust2Weight',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-tools" */ './layouts/ContentLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
 						name: 'thrust2Weight',
-						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-tools" */ './components/tools/Thrust2Weight.vue'),
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/tools/Thrust2Weight.vue'),
 						meta: {
 							requiresAuth: false
 						}
@@ -243,7 +243,7 @@ const routes = [
 	},
 	{
 		path: '/openSource',
-		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './layouts/MainLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',
@@ -257,7 +257,7 @@ const routes = [
 	},
 	{
 		path: '/settings',
-		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './layouts/MainLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',
@@ -271,7 +271,7 @@ const routes = [
 	},
 	{
 		path: '/support',
-		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './layouts/MainLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',

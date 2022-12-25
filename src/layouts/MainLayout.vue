@@ -87,7 +87,7 @@
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
 						v-bind="props"
-					>{{ $t('menu.tools.title') }}</v-btn>
+					>{{ $t('menu.content.title') }}</v-btn>
 				</template>
 				<v-list>
 					<v-list-item
@@ -106,7 +106,7 @@
 					<v-list-item
 						to="/landing"
 					>
-						<v-list-item-title>{{ $t('menu.tools.app') }}</v-list-item-title>
+						<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
 					</v-list-item>
 				</v-list> -->
 			</v-menu>
@@ -136,7 +136,7 @@
 					<v-list-item
 						to="/landing"
 					>
-						<v-list-item-title>{{ $t('menu.tools.app') }}</v-list-item-title>
+						<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
 					</v-list-item>
 				</v-list> -->
 			</v-menu>
@@ -144,7 +144,7 @@
 				v-if="$vuetify.display.mdAndUp"
 				to="/landing"
 			>
-				{{ $t('menu.tools.app') }}
+				{{ $t('menu.content.app') }}
 			</v-btn>
 
 			<template v-slot:append>
@@ -255,7 +255,7 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item>
-					{{ $t('menu.tools.title') }}
+					{{ $t('menu.content.title') }}
 					<v-list>
 						<v-list-item
 							v-for="item in tools"
@@ -282,7 +282,7 @@
 				<v-list-item
 					to="/landing"
 				>
-					<v-list-item-title>{{ $t('menu.tools.app') }}</v-list-item-title>
+					<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
 				</v-list-item>
 			</v-list>
 		</v-navigation-drawer>
@@ -363,7 +363,7 @@ export default {
 		const dialogNewCharacter = ref(new DialogSupport());
 
 		const info = computed(() => {
-			let temp = instance.ctx.serviceStore.state.tools;
+			let temp = instance.ctx.serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
@@ -371,7 +371,7 @@ export default {
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
 		const links = computed(() => {
-			let temp = instance.ctx.serviceStore.state.tools;
+			let temp = instance.ctx.serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.links)
@@ -379,7 +379,7 @@ export default {
 			return temp.links.sort((a, b) => a.order >= b.order);
 		});
 		const tools = computed(() => {
-			let temp = instance.ctx.serviceStore.state.tools;
+			let temp = instance.ctx.serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.tools)
