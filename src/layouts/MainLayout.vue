@@ -110,6 +110,36 @@
 					</v-list-item>
 				</v-list> -->
 			</v-menu>
+			<v-menu
+				v-if="$vuetify.display.mdAndUp"
+			>
+				<template v-slot:activator="{ props }">
+					<v-btn append-icon="mdi-menu-down"
+						v-bind="props"
+					>{{ $t('menu.links.title') }}</v-btn>
+				</template>
+				<v-list>
+					<v-list-item
+						v-for="item in links"
+						:key="item.name"
+						:href="item.link"
+						target="_blank"
+					>
+						<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
+					</v-list-item>
+				</v-list>
+				<!-- 
+				<v-list class="pl-2 pr-2">
+					<hr/>
+				</v-list>
+				<v-list>
+					<v-list-item
+						to="/landing"
+					>
+						<v-list-item-title>{{ $t('menu.tools.app') }}</v-list-item-title>
+					</v-list-item>
+				</v-list> -->
+			</v-menu>
 			<v-btn 
 				v-if="$vuetify.display.mdAndUp"
 				to="/landing"
@@ -327,6 +357,14 @@ export default {
 				return [];
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
+		const links = computed(() => {
+			let temp = instance.ctx.serviceStore.state.tools;
+			if (!temp)
+				return [];
+			if (!temp.links)
+				return [];
+			return temp.links.sort((a, b) => a.order >= b.order);
+		});
 		const tools = computed(() => {
 			let temp = instance.ctx.serviceStore.state.tools;
 			if (!temp)
@@ -359,6 +397,7 @@ export default {
 			displayMarkupValue,
 			dialogNewCharacter,
 			info,
+			links,
 			markup,
 			serviceMarkup,
 			tools
