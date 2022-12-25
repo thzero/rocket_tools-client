@@ -36,7 +36,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 		children: [
 // 			{
 // 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/FlightInfo.vue'),
+// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/FlightInfo.vue'),
 // 				meta: {
 // 					requiresAuth: false
 // 				}
@@ -49,7 +49,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 		children: [
 // 			{
 // 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/FlightPath.vue'),
+// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/FlightPath.vue'),
 // 				meta: {
 // 					requiresAuth: false
 // 				}
@@ -62,7 +62,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 		children: [
 // 			{
 // 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/tools/Thrust2Weight.vue'),
+// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/Thrust2Weight.vue'),
 // 				meta: {
 // 					requiresAuth: false
 // 				}
@@ -218,7 +218,31 @@ const routes = [
 		]
 	},
 	{
-		path: '/tools/thrust2Weight',
+		path: '/content/info/epoxy',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				name: 'epoxy',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				children: [
+					{
+						path: '',
+						name: 'epoxy',
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/info/Epoxy.vue'),
+						meta: {
+							requiresAuth: false
+						}
+					}
+				],
+				meta: {
+					requiresAuth: false
+				}
+			}
+		]
+	},
+	{
+		path: '/content/tools/thrust2Weight',
 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
@@ -229,7 +253,7 @@ const routes = [
 					{
 						path: '',
 						name: 'thrust2Weight',
-						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/tools/Thrust2Weight.vue'),
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/Thrust2Weight.vue'),
 						meta: {
 							requiresAuth: false
 						}

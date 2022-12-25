@@ -1,13 +1,13 @@
 <script>
 import { computed, ref } from 'vue';
 
-import base from '@/library_vue/components/base';
+import contentBase from '@/components/content/contentBase';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 export default {
 	name: 'toolBase',
-	extends: base,
+	extends: contentBase,
 	setup(props) {
 		const errors = ref(null);
 		const errorTimer = ref(null);
@@ -19,7 +19,7 @@ export default {
 			return GlobalUtility.dateFormat().replace(/[a-zA-Z0-9]/g, '#');
 		});
 
-		return Object.assign(base.setup(props), {
+		return Object.assign(contentBase.setup(props), {
 			dateFormat,
 			dateFormatMask,
 			errors,

@@ -2,7 +2,7 @@
 	<div>
 		<v-row dense>
 			<v-col cols="12" class="text-center text-h5 pb-2">
-				{{ $t('titles.tools.thrust2Weight') }}
+				{{ $t('titles.content.tools.thrust2Weight') }}
 			</v-col>
 		</v-row>
 		<v-row dense>
@@ -23,7 +23,7 @@
 									vid="mass"
 									v-model="mass"
 									:validation="validation"
-									:label="$t('forms.thrust2Weight.mass')"
+									:label="$t('forms.content.tools.thrust2Weight.mass')"
 								/>
 							</v-col>
 							<v-col cols="12" sm="6" >
@@ -32,8 +32,8 @@
 									vid="thrustInitial"
 									v-model="thrustInitial"
 									:validation="validation"
-									:label="$t('forms.thrust2Weight.thrust_initial') + ' ' + $t('forms.thrust2Weight.thrust')"
-									:placeholder="$t('forms.thrust2Weight.thrust_initial_hint')"
+									:label="$t('forms.content.tools.thrust2Weight.thrust_initial') + ' ' + $t('forms.content.tools.thrust2Weight.thrust')"
+									:placeholder="$t('forms.content.tools.thrust2Weight.thrust_initial_hint')"
 								/>
 							</v-col>
 							<v-col cols="12" sm="6" >
@@ -42,8 +42,8 @@
 									vid="thrustPeak"
 									v-model="thrustPeak"
 									:validation="validation"
-									:label="$t('forms.thrust2Weight.thrust_peak') + ' ' + $t('forms.thrust2Weight.thrust')"
-									:placeholder="$t('forms.thrust2Weight.thrust_peak_hint')"
+									:label="$t('forms.content.tools.thrust2Weight.thrust_peak') + ' ' + $t('forms.content.tools.thrust2Weight.thrust')"
+									:placeholder="$t('forms.content.tools.thrust2Weight.thrust_peak_hint')"
 								/>
 							</v-col>
 							<v-col cols="12" sm="6" >
@@ -52,8 +52,8 @@
 									vid="thrustAverage"
 									v-model="thrustAverage"
 									:validation="validation"
-									:label="$t('forms.thrust2Weight.thrust_average') + ' ' + $t('forms.thrust2Weight.thrust')"
-									:placeholder="$t('forms.thrust2Weight.thrust_average_hint')"
+									:label="$t('forms.content.tools.thrust2Weight.thrust_average') + ' ' + $t('forms.content.tools.thrust2Weight.thrust')"
+									:placeholder="$t('forms.content.tools.thrust2Weight.thrust_average_hint')"
 								/>
 							</v-col>
 							<v-col cols="12" sm="6" >
@@ -62,8 +62,8 @@
 									vid="motor"
 									v-model="motor"
 									:readonly="true"
-									:label="$t('forms.thrust2Weight.motor')"
-									:placeholder="$t('forms.thrust2Weight.motor_hint')"
+									:label="$t('forms.content.tools.thrust2Weight.motor')"
+									:placeholder="$t('forms.content.tools.thrust2Weight.motor_hint')"
 								/>
 							</v-col>
 							<v-col cols="12" sm="6" >
@@ -72,8 +72,8 @@
 									vid="maxLaunchRodTime"
 									v-model="maxLaunchRodTime"
 									:validation="validation"
-									:label="$t('forms.thrust2Weight.max_launch_rod_timespan')"
-									:placeholder="$t('forms.thrust2Weight.max_launch_rod_timespan_hint')"
+									:label="$t('forms.content.tools.thrust2Weight.max_launch_rod_timespan')"
+									:placeholder="$t('forms.content.tools.thrust2Weight.max_launch_rod_timespan_hint')"
 								/>
 							</v-col>
 						</v-row>
@@ -95,27 +95,27 @@
 				<v-card>
 					<v-card-text>
 						<div class="text-center text-h5 pb-2">
-							{{ $t('thrust2Weight.calculated') }}
+							{{ $t('strings.content.tools.thrust2Weight.calculated') }}
 						</div>
 						<div v-if="calculationResults.calculated">
 							<v-row class="pb-2" dense>
 								<v-col cols="4">
-									<span class="text-bold">{{ $t('forms.thrust2Weight.thrust_initial') }}</span>
+									<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
 								</v-col>
 								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.thrust2Weight.thrust_peak') }}</span>
+									<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
 								</v-col>
 								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.thrust2Weight.thrust_average') }}</span>
+									<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
 								</v-col>
 								<v-col cols="4">
-									<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</span>
+									<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
 								</v-col>
 								<v-col cols="4">
-									<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</span>
+									<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
 								</v-col>
 								<v-col cols="4">
-									<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('thrust2Weight.newtons_abbr') +'/' + $t('thrust2Weight.mass_metric_abbr') }}</span>
+									<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
 								</v-col>
 							</v-row>
 							<v-row 
@@ -127,10 +127,10 @@
 							</v-row>
 						</div>
 						<div class="">
-							{{ $t('thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
+							{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
 							<div v-if="motor">
 								<br>
-								{{ $t('thrust2Weight.guidance2') }}
+								{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
 							</div>
 						</div>
 					</v-card-text>
@@ -160,7 +160,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import DialogSupport from '@/library_vue/components/support/dialog';
 
-import toolBase from '@/components/tools/toolBase';
+import toolBase from '@/components/content/tools/toolBase';
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
 
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';

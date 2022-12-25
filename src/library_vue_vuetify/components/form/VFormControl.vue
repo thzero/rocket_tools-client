@@ -32,7 +32,7 @@
 				class="mr-2"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.delete') }}
+				{{ $t(buttonDeleteName) }}
 			</v-btn>
 			<v-btn
 				v-if="buttonClear"
@@ -42,7 +42,7 @@
 				class="mr-2"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.clear') }}
+				{{ $t(buttonClearName) }}
 			</v-btn>
 			<v-btn
 				v-if="buttonOk"
@@ -52,7 +52,7 @@
 				@click="submit"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.ok') }}
+				{{ $t(buttonOkName) }}
 			</v-btn>
 		</div>
 		<v-overlay

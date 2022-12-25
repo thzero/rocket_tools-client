@@ -37,7 +37,7 @@
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
 						v-bind="props"
-					>{{ $t('menu.info.title') }}</v-btn>
+					>{{ $t('menu.content.info.title') }}</v-btn>
 				</template>
 				<v-list>
 					<v-list-item
@@ -87,7 +87,7 @@
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
 						v-bind="props"
-					>{{ $t('menu.content.title') }}</v-btn>
+					>{{ $t('menu.content.tools.title') }}</v-btn>
 				</template>
 				<v-list>
 					<v-list-item
@@ -116,7 +116,7 @@
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
 						v-bind="props"
-					>{{ $t('menu.links.title') }}</v-btn>
+					>{{ $t('menu.content.links.title') }}</v-btn>
 				</template>
 				<v-list>
 					<v-list-item
@@ -255,7 +255,7 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item>
-					{{ $t('menu.content.title') }}
+					{{ $t('menu.tools.title') }}
 					<v-list>
 						<v-list-item
 							v-for="item in tools"

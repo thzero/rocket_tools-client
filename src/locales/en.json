@@ -179,6 +179,25 @@
 		"touchdown": "Touchdown"
 	},
 	"forms": {
+		"content": {
+			"tools": {
+				"thrust2Weight": {
+					"mass": "Rocket Weight",
+					"mass_hint": "Weight of the rocket fully loaded including engines.",
+					"max_launch_rod_timespan": "Max. Launch Rod Time",
+					"max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
+					"motor": "Motor",
+					"motor_hint": "Select rocket motor.",
+					"thrust": "Thrust (Newtons)",
+					"thrust_average": "Average",
+					"thrust_average_hint": "Average thrust of the engine.",
+					"thrust_initial": "Initial",
+					"thrust_initial_hint": "Initial thrust of the engine.",
+					"thrust_peak": "Peak",
+					"thrust_peak_hint": "Peak thrust of the engine."
+				}	
+			}
+		},
 		"external": {
 			"motorSearch": {
 				"diameter": "Diameter",
@@ -230,22 +249,7 @@
 			"nameShort": "Sort"
 		},
 		"tagLine": "Tag Line",
-		"title": "Title",
-		"thrust2Weight": {
-			"mass": "Rocket Weight",
-			"mass_hint": "Weight of the rocket fully loaded including engines.",
-			"max_launch_rod_timespan": "Max. Launch Rod Time",
-			"max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
-			"motor": "Motor",
-			"motor_hint": "Select rocket motor.",
-			"thrust": "Thrust (Newtons)",
-			"thrust_average": "Average",
-			"thrust_average_hint": "Average thrust of the engine.",
-			"thrust_initial": "Initial",
-			"thrust_initial_hint": "Initial thrust of the engine.",
-			"thrust_peak": "Peak",
-			"thrust_peak_hint": "Peak thrust of the engine."
-		}
+		"title": "Title"
 	},
 	"home": {
 		"welcome": "Hello {msg}!"
@@ -342,18 +346,27 @@
 		},
 		"content": {
 			"app": "Mobile App",
-			"title": "Content"
-		},
-		"info": {
-			"epoxy": "Epoxy",
-			"title": "Info"
+			"title": "Content",
+			"tools": {
+				"ejectionCharges": "Ejection Charges",
+				"flightInfo": "Flight Info",
+				"flightPath": "Flight Path",
+				"foam": "Foam",
+				"staticPortHoles": "Static Port Holes",
+				"title": "Tools", 
+				"thrust2Weight": "Thrust 2 Weight"
+			},
+			"info": {
+				"epoxy": "Epoxy",
+				"title": "Info"
+			},
+			"links": {
+				"title": "Links",
+				"simulators": "Simulators"
+			}
 		},
 		"launches": {
 			"title": "Launches"
-		},
-		"links": {
-			"title": "Links",
-			"simulators": "Simulators"
 		},
 		"rockets": {
 			"altimeters": "Altimeters",
@@ -361,15 +374,6 @@
 			"parachutes": "Parachutes",
 			"rockets": "Rockets",
 			"title": "Rockets"
-		},
-		"tools": {
-			"ejectionCharges": "Ejection Charges",
-			"flightInfo": "Flight Info",
-			"flightPath": "Flight Path",
-			"foam": "Foam",
-			"staticPortHoles": "Static Port Holes",
-			"title": "Content", 
-			"thrust2Weight": "Thrust 2 Weight"
 		},
 		"settings": {
 			"title": "Settings"
@@ -459,6 +463,51 @@
 		"add": "Add",
 		"clear": "Clear",
 		"content": {
+			"info": {
+				"epoxy": {
+					"desc": ""
+				}
+			},
+			"links": {
+				"simulators": {
+					"desc": ""
+				}
+			},
+			"tools": {
+				"ejectionCharges": {
+					"desc": ""
+				},
+				"flightInfo": {
+					"desc": ""
+				},
+				"flightPath": {
+					"desc": ""
+				},
+				"foam": {
+					"desc": ""
+				},
+				"staticPortHoles": {
+					"desc": ""
+				},
+				"thrust2Weight": {
+					"title": "Thrust to Weight",
+					"desc": "",
+					"calculated": "Calculated Thrust to Weight Ratio",
+					"mass": "Rocket Weight",
+					"mass_hint": "Weight of the rocket fully loaded including engines.",
+					"mass_english": "Pounds",
+					"mass_english_abbr": "lb",
+					"mass_metric": "Kilograms",
+					"mass_metric_abbr": "kg",
+					"motor": "Motor",
+					"newtons": "Newtons",
+					"newtons_abbr": "N",
+					"results": "Results",
+					"thrust": "Thrust (Newtons)",
+					"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
+					"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
+				}
+			},
 			"welcome": "RocketSidekick hosts a variety of tools in once place.  Some of the tools are custom build, others are based on formulas found in variety of rocketry forums and sites, as well as some sections having links or information.",
 			"welcome1a": "Contributions for additional tools are welcome via Pull Requests on the site's GitHub repo (",
 			"welcome1b": ").  See the documentation on the repo.",
@@ -482,6 +531,16 @@
 	"titles": {
 		"about": "About",
 		"application": "Rocket Sidekick",
+		"content": {
+			"info": {
+				"epoxy": "Epoxy"
+			},
+			"tools": {
+				"flightInfo": "Flight Info",
+				"flightPath": "Flight Path",
+				"thrust2Weight": "Thrust 2 Weight"
+			}
+		},
 		"edit": "Edit",
 		"editType": "Edit {type}",
 		"external": {
@@ -502,29 +561,7 @@
 		"signOut": "Sign Out",
 		"statistics": "Stats",
 		"support": "Support",
-		"users": "Users",
-		"tools": {
-		"flightInfo": "Flight Info",
-		"flightPath": "Flight Path",
-		"thrust2Weight": "Thrust 2 Weight"
-		}
-	},
-	"thrust2Weight": {
-		"title": "Thrust to Weight",
-		"calculated": "Calculated Thrust to Weight Ratio",
-		"mass": "Rocket Weight",
-		"mass_hint": "Weight of the rocket fully loaded including engines.",
-		"mass_english": "Pounds",
-		"mass_english_abbr": "lb",
-		"mass_metric": "Kilograms",
-		"mass_metric_abbr": "kg",
-		"motor": "Motor",
-		"newtons": "Newtons",
-		"newtons_abbr": "N",
-		"results": "Results",
-		"thrust": "Thrust (Newtons)",
-		"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
-		"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
+		"users": "Users"
 	},
 	"tooltips": {
 		"clear": "Clear filters",
