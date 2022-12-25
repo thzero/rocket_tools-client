@@ -1,31 +1,34 @@
 <template>
-	<div>
-		<div class="row justify-center">
-			<div class="col-xs-12">
-				<q-card class="my-card">
-					<q-card-section>
-						<div class="support">
-							<h1>Support</h1>
-							<br>
-							<h2>Lost? Need some help?</h2>
-						</div>
-					</q-card-section>
-				</q-card>
-			</div>
-		</div>
-	</div>
+	<v-row
+		wrap
+	>
+		<v-col
+			cols="12"
+			pb-2
+		>
+			<v-card>
+				<v-card-text>
+					<div class="support">
+						<h1>Support</h1>
+						<br>
+						<h2>Lost? Need some help?</h2>
+					</div>
+				</v-card-text>
+			</v-card>
+		</v-col>
+	</v-row>
 </template>
 
 <script>
 import baseSupport from '@/library_vue/components/baseSupport';
 
 export default {
-	name: 'AppSupport',
+	name: 'Support',
 	extends: baseSupport,
 	setup(props) {
 		return Object.assign(baseSupport.setup(props), {
 		});
-	}
+	},
 };
 </script>
 
