@@ -266,6 +266,19 @@
 						</v-list-item>
 					</v-list>
 				</v-list-item>
+				<v-list-item>
+					{{ $t('menu.links.title') }}
+					<v-list>
+						<v-list-item
+							v-for="item in links"
+							:key="item.name"
+							:href="item.link"
+							target="_blank"
+						>
+							<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
+						</v-list-item>
+					</v-list>
+				</v-list-item>
 				<v-list-item
 					to="/landing"
 				>
