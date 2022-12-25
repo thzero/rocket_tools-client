@@ -443,7 +443,8 @@
 		"server": "Server"
 	},
 	"questions": {
-		"areYouSure": "Are you sure?"
+		"areYouSure": "Are you sure?",
+		"formDirty": "You made changes, are you sure you wish to leave?"
 	},
 	"strings": {
 		"add": "Add",
