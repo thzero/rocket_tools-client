@@ -211,7 +211,6 @@ import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
 // import SharedConstants from '@/common/constants';
 
-import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 // import LibraryUtility from '@thzero/library_common/utility';
 
