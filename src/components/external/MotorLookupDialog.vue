@@ -27,7 +27,6 @@
 										vid="impulseClass"
 										:items="impulseClasses"
 										:validation="validation"
-										:dense="true"
 										:label="$t('forms.external.motorSearch.impulseClass')"
 									/>
 								</v-col>
@@ -38,7 +37,6 @@
 										vid="diameter"
 										:items="diameters"
 										:validation="validation"
-										:dense="true"
 										:label="$t('forms.external.motorSearch.diameter')"
 									/>
 								</v-col>
@@ -69,7 +67,6 @@
 										:max-values="2"
 										:items="manufacturers"
 										:validation="validation"
-										:dense="true"
 										:label="$t('forms.external.motorSearch.manufacturer')"
 										:hint="$t('forms.external.motorSearch.manufacturer_hint')"
 									/>
@@ -77,17 +74,13 @@
 							</v-row>
 							<v-row dense>
 								<v-col col="12">
-									<VSelectWithValidation
-										ref="manufacturerRef"
-										v-model="manufacturer"
-										vid="manufacturer"
-										multiple
-										:max-values="2"
-										:items="manufacturers"
+									<VTextFieldWithValidation
+										ref="motorRef"
+										v-model="motor"
+										vid="motor"
 										:validation="validation"
-										:dense="true"
-										:label="$t('forms.external.motorSearch.manufacturer')"
-										:hint="$t('forms.external.motorSearch.manufacturer_hint')"
+										:label="$t('forms.external.motorSearch.motor')"
+										:hint="$t('forms.external.motorSearch.motor_hint')"
 									/>
 								</v-col>
 							</v-row>
@@ -188,7 +181,7 @@
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
-import { required } from '@vuelidate/validators';
+import { helpers, minLength, required, requiredUnless } from '@vuelidate/validators';
 
 import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
@@ -201,6 +194,7 @@ import base from '@/library_vue/components/base';
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 import VFormListingDialog from '@/library_vue_vuetify/components/form/VFormListingDialog';
 import VSelectWithValidation from '@/library_vue_vuetify/components/form/VSelectWithValidation';
+import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
 
 import DialogSupport from '@/library_vue/components/support/dialog';
 
@@ -209,7 +203,8 @@ export default {
 	components: {
 		VConfirmationDialog,
 		VFormListingDialog,
-		VSelectWithValidation
+		VSelectWithValidation,
+		VTextFieldWithValidation
 	},
 	extends: base,
 	props: {
@@ -235,6 +230,7 @@ export default {
 		const impulseClass = ref(null);
 		const manufacturer = ref(null);
 		const manufacturersCache = ref(null);
+		const motor = ref(null);
 		const results = ref([]);
 		const sparky = ref(false);
 		const singleUse = ref(false);
@@ -243,7 +239,7 @@ export default {
 			return ['', '13', '18', '24', '29', '38', '75', '98'].map((item) => { return { id: item, name: (item ? item + GlobalUtility.$trans.t('motorSearch.motor_diameter_measurement') : '') }; });
 		});
 		const impulseClasses = computed(() => {
-			return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
+			return ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
 		});
 		const manufacturers = computed(() => {
 			return instance.ctx.manufacturersCache.map((item) => { return { id: item.abbrev, name: item.name }; });
@@ -356,6 +352,7 @@ export default {
 				diameter: diameter.value,
 				impulseClass: impulseClass.value,
 				manufacturer: manufacturer.value,
+				motor: motor.value,
 				singleUse: singleUse.value,
 				sparky: sparky.value
 			};
@@ -369,6 +366,7 @@ export default {
 		const resetDialog = async (correlationId) => {
 			impulseClass.value = null;
 			manufacturer.value = null;
+			motor.value = null;
 			results.value = null;
 
 			const data = await instance.ctx.serviceStore.getters.getMotorSearchCriteria();
@@ -412,6 +410,7 @@ export default {
 			manufacturer,
 			manufacturers,
 			manufacturersCache,
+			motor,
 			motorCaseInfo,
 			motorUrl,
 			preCompleteOk,
@@ -611,10 +610,18 @@ export default {
     // },
 	validations () {
 		return {
-			impulseClass: { required, $autoDirty: true }
+			impulseClass: { requiredIfMotor: requiredUnless(this.motor), $autoDirty: true },
+			motor: { 
+				requiredIfImpulseClass: requiredUnless(this.impulseClass), 
+				minLength: minLength(3), 
+				validatorMotor,
+				$autoDirty: true 
+			}
 		};
 	}
 };
+
+const validatorMotor = helpers.regex(/^[a-zA-Z0-9-']{3}/, /\d/);
 </script>
 
 <style scoped>

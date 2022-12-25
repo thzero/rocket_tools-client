@@ -168,8 +168,24 @@ class MotorSearchExternalService extends BaseService {
 	_searchFilter(correlationId, criteria, data) {
 		let total = 0;
 		const output = [];
+
+		if (!data || !Array.isArray(data)) {
+			return this._successResponse({ output: [], total: 0 }, correlationId);
+		}
+
 		for (const item of data) {
-			if (item.impulseClass !== criteria.impulseClass)
+			if (!String.isNullOrEmpty(criteria.motor)) {
+				if (String.isNullOrEmpty(item.commonName) || item.commonName.toLowerCase().indexOf(criteria.motor.toLowerCase()) < 0) {
+					if (String.isNullOrEmpty(item.designation) || item.designation.toLowerCase().indexOf(criteria.motor.toLowerCase()) < 0)
+						continue;
+				}
+
+				total++;
+				output.push(item);
+				continue;
+			}
+
+			if (!String.isNullOrEmpty(criteria.impulseClass) && (item.impulseClass.toLowerCase() !== criteria.impulseClass.toLowerCase()))
 				continue;
 
 			total++;
@@ -208,6 +224,10 @@ class MotorSearchExternalService extends BaseService {
 	_searchUpdateData(correlationId, results, data, cached) {
 		let result;
 		let item;
+		if (!results) {
+			return this._successResponse(correlationId, []);
+		}
+
 		const length = results.length;
 		const lengthCached = cached.length;
 		let difference = [ ...cached ];

@@ -103,10 +103,28 @@ class ThrustCurveMotorSearchExternalService extends MotorSearchExternalService {
 					ignoreToken: true
 				};
 			const body = {
-					impulseClass: criteria.impulseClass,
 					availability: 'available',
 					maxResults: 500
 			};
+			if (!String.isNullOrEmpty(criteria.impulseClass)) {
+				body.impulseClass = criteria.impulseClass;
+			}
+			if (!String.isNullOrEmpty(criteria.motor)) {
+				body.commonName = criteria.motor;
+				let response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+				delete body.commonName;
+				if (!response || !response.results || (response.results && (response.results.length === 0))) {
+					body.designation = criteria.motor;
+					response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
+					delete body.designation;
+				}
+
+				if (response && response.results && (response.results.length > 0))
+					body.impulseClass = response.results[0].impulseClass;
+			}
+			if (String.isNullOrEmpty(body.impulseClass))
+				return this._error('ThrustCurveMotorSearchExternalService', 'search', 'Invalid criteira', null, null, null, correlationId);
+
 			const response = await this._serviceCommunicationRest.post(correlationId, this._urlKey(), { url: 'search.json' }, body, opts);
 			this._logger.debug('ThrustCurveMotorSearchExternalService', '_search', 'response', response, correlationId);
 			return this._successResponse(response.results, correlationId);
