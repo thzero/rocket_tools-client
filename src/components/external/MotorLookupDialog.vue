@@ -88,6 +88,7 @@
 						<v-card-actions>
 							<v-spacer />
 							<v-btn
+								:disabled="clickMotorSearchResetDisabled"
 								:loading="loading"
 								variant="flat"
 								color="primary"
@@ -234,7 +235,13 @@ export default {
 		const results = ref([]);
 		const sparky = ref(false);
 		const singleUse = ref(false);
+		const ttl = ref(0);
 
+		const clickMotorSearchResetDisabled = computed(() => {
+			// const ttl = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			const now = CommonUtility.getTimestamp();
+			return (ttl.value < now);
+		});
 		const diameters = computed(() => {
 			return ['', '13', '18', '24', '29', '38', '75', '98'].map((item) => { return { id: item, name: (item ? item + GlobalUtility.$trans.t('motorSearch.motor_diameter_measurement') : '') }; });
 		});
@@ -285,11 +292,12 @@ export default {
 			await instance.ctx.$refs.dlg.reset();
 		};
 		const clickMotorSearchReset = async () => {
-			const last = instance.ctx.serviceStore.state.motorSearchResults !== null ? instance.ctx.serviceStore.state.motorSearchResults.last : 0;
-			const ttl = instance.ctx.serviceStore.state.motorSearchResults !== null ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			const last = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.last : 0;
+			// const ttl2 = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			const ttl2 = ttl.value;
 
 			const now = CommonUtility.getTimestamp();
-			if (ttl < now) {
+			if (ttl2 < now) {
 				return;
 			}
 
@@ -327,7 +335,10 @@ export default {
 		};
 		const dialogResetOk = async () => {
 			dialogReset.value.ok();
-			instance.ctx.serviceStore.dispatcher.requestMotorSearchReset(instance.ctx.correlationId());
+			const correlationId = instance.ctx.correlationId();
+			await instance.ctx.serviceStore.dispatcher.requestMotorSearchReset(correlationId);
+			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			await instance.ctx.preCompleteOk(correlationId);
 		};
 		const motorCaseInfo = (motor) => {
 			if (motor.type === 'SU')
@@ -361,6 +372,7 @@ export default {
 
 			const response = await instance.ctx.serviceStore.dispatcher.requestMotorSearchResults(correlationId, request);
 			results.value = response || [];
+			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
 		};
 		// eslint-disable-next-line
 		const resetDialog = async (correlationId) => {
@@ -369,6 +381,8 @@ export default {
 			motor.value = null;
 			results.value = null;
 
+			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+
 			const data = await instance.ctx.serviceStore.getters.getMotorSearchCriteria();
 			if (!data)
 				return;
@@ -376,12 +390,15 @@ export default {
 			diameter.value = data.diameter;
 			impulseClass.value = data.impulseClass;
 			manufacturer.value = data.manufacturer;
+			motor.value = data.motor;
 			sparky.value = !CommonUtility.isNull(data.sparky) ? data.sparky : false;
 			singleUse.value = !CommonUtility.isNull(data.singleUse) ? data.singleUse : false;
 
-			(async () => {
-				instance.ctx.clickMotorSearch();
-			})();
+			// (async () => {
+			// 	// await instance.ctx.clickMotorSearch();
+			// 	await instance.ctx.preCompleteOk(correlationId);
+			// })();
+			await instance.ctx.preCompleteOk(correlationId);
 		};
 		const reset = async (correlationId) => {
 			await instance.ctx.$refs.dlg.reset();
@@ -398,6 +415,7 @@ export default {
 			clickMotorSearch,
 			clickMotorSearchClear,
 			clickMotorSearchReset,
+			clickMotorSearchResetDisabled,
 			clickMotorSelect,
 			close,
 			dialogReset,
