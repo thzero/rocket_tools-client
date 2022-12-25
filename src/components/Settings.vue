@@ -6,6 +6,7 @@
 		buttonClearName="buttons.reset"
 		buttonOkName="buttons.save"
 		:pre-complete-ok="preCompleteOk"
+		:dirtyCheck="dirtyCheck"
 	>
 		<v-container fluid>
 			<v-row dense>
@@ -203,7 +204,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, getCurrentInstance, ref, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 
 import Constants from '@/constants';
@@ -249,9 +250,6 @@ export default {
 		const measurementUnitVolumeId = ref(null);
 		const measurementUnitWeightId = ref(null);
 
-		const measurementUnits = computed(() => {
-			return AppUtility.measurementUnits();
-		});
 		const measurementUnitsSelect = computed(() => {
 			return [Constants.MeasurementUnits.english.id, Constants.MeasurementUnits.metrics.id].map((item) => { return { id: item, name: GlobalUtility.$trans.t('measurementUnits.' + item + '.title') }; });
 		});
@@ -349,8 +347,23 @@ export default {
 		};
 		const resetFormIdCheck = (id, values) => {
 			const temp = values.find(l => l.id === id);
-			return !String.isNullOrEmpty(temp) ? temp : null;
+			return !String.isNullOrEmpty(temp) ? temp.id : null;
 		};
+
+		watch(() => measurementUnitsId,
+			(value) => {
+				let units = Constants.MeasurementUnits.english;
+				if (measurementUnitsId.value ===  Constants.MeasurementUnits.metrics.id)
+					Constants.MeasurementUnits.metrics;
+
+				measurementUnitAccelerationId.value = Constants.MeasurementUnits[units].acceleration.default;
+				measurementUnitAreaId.value = Constants.MeasurementUnits[units].area.default;
+				measurementUnitDistanceId.value = Constants.MeasurementUnits[units].distance.default;
+				measurementUnitVelocityId.value = Constants.MeasurementUnits[units].velocity.default;
+				measurementUnitVolumeId.value = Constants.MeasurementUnits[units].volume.default;
+				measurementUnitWeightId.value = Constants.MeasurementUnits[units].weight.default;
+			}
+		);
 
 		return Object.assign(baseSettings.setup(props), {
 			gamerTag,
