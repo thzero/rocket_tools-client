@@ -222,22 +222,22 @@ const routes = [
 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
-				path: '',
-				name: 'epoxy',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
-				children: [
-					{
+				// path: '',
+				// name: 'epoxy',
+				// component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				// children: [
+				// 	{
 						path: '',
 						name: 'epoxy',
 						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/info/Epoxy.vue'),
 						meta: {
 							requiresAuth: false
 						}
-					}
-				],
-				meta: {
-					requiresAuth: false
-				}
+				// 	}
+				// ],
+				// meta: {
+				// 	requiresAuth: false
+				// }
 			}
 		]
 	},
@@ -258,10 +258,7 @@ const routes = [
 							requiresAuth: false
 						}
 					}
-				],
-				meta: {
-					requiresAuth: false
-				}
+				]
 			}
 		]
 	},
