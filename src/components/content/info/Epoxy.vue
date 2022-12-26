@@ -2,12 +2,12 @@
 	<div>
 		<v-row dense>
 			<v-col cols="12" class="text-center text-h5 pb-2">
-				{{ $t('titles.content.info.epoxy') }}
+				{{ $t('titles.content.info.epoxy') + ' ' + $t('titles.content.info.title') }}
 			</v-col>
 		</v-row>
 		<v-row dense>
 			<v-col cols="12" class="text-center text-h5 pb-2">
-				{{ $t('titles.content.info.epoxy.chart') }}
+				{{ $t('strings.content.info.epoxy.chart') }}
 			</v-col>
 		</v-row>
 		<v-row dense>
@@ -131,8 +131,8 @@
 			</v-col>
 		</v-row>
 		<v-row dense>
-			<v-col cols="12" class="text-center text-h5 pb-2">
-				{{ $t('titles.content.info.epoxy.additionallinks') }}
+			<v-col cols="12" class="text-center text-h5 pt-4 pb-2">
+				{{ $t('strings.content.info.epoxy.additionalLinks') }}
 			</v-col>
 			<v-col cols="12" class="pb-2">
 				<a href="http://www.jcrocket.com/adhesives.shtml" target="_blank">http://www.jcrocket.com/adhesives.shtml</a><br/>

@@ -465,7 +465,9 @@
 		"content": {
 			"info": {
 				"epoxy": {
-					"desc": ""
+					"additionalLinks": "Additional Links",
+					"desc": "",
+					"chart": "Chart"
 				}
 			},
 			"links": {
@@ -533,6 +535,7 @@
 		"application": "Rocket Sidekick",
 		"content": {
 			"info": {
+				"title": "Information", 
 				"epoxy": "Epoxy"
 			},
 			"tools": {
