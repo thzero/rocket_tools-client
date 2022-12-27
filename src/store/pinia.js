@@ -18,8 +18,11 @@ class AppStore extends BaseStore {
 				key: 'rocketsidekick',
 				storage: localStorage,
 				paths: [
+					'flightInfoDataTypeUse',
+					'flightInfoProcessor',
 					'flightInfoResolution',
 					'flightInfoStyle',
+					'flightMeasurementUnits',
 					'flightPathStyle',
 					'motorManufacturers',
 					'motorSearchCriteria',
@@ -46,10 +49,13 @@ class AppStore extends BaseStore {
 			state: () => ({
 				checksumLastUpdate: [],
 				content: [],
+				flightInfoDataTypeUse: null,
 				flightDate: '',
+				flightInfoProcessor: null,
 				flightInfoResolution: Constants.FlightInfo.Resolution,
 				flightInfoStyle: [],
 				flightLocation: '',
+				flightMeasurementUnits: null,
 				flightPathStyle: [],
 				flightTitle: '',
 				motorManufacturers: [],
@@ -101,8 +107,14 @@ class AppStore extends BaseStore {
 
 					return [];
 				},
+				async setFlightInfoDataTypeUse(correlationId, value) {
+					this.flightInfoDataTypeUse = value;
+				},
 				async setFlightDate(correlationId, value) {
 					this.flightDate = value;
+				},
+				async setFlightInfoProcessor(correlationId, value) {
+					this.flightInfoProcessor = value;
 				},
 				async setFlightInfoResolution(correlationId, value) {
 					this.flightInfoResolution = value;
@@ -116,6 +128,9 @@ class AppStore extends BaseStore {
 				},
 				async setFlightLocation(correlationId, value) {
 					this.flightLocation = value;
+				},
+				async setFlightMeasurementUnits(correlationId, value) {
+					this.flightMeasurementUnits = value;
 				},
 				async setFlightPathStyle(correlationId, value) {
 					if (String.isNullOrEmpty(value.id))
@@ -141,6 +156,41 @@ class AppStore extends BaseStore {
 				}
 			},
 			getters: {
+				getFlightDate() {
+					return GlobalUtility.$store.flightDate;
+				},
+				getFlightInfoDataTypeUse() {
+					const value = GlobalUtility.$store.flightInfoDataTypeUse;
+					return value !== null ? value : true;
+				},
+				getFlightInfoProcessor() {
+					return GlobalUtility.$store.flightInfoProcessor;
+				},
+				getFlightInfoResolution() {
+					return GlobalUtility.$store.flightInfoResolution;
+				},
+				getFlightInfoStyle() {
+					if (!GlobalUtility.$store.flightInfoStyle)
+						return null;
+					return GlobalUtility.$store.flightInfoStyle.find(l => l.id);
+				},
+				getFlightLocation() {
+					return GlobalUtility.$store.flightLocation;
+				},
+				getFlightMeasurementUnits() {
+					return GlobalUtility.$store.flightMeasurementUnits;
+				},
+				getFlightPathStyle() {
+					if (!GlobalUtility.$store.flightPathStyle)
+						return null;
+					return GlobalUtility.$store.flightPathStyle.find(l => l.id);
+				},
+				getFlightTitle() {
+					return GlobalUtility.$store.flightTitle;
+				},
+				getsetMotorSearchCriteria() {
+					return GlobalUtility.$store.motorSearchCriteria;
+				},
 				async getMotorSearchCriteria() {
 					return GlobalUtility.$store.motorSearchCriteria;
 				}
@@ -158,8 +208,14 @@ class AppStore extends BaseStore {
 				async requestMotorSearchResults(correlationId, criteria) {
 					return await GlobalUtility.$store.requestMotorSearchResults(correlationId, criteria);
 				},
+				async setFlightInfoDataTypeUse(correlationId, value) {
+					await GlobalUtility.$store.setFlightInfoDataTypeUse(correlationId, value);
+				},
 				async setFlightDate(correlationId, value) {
 					await GlobalUtility.$store.setFlightDate(correlationId, value);
+				},
+				async setFlightInfoProcessor(correlationId, value) {
+					await GlobalUtility.$store.setFlightInfoProcessor(correlationId, value);
 				},
 				async setFlightInfoResolution(correlationId, value) {
 					await GlobalUtility.$store.setFlightInfoResolution(correlationId, value);
@@ -169,6 +225,9 @@ class AppStore extends BaseStore {
 				},
 				async setFlightLocation(correlationId, value) {
 					await GlobalUtility.$store.setFlightLocation(correlationId, value);
+				},
+				async setFlightMeasurementUnits(correlationId, value) {
+					await GlobalUtility.$store.setFlightMeasurementUnits(correlationId, value);
 				},
 				async setFlightPathStyle(correlationId, value) {
 					await GlobalUtility.$store.setFlightPathStyle(correlationId, value);

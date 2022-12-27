@@ -4,6 +4,7 @@
 		:hide-details="hideDetails"
 		:label="$attrs.label"
 		:disabled="disabled"
+		density="compact"
 		@update:modelValue="change"
 	>
 		<template v-slot:details>

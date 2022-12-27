@@ -30,6 +30,13 @@ export default {
 				// },
 				{
 					category: 'client',
+					name: 'html2canvas',
+					url: 'https://github.com/niklasvh/html2canvas',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/niklasvh/html2canvas/blob/master/LICENSE'
+				},
+				{
+					category: 'client',
 					name: 'papaparse',
 					url: 'https://github.com/mholt/PapaParse',
 					licenseName: 'MIT',

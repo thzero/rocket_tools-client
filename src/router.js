@@ -242,6 +242,20 @@ const routes = [
 		]
 	},
 	{
+		path: '/content/tools/flightInfo',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				name: 'flightInfo',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/FlightInfo.vue'),
+				meta: {
+					requiresAuth: false
+				}
+			}
+		]
+	},
+	{
 		path: '/content/tools/thrust2Weight',
 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [

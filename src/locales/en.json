@@ -102,85 +102,88 @@
 		"title": "File",
 		"csv": "CSV"
 	},
-	"flightInfo": {
-		"title": "Flight Title",
-		"csv": "CSV Flight Data",
-		"dataTypes": {
-			"showActual": "Show Actual"
-		},
-		"date": "Flight Date",
-		"export": {
-			"image": "image",
-			"json": "json",
-			"text": "text"
-		},
-		"location": "Flight Location",
-		"measurementUnits": "Flight Measurement Units",
-		"processors": {
-			"title": "Flight Data Type",
-			"eggtimer": "Eggtimer"
-		},
-		"style": {
-			"title": "Chart Styles",
-			"altitude": {
-				"title": "Altitude",
-				"filtered": "Altitude (Filtered)"
-			},
-			"event": {
-				"apogee": {
-					"title": "Apogee",
-					"border": "Apogee Border"
-				},
-				"drogue": {
-					"title": "Drogue/Freefall",
-					"border": "Drogue/Freefall Border"
-				},
-				"main": {
-					"title": "Main",
-					"border": "Main Border"
-				}
-			},
-			"velocity": {
-				"title": "Velocity",
-				"filtered": "Velocity (Filtered)"
-			}
-		},
-		"resolution": "Resolution"
-	},
-	"flightPath": {
-		"title": "Flight Title",
-		"style": {
-			"title": "Flight Path Styles",
-			"flight": {
-				"color": "Flight Path Color"
-			},
-			"ground": {
-				"color": "Ground Path Color"
-			},
-			"launch": {
-				"color": "Launch Pin Color"
-			},
-			"touchdown": {
-				"color": "Touchdown Pin Color"
-			}
-		},
-		"csv": "CSV GPS Flight Data",
-		"date": "Flight Date",
-		"flightPath": "Flight Path",
-		"groundPath": "Ground Path",
-		"launch": "Launch",
-		"location": "Flight Location",
-		"measurementUnits": "Altitude Measurement Units",
-		"processors": {
-			"title": "Flight Data Type",
-			"eggtimer": "Eggtimer",
-			"featherweight": "Featherweight"
-		},
-		"touchdown": "Touchdown"
-	},
 	"forms": {
 		"content": {
 			"tools": {
+				"flightInfo": {
+					"actual": "Actual",
+					"filtered": "Filtered",
+					"title": "Flight Title",
+					"csv": "CSV Flight Data",
+					"dataTypes": {
+						"showActual": "Show Actual"
+					},
+					"date": "Flight Date",
+					"export": {
+						"image": "image",
+						"json": "json",
+						"text": "text"
+					},
+					"location": "Flight Location",
+					"measurementUnits": "Flight Measurement Units",
+					"processors": {
+						"title": "Flight Data Type",
+						"eggtimer": "Eggtimer"
+					},
+					"set": "Set",
+					"style": {
+						"title": "Chart Styles",
+						"altitude": {
+							"title": "Altitude",
+							"filtered": "Altitude (Filtered)"
+						},
+						"event": {
+							"apogee": {
+								"title": "Apogee",
+								"border": "Apogee Border"
+							},
+							"drogue": {
+								"title": "Drogue/Freefall",
+								"border": "Drogue/Freefall Border"
+							},
+							"main": {
+								"title": "Main",
+								"border": "Main Border"
+							}
+						},
+						"velocity": {
+							"title": "Velocity",
+							"filtered": "Velocity (Filtered)"
+						}
+					},
+					"resolution": "Resolution"
+				},
+				"flightPath": {
+					"title": "Flight Title",
+					"style": {
+						"title": "Flight Path Styles",
+						"flight": {
+							"color": "Flight Path Color"
+						},
+						"ground": {
+							"color": "Ground Path Color"
+						},
+						"launch": {
+							"color": "Launch Pin Color"
+						},
+						"touchdown": {
+							"color": "Touchdown Pin Color"
+						}
+					},
+					"csv": "CSV GPS Flight Data",
+					"date": "Flight Date",
+					"flightPath": "Flight Path",
+					"groundPath": "Ground Path",
+					"launch": "Launch",
+					"location": "Flight Location",
+					"measurementUnits": "Altitude Measurement Units",
+					"processors": {
+						"title": "Flight Data Type",
+						"eggtimer": "Eggtimer",
+						"featherweight": "Featherweight"
+					},
+					"touchdown": "Touchdown"
+				},
 				"thrust2Weight": {
 					"mass": "Rocket Weight",
 					"mass_hint": "Weight of the rocket fully loaded including engines.",
@@ -253,6 +256,38 @@
 	},
 	"home": {
 		"welcome": "Hello {msg}!"
+	},
+	"measurements":{
+		"english":{
+		"acceleration":{
+			"abbr":"ft/s^s"
+		},
+		"altitude":{
+			"abbr":"ft",
+			"name":"Feet"
+		},
+		"time":{
+			"abbr":"s"
+		},
+		"velocity":{
+			"abbr":"ft/s"
+		}
+		},
+		"metric":{
+		"acceleration":{
+			"abbr":"m/s^s"
+		},
+		"altitude":{
+			"abbr":"m",
+			"name":"Meters"
+		},
+		"time":{
+			"abbr":"s"
+		},
+		"velocity":{
+			"abbr":"m/s"
+		}
+		}
 	},
 	"measurementUnits": {
 		"english": {
@@ -389,6 +424,7 @@
 		"loading": "Loading...",
 		"success": "Action was successful",
 		"processed": "Processed",
+		"processing": "Processing",
 		"reset": "Reset",
 		"saved": "Saved",
 		"thrust2Weight": {
