@@ -13,18 +13,30 @@
 <script>
 import { computed } from 'vue';
 
-import base from '@/library_vue/components/base';
+// import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
 export default {
 	name: 'VtCopyright',
-	extends: base,
 	props: {
 		version: {
 			type: Object,
 			default: null
 		}
 	},
-	setup(props) {
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseComponent(props, context);
+
 		const author = computed(() => {
 			return props.version && props.version.client && props.version.client.author ? props.version.client.author : '';
 		});
@@ -41,13 +53,22 @@ export default {
 			return props.version && props.version.client && props.version.client.copyright ? props.version.client.copyright : '';
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			author,
 			authorUrl,
 			copyright,
 			hasAuthor,
 			hasCopyright,
-		});
+		};
 	},
 	// data () {
 	// 	return {};

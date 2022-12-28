@@ -3,28 +3,45 @@
 </template>
 
 <script>
-import { getCurrentInstance } from 'vue';
 import { useTheme } from 'vuetify';
 
 import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import baseApp from '@/library_vue/components/baseApp';
+// import baseApp from '@/library_vue/components/baseApp';
+import { useBaseAppComponent } from '@/library_vue/components/baseApp';
 
 export default {
 	name: 'App',
-	extends: baseApp,
-	setup(props) {
-		const instance = getCurrentInstance();
-		
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success
+		} = useBaseAppComponent(
+			props, 
+			context,
+			async () => {
+				return [
+					serviceStore.dispatcher.initialize(correlationId())
+				];
+			}
+		);
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
-		const initialize = async () => {
-			return [
-				instance.ctx.serviceStore.dispatcher.initialize(instance.ctx.correlationId())
-			];
-		};
+		// const initialize = async () => {
+		// 	return [
+		// 		serviceStore.dispatcher.initialize(correlationId())
+		// 	];
+		// };
 
 		const theme = useTheme();
 		const userTheme = () => {
@@ -42,10 +59,19 @@ export default {
 			theme.global.name.value = themeRequested;
 		});
 
-		return Object.assign(baseApp.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			initialize,
 			serviceStore
-		});
+		};
 	},
 	// methods: {
 	// 	initialize(correlationId) {

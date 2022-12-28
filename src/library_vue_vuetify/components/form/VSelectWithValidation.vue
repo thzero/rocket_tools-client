@@ -25,13 +25,14 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+// import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 
 export default {
 	name: 'VtSelectWithValidation',
-	extends: baseControlEdit,
+	// extends: baseControlEdit,
 	props: {
 		change: {
 			type: Function,
@@ -62,9 +63,29 @@ export default {
 			default: false
 		}
 	},
-	setup (props) {
-		const instance = getCurrentInstance();
-
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			watchInner
+		} = useBaseControlEditComponent(props, context);
+		
 		const innerItems = ref([]);
 		
 		const text = (item) => { 
@@ -74,7 +95,7 @@ export default {
 		onMounted(async () => {
 			if (props.items)
 				innerItems.value = props.items;
-			instance.ctx.initValue(props.modelValue);
+			initValue(props.modelValue);
 		});
 
 		watch(() => props.items,
@@ -83,10 +104,29 @@ export default {
 			}
 		);
 
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			watchInner,
 			innerItems,
 			text
-		});
+		};
 	},
 	// data: () => ({
 	// 	innerItems: []

@@ -40,9 +40,11 @@ import { computed } from 'vue';
 import LibraryConstants from '@thzero/library_client/constants';
 
 import CommonUtility from '@thzero/library_common/utility';
+import LibraryUtility from '@thzero/library_common/utility';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+// import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 import VMarkdown from '@/library_vue_vuetify/components/markup/VMarkdown';
 
 export default {
@@ -50,9 +52,26 @@ export default {
 	components: {
 		VMarkdown
 	},
-	extends: base,
 	setup(props) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseComponent(props);
+
+		
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		
+		const getDateHuman = computed(() => {
+			return LibraryUtility.getDateHuman(date);
+		});
 		const news = computed(() => {
 			if (!serviceStore.state.news.latest)
 				return [];
@@ -61,9 +80,19 @@ export default {
 			return newsS.concat(news);
 		});
 		
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			getDateHuman,
 			news
-		});
+		};
 	}
 	// computed: {
 	// 	news() {

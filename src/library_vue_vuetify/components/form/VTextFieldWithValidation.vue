@@ -34,11 +34,12 @@
 <script>
 import { computed } from 'vue';
 
-import baseControlEdit from '@/library_vue/components/baseControlEdit';
+// import baseControlEdit from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
 
 export default {
 	name: 'VtTextFieldWithValidation',
-	extends: baseControlEdit,
+	// extends: baseControlEdit,
 	props: {
 		blur: {
 			type: Function,
@@ -65,7 +66,29 @@ export default {
 			default: false
 		}
 	},
-	setup (props) {
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			watchInner
+		} = useBaseControlEditComponent(props, context);
+		
 		const count = computed(() => {
 			return props.maxcount ? '(' + (innerValue .value? innerValue.value.length : 0) + ')' : '';
 		});
@@ -73,10 +96,29 @@ export default {
 			return (props.maxcount && !String.isNullOrEmpty(innerValu.value) ? innerValue.value.length > props.maxcount ? 'negative ' : '' : '') + 'title-body2';
 		});
 		
-		return Object.assign(baseControlEdit.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			isSaving,
+			serverErrors,
+			setErrors,
+			convertValue,
+			errorI,
+			errorsI,
+			hideDetails,
+			innerValue,
+			initValue,
+			watchInner,
 			count,
 			countClass
-		});
+		};
 	},
 	// computed: {
 	// 	count() {

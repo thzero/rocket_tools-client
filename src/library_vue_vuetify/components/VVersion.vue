@@ -7,25 +7,46 @@
 <script>
 import { computed } from 'vue';
 
-import base from '@/library_vue/components/base';
+// import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
 export default {
 	name: 'VtVersion',
-	extends: base,
 	props: {
 		version: {
 			type: Object,
 			default: null
 		}
 	},
-	setup(props) {
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseComponent(props, context);
+
 		const innerVersion = computed(() => {
 			return props.version;
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			innerVersion
-		});
+		};
 	},
 	// data () {
 	// 	return {};

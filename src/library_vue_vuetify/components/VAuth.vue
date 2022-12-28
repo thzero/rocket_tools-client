@@ -31,14 +31,53 @@
 </template>
 
 <script>
-import baseAuth from '@/library_vue/components/baseAuth';
+// import baseAuth from '@/library_vue/components/baseAuth';
+import { useBaseAuthComponent } from '@/library_vue/components/baseAuth';
 
 export default {
 	name: 'VtAuth',
-	extends: baseAuth,
-	setup(props) {
-		return Object.assign(baseAuth.setup(props), {
-		});
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			allowRememberMe,
+			authenticated,
+			disabled,
+			display,
+			features,
+			isLoggedIn,
+			rememberMe,
+			serviceAuth,
+			signInGoogle
+		} = useBaseAuthComponent(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			allowRememberMe,
+			authenticated,
+			disabled,
+			display,
+			features,
+			isLoggedIn,
+			rememberMe,
+			serviceAuth,
+			signInGoogle
+		};
 	}
 };
 </script>

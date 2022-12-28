@@ -163,7 +163,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
@@ -172,7 +172,8 @@ import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import CommonUtility from '@thzero/library_common/utility';
 
-import base from '@/library_vue/components/base';
+// import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
 import News from '@/components/News';
 import VLoadingOverlay from '@/library_vue_vuetify/components/VLoadingOverlay';
@@ -185,17 +186,26 @@ export default {
 		News,
 		VLoadingOverlay
 	},
-	extends: base,
 	setup(props) {
-		const instance = getCurrentInstance();
-		
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseComponent(props);
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		const externalGithub = ref(Constants.External.github);
 		const initializeCompleted = ref(false);
 
 		const info = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
@@ -203,7 +213,7 @@ export default {
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
 		const tools = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.tools)
@@ -211,27 +221,36 @@ export default {
 			return temp.tools.sort((a, b) => a.order >= b.order);
 		});
 		const isLoggedIn = computed(() => {
-			return instance.ctx.serviceStore.user && instance.ctx.serviceStore.userAuthIsLoggedIn;
+			return serviceStore.user && serviceStore.userAuthIsLoggedIn;
 		});
 		const newsCount = computed(() => {
-			if (!instance.ctx.serviceStore.state.news.latest)
+			if (!serviceStore.state.news.latest)
 				return 0;
 
-			const news = instance.ctx.serviceStore.state.news.latest.slice(0);
+			const news = serviceStore.state.news.latest.slice(0);
 			return news.length;
 		});
 		const user = computed(() => {
-			return instance.ctx.serviceStore.user;
+			return serviceStore.user;
 		});
 		const userDisplayName = computed(() => {
-			return AppUtility.userDisplayName(instance.ctx.correlationId(), instance.ctx.serviceStore.user);
+			return AppUtility.userDisplayName(correlationId(), serviceStore.user);
 		});
 
 		GlobalUtility.$EventBus.on('initialize-completed', (value) => {
 			initializeCompleted.value = value;
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			externalGithub,
 			info,
 			initializeCompleted,
@@ -241,7 +260,7 @@ export default {
 			tools,
 			user,
 			userDisplayName
-		});
+		};
 	},
 	// computed: {
 	// 	isLoggedIn() {
