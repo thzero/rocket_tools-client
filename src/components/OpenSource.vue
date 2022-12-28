@@ -44,7 +44,7 @@ export default {
 				},
 				{
 					category: 'client',
-					name: 'rocket_tools-client',
+					name: 'rocket_sidekick-client',
 					url: 'https://github.com/thzero/rocket_sidekick-client',
 					licenseName: 'MIT',
 					licenseUrl: 'https://github.com/thzero/rocket_sidekick-client/blob/master/license.md'
