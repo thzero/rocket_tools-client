@@ -12,10 +12,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thzero/rocket-tools-client.git"
+    "url": "git+https://github.com/thzero/rocket_sidekick-client.git"
   },
   "bugs": {
-    "url": "https://github.com/thzero/rocket-tools-client/issues"
+    "url": "https://github.com/thzero/rocket_sidekick-client/issues"
   },
   "scripts": {
     "dev": "vite",
