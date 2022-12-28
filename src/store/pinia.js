@@ -18,8 +18,11 @@ class AppStore extends BaseStore {
 				key: 'rocketsidekick',
 				storage: localStorage,
 				paths: [
+					'flightInfoDataTypeUse',
+					'flightInfoProcessor',
 					'flightInfoResolution',
 					'flightInfoStyle',
+					'flightMeasurementUnits',
 					'flightPathStyle',
 					'motorManufacturers',
 					'motorSearchCriteria',
@@ -28,7 +31,7 @@ class AppStore extends BaseStore {
 			}
 			// pinia2
 			// root: {
-			// 	key: 'rocket_tools',
+			// 	key: 'rocket_sidekick',
 			// 	includePaths: [
 			// 		'flightInfoResolution',
 			// 		'flightInfoStyle',
@@ -45,22 +48,25 @@ class AppStore extends BaseStore {
 		return {
 			state: () => ({
 				checksumLastUpdate: [],
+				content: [],
+				flightInfoDataTypeUse: null,
 				flightDate: '',
+				flightInfoProcessor: null,
 				flightInfoResolution: Constants.FlightInfo.Resolution,
 				flightInfoStyle: [],
 				flightLocation: '',
+				flightMeasurementUnits: null,
 				flightPathStyle: [],
 				flightTitle: '',
 				motorManufacturers: [],
 				motorSearchCriteria: {},
 				motorSearchResults: {},
 				thrust2weight: {},
-				tools: [],
 				toolSettings: []
 			}),
 			actions: {
 				async _initialize(correlationId, results) {
-					await this.setTools(correlationId, results.tools);
+					await this.setContent(correlationId, results.content);
 				},
 				async requestMotor(correlationId, motorId) {
 					const service = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
@@ -101,8 +107,14 @@ class AppStore extends BaseStore {
 
 					return [];
 				},
+				async setFlightInfoDataTypeUse(correlationId, value) {
+					this.flightInfoDataTypeUse = value;
+				},
 				async setFlightDate(correlationId, value) {
 					this.flightDate = value;
+				},
+				async setFlightInfoProcessor(correlationId, value) {
+					this.flightInfoProcessor = value;
 				},
 				async setFlightInfoResolution(correlationId, value) {
 					this.flightInfoResolution = value;
@@ -116,6 +128,9 @@ class AppStore extends BaseStore {
 				},
 				async setFlightLocation(correlationId, value) {
 					this.flightLocation = value;
+				},
+				async setFlightMeasurementUnits(correlationId, value) {
+					this.flightMeasurementUnits = value;
 				},
 				async setFlightPathStyle(correlationId, value) {
 					if (String.isNullOrEmpty(value.id))
@@ -133,14 +148,49 @@ class AppStore extends BaseStore {
 				async setMotorSearchResults(correlationId, value) {
 					this.motorSearchResults = value;
 				},
-				async setTools(correlationId, tools) {
-					this.$logger.debug('store', 'setTools', 'tools.a', tools, correlationId);
-					this.$logger.debug('store', 'setTools', 'tools.b', this.tools, correlationId);
-					this.tools = tools;
-					this.$logger.debug('store', 'setTools', 'tools.c', this.tools, correlationId);
+				async setContent(correlationId, content) {
+					this.$logger.debug('store', 'setContent', 'content.a', content, correlationId);
+					this.$logger.debug('store', 'setContent', 'content.b', this.content, correlationId);
+					this.content = content;
+					this.$logger.debug('store', 'setContent', 'content.c', this.content, correlationId);
 				}
 			},
 			getters: {
+				getFlightDate() {
+					return GlobalUtility.$store.flightDate;
+				},
+				getFlightInfoDataTypeUse() {
+					const value = GlobalUtility.$store.flightInfoDataTypeUse;
+					return value !== null ? value : true;
+				},
+				getFlightInfoProcessor() {
+					return GlobalUtility.$store.flightInfoProcessor;
+				},
+				getFlightInfoResolution() {
+					return GlobalUtility.$store.flightInfoResolution;
+				},
+				getFlightInfoStyle() {
+					if (!GlobalUtility.$store.flightInfoStyle)
+						return null;
+					return GlobalUtility.$store.flightInfoStyle.find(l => l.id);
+				},
+				getFlightLocation() {
+					return GlobalUtility.$store.flightLocation;
+				},
+				getFlightMeasurementUnits() {
+					return GlobalUtility.$store.flightMeasurementUnits;
+				},
+				getFlightPathStyle() {
+					if (!GlobalUtility.$store.flightPathStyle)
+						return null;
+					return GlobalUtility.$store.flightPathStyle.find(l => l.id);
+				},
+				getFlightTitle() {
+					return GlobalUtility.$store.flightTitle;
+				},
+				getsetMotorSearchCriteria() {
+					return GlobalUtility.$store.motorSearchCriteria;
+				},
 				async getMotorSearchCriteria() {
 					return GlobalUtility.$store.motorSearchCriteria;
 				}
@@ -158,8 +208,14 @@ class AppStore extends BaseStore {
 				async requestMotorSearchResults(correlationId, criteria) {
 					return await GlobalUtility.$store.requestMotorSearchResults(correlationId, criteria);
 				},
+				async setFlightInfoDataTypeUse(correlationId, value) {
+					await GlobalUtility.$store.setFlightInfoDataTypeUse(correlationId, value);
+				},
 				async setFlightDate(correlationId, value) {
 					await GlobalUtility.$store.setFlightDate(correlationId, value);
+				},
+				async setFlightInfoProcessor(correlationId, value) {
+					await GlobalUtility.$store.setFlightInfoProcessor(correlationId, value);
 				},
 				async setFlightInfoResolution(correlationId, value) {
 					await GlobalUtility.$store.setFlightInfoResolution(correlationId, value);
@@ -169,6 +225,9 @@ class AppStore extends BaseStore {
 				},
 				async setFlightLocation(correlationId, value) {
 					await GlobalUtility.$store.setFlightLocation(correlationId, value);
+				},
+				async setFlightMeasurementUnits(correlationId, value) {
+					await GlobalUtility.$store.setFlightMeasurementUnits(correlationId, value);
 				},
 				async setFlightPathStyle(correlationId, value) {
 					await GlobalUtility.$store.setFlightPathStyle(correlationId, value);

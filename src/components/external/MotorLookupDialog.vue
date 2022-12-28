@@ -182,7 +182,7 @@
 import { computed, getCurrentInstance, onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
-import { helpers, minLength, required, requiredUnless } from '@vuelidate/validators';
+import { helpers, minLength, requiredUnless } from '@vuelidate/validators';
 
 import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';

@@ -102,83 +102,105 @@
 		"title": "File",
 		"csv": "CSV"
 	},
-	"flightInfo": {
-		"title": "Flight Title",
-		"csv": "CSV Flight Data",
-		"dataTypes": {
-			"showActual": "Show Actual"
-		},
-		"date": "Flight Date",
-		"export": {
-			"image": "image",
-			"json": "json",
-			"text": "text"
-		},
-		"location": "Flight Location",
-		"measurementUnits": "Flight Measurement Units",
-		"processors": {
-			"title": "Flight Data Type",
-			"eggtimer": "Eggtimer"
-		},
-		"style": {
-			"title": "Chart Styles",
-			"altitude": {
-				"title": "Altitude",
-				"filtered": "Altitude (Filtered)"
-			},
-			"event": {
-				"apogee": {
-					"title": "Apogee",
-					"border": "Apogee Border"
-				},
-				"drogue": {
-					"title": "Drogue/Freefall",
-					"border": "Drogue/Freefall Border"
-				},
-				"main": {
-					"title": "Main",
-					"border": "Main Border"
-				}
-			},
-			"velocity": {
-				"title": "Velocity",
-				"filtered": "Velocity (Filtered)"
-			}
-		},
-		"resolution": "Resolution"
-	},
-	"flightPath": {
-		"title": "Flight Title",
-		"style": {
-			"title": "Flight Path Styles",
-			"flight": {
-				"color": "Flight Path Color"
-			},
-			"ground": {
-				"color": "Ground Path Color"
-			},
-			"launch": {
-				"color": "Launch Pin Color"
-			},
-			"touchdown": {
-				"color": "Touchdown Pin Color"
-			}
-		},
-		"csv": "CSV GPS Flight Data",
-		"date": "Flight Date",
-		"flightPath": "Flight Path",
-		"groundPath": "Ground Path",
-		"launch": "Launch",
-		"location": "Flight Location",
-		"measurementUnits": "Altitude Measurement Units",
-		"processors": {
-			"title": "Flight Data Type",
-			"eggtimer": "Eggtimer",
-			"featherweight": "Featherweight"
-		},
-		"touchdown": "Touchdown"
-	},
 	"forms": {
+		"content": {
+			"tools": {
+				"flightInfo": {
+					"actual": "Actual",
+					"filtered": "Filtered",
+					"title": "Flight Title",
+					"csv": "CSV Flight Data",
+					"dataTypes": {
+						"showActual": "Show Actual"
+					},
+					"date": "Flight Date",
+					"export": {
+						"image": "image",
+						"json": "json",
+						"text": "text"
+					},
+					"location": "Flight Location",
+					"measurementUnits": "Flight Measurement Units",
+					"processors": {
+						"title": "Flight Data Type",
+						"eggtimer": "Eggtimer"
+					},
+					"set": "Set",
+					"style": {
+						"title": "Chart Styles",
+						"altitude": {
+							"title": "Altitude",
+							"filtered": "Altitude (Filtered)"
+						},
+						"event": {
+							"apogee": {
+								"title": "Apogee",
+								"border": "Apogee Border"
+							},
+							"drogue": {
+								"title": "Drogue/Freefall",
+								"border": "Drogue/Freefall Border"
+							},
+							"main": {
+								"title": "Main",
+								"border": "Main Border"
+							}
+						},
+						"velocity": {
+							"title": "Velocity",
+							"filtered": "Velocity (Filtered)"
+						}
+					},
+					"resolution": "Resolution"
+				},
+				"flightPath": {
+					"title": "Flight Title",
+					"style": {
+						"title": "Flight Path Styles",
+						"flight": {
+							"color": "Flight Path Color"
+						},
+						"ground": {
+							"color": "Ground Path Color"
+						},
+						"launch": {
+							"color": "Launch Pin Color"
+						},
+						"touchdown": {
+							"color": "Touchdown Pin Color"
+						}
+					},
+					"csv": "CSV GPS Flight Data",
+					"date": "Flight Date",
+					"flightPath": "Flight Path",
+					"groundPath": "Ground Path",
+					"launch": "Launch",
+					"location": "Flight Location",
+					"measurementUnits": "Altitude Measurement Units",
+					"processors": {
+						"title": "Flight Data Type",
+						"eggtimer": "Eggtimer",
+						"featherweight": "Featherweight"
+					},
+					"touchdown": "Touchdown"
+				},
+				"thrust2Weight": {
+					"mass": "Rocket Weight",
+					"mass_hint": "Weight of the rocket fully loaded including engines.",
+					"max_launch_rod_timespan": "Max. Launch Rod Time",
+					"max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
+					"motor": "Motor",
+					"motor_hint": "Select rocket motor.",
+					"thrust": "Thrust (Newtons)",
+					"thrust_average": "Average",
+					"thrust_average_hint": "Average thrust of the engine.",
+					"thrust_initial": "Initial",
+					"thrust_initial_hint": "Initial thrust of the engine.",
+					"thrust_peak": "Peak",
+					"thrust_peak_hint": "Peak thrust of the engine."
+				}	
+			}
+		},
 		"external": {
 			"motorSearch": {
 				"diameter": "Diameter",
@@ -230,25 +252,42 @@
 			"nameShort": "Sort"
 		},
 		"tagLine": "Tag Line",
-		"title": "Title",
-		"thrust2Weight": {
-			"mass": "Rocket Weight",
-			"mass_hint": "Weight of the rocket fully loaded including engines.",
-			"max_launch_rod_timespan": "Max. Launch Rod Time",
-			"max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
-			"motor": "Motor",
-			"motor_hint": "Select rocket motor.",
-			"thrust": "Thrust (Newtons)",
-			"thrust_average": "Average",
-			"thrust_average_hint": "Average thrust of the engine.",
-			"thrust_initial": "Initial",
-			"thrust_initial_hint": "Initial thrust of the engine.",
-			"thrust_peak": "Peak",
-			"thrust_peak_hint": "Peak thrust of the engine."
-		}
+		"title": "Title"
 	},
 	"home": {
 		"welcome": "Hello {msg}!"
+	},
+	"measurements":{
+		"english":{
+		"acceleration":{
+			"abbr":"ft/s^s"
+		},
+		"altitude":{
+			"abbr":"ft",
+			"name":"Feet"
+		},
+		"time":{
+			"abbr":"s"
+		},
+		"velocity":{
+			"abbr":"ft/s"
+		}
+		},
+		"metric":{
+		"acceleration":{
+			"abbr":"m/s^s"
+		},
+		"altitude":{
+			"abbr":"m",
+			"name":"Meters"
+		},
+		"time":{
+			"abbr":"s"
+		},
+		"velocity":{
+			"abbr":"m/s"
+		}
+		}
 	},
 	"measurementUnits": {
 		"english": {
@@ -340,16 +379,29 @@
 		"checklists": {
 			"title": "Checklists"
 		},
-		"info": {
-			"epoxy": "Epoxy",
-			"title": "Info"
+		"content": {
+			"app": "Mobile App",
+			"title": "Content",
+			"tools": {
+				"ejectionCharges": "Ejection Charges",
+				"flightInfo": "Flight Info",
+				"flightPath": "Flight Path",
+				"foam": "Foam",
+				"staticPortHoles": "Static Port Holes",
+				"title": "Tools", 
+				"thrust2Weight": "Thrust 2 Weight"
+			},
+			"info": {
+				"epoxy": "Epoxy",
+				"title": "Info"
+			},
+			"links": {
+				"title": "Links",
+				"simulators": "Simulators"
+			}
 		},
 		"launches": {
 			"title": "Launches"
-		},
-		"links": {
-			"title": "Links",
-			"simulators": "Simulators"
 		},
 		"rockets": {
 			"altimeters": "Altimeters",
@@ -357,16 +409,6 @@
 			"parachutes": "Parachutes",
 			"rockets": "Rockets",
 			"title": "Rockets"
-		},
-		"tools": {
-			"app": "Mobile App",
-			"ejectionCharges": "Ejection Charges",
-			"flightInfo": "Flight Info",
-			"flightPath": "Flight Path",
-			"foam": "Foam",
-			"staticPortHoles": "Static Port Holes",
-			"title": "Tools", 
-			"thrust2Weight": "Thrust 2 Weight"
 		},
 		"settings": {
 			"title": "Settings"
@@ -382,6 +424,7 @@
 		"loading": "Loading...",
 		"success": "Action was successful",
 		"processed": "Processed",
+		"processing": "Processing",
 		"reset": "Reset",
 		"saved": "Saved",
 		"thrust2Weight": {
@@ -455,6 +498,59 @@
 	"strings": {
 		"add": "Add",
 		"clear": "Clear",
+		"content": {
+			"info": {
+				"epoxy": {
+					"additionalLinks": "Additional Links",
+					"desc": "",
+					"chart": "Chart"
+				}
+			},
+			"links": {
+				"simulators": {
+					"desc": ""
+				}
+			},
+			"tools": {
+				"ejectionCharges": {
+					"desc": ""
+				},
+				"flightInfo": {
+					"desc": ""
+				},
+				"flightPath": {
+					"desc": ""
+				},
+				"foam": {
+					"desc": ""
+				},
+				"staticPortHoles": {
+					"desc": ""
+				},
+				"thrust2Weight": {
+					"title": "Thrust to Weight",
+					"desc": "",
+					"calculated": "Calculated Thrust to Weight Ratio",
+					"mass": "Rocket Weight",
+					"mass_hint": "Weight of the rocket fully loaded including engines.",
+					"mass_english": "Pounds",
+					"mass_english_abbr": "lb",
+					"mass_metric": "Kilograms",
+					"mass_metric_abbr": "kg",
+					"motor": "Motor",
+					"newtons": "Newtons",
+					"newtons_abbr": "N",
+					"results": "Results",
+					"thrust": "Thrust (Newtons)",
+					"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
+					"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
+				}
+			},
+			"welcome": "RocketSidekick hosts a variety of tools in once place.  Some of the tools are custom build, others are based on formulas found in variety of rocketry forums and sites, as well as some sections having links or information.",
+			"welcome1a": "Contributions for additional tools are welcome via Pull Requests on the site's GitHub repo (",
+			"welcome1b": ").  See the documentation on the repo.",
+			"welcome2": "The following is the selection of tools currently available."
+		},
 		"copyright": "Copyright",
 		"copyToClipboard": "Copied to the clipboard!",
 		"delete": "Delete",
@@ -464,12 +560,6 @@
 		"no": "No",
 		"save": "Save",
 		"share": "Share",
-		"tools": {
-			"welcome": "RocketSidekick hosts a variety of tools in once place.  Some of the tools are custom build, others are based on formulas found in variety of rocketry forums and sites, as well as some sections having links or information.",
-			"welcome1a": "Contributions for additional tools are welcome via Pull Requests on the site's GitHub repo (",
-			"welcome1b": ").  See the documentation on the repo.",
-			"welcome2": "The following is the selection of tools currently available."
-		},
 		"yes": "Yes",
 		"welcome": "Welcome to"
 	},
@@ -479,6 +569,17 @@
 	"titles": {
 		"about": "About",
 		"application": "Rocket Sidekick",
+		"content": {
+			"info": {
+				"title": "Information", 
+				"epoxy": "Epoxy"
+			},
+			"tools": {
+				"flightInfo": "Flight Info",
+				"flightPath": "Flight Path",
+				"thrust2Weight": "Thrust 2 Weight"
+			}
+		},
 		"edit": "Edit",
 		"editType": "Edit {type}",
 		"external": {
@@ -499,29 +600,7 @@
 		"signOut": "Sign Out",
 		"statistics": "Stats",
 		"support": "Support",
-		"users": "Users",
-		"tools": {
-		"flightInfo": "Flight Info",
-		"flightPath": "Flight Path",
-		"thrust2Weight": "Thrust 2 Weight"
-		}
-	},
-	"thrust2Weight": {
-		"title": "Thrust to Weight",
-		"calculated": "Calculated Thrust to Weight Ratio",
-		"mass": "Rocket Weight",
-		"mass_hint": "Weight of the rocket fully loaded including engines.",
-		"mass_english": "Pounds",
-		"mass_english_abbr": "lb",
-		"mass_metric": "Kilograms",
-		"mass_metric_abbr": "kg",
-		"motor": "Motor",
-		"newtons": "Newtons",
-		"newtons_abbr": "N",
-		"results": "Results",
-		"thrust": "Thrust (Newtons)",
-		"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
-		"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
+		"users": "Users"
 	},
 	"tooltips": {
 		"clear": "Clear filters",

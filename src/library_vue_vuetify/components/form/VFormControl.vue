@@ -16,9 +16,53 @@
 				>
 					{{ item }}
 				</div>
+				<div>
+					<slot name="before"/>
+				</div>
+				<div
+					v-if="!autoSave"
+					class="text-right"
+				>
+					<v-spacer />
+					<slot name="buttons_pre"/>
+					<v-btn
+						v-if="buttonDelete"
+						color="primary lighten-1"
+						text
+						@click="handleDelete"
+						class="mr-2"
+						:loading="isLoading"
+					>
+						{{ $t(buttonDeleteName) }}
+					</v-btn>
+					<v-btn
+						v-if="buttonClear"
+						color="primary lighten-1"
+						text
+						@click="handleClear"
+						class="mr-2"
+						:loading="isLoading"
+					>
+						{{ $t(buttonClearName) }}
+					</v-btn>
+					<v-btn
+						v-if="buttonOk"
+						:disabled="buttonOkDisabled"
+						color="green darken-1"
+						text
+						@click="submit"
+						:loading="isLoading"
+					>
+						{{ $t(buttonOkName) }}
+					</v-btn>
+					<slot name="buttons_post"/>
+				</div>
+				<div>
+					<slot name="after"/>
+				</div>
 			</v-form>
 		</div>
-		<div
+		<!-- <div
 			v-if="!autoSave"
 			class="text-right"
 		>
@@ -32,7 +76,7 @@
 				class="mr-2"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.delete') }}
+				{{ $t(buttonDeleteName) }}
 			</v-btn>
 			<v-btn
 				v-if="buttonClear"
@@ -42,7 +86,7 @@
 				class="mr-2"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.clear') }}
+				{{ $t(buttonClearName) }}
 			</v-btn>
 			<v-btn
 				v-if="buttonOk"
@@ -52,9 +96,13 @@
 				@click="submit"
 				:loading="isLoading"
 			>
-				{{ $t('buttons.ok') }}
+				{{ $t(buttonOkName) }}
 			</v-btn>
+			<slot name="buttons_post"/>
 		</div>
+		<div>
+			<slot name="after"/>
+		</div> -->
 		<v-overlay
 			absolute
 			:value="overlayLoading"

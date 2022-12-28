@@ -56,10 +56,10 @@
 								cols="12"
 							>
 								<p>
-									{{ $t('strings.tools.welcome') }}
+									{{ $t('strings.content.welcome') }}
 								</p><br/>
 								<p>
-									{{ $t('strings.tools.welcome2') }}
+									{{ $t('strings.content.welcome2') }}
 								</p><br/>
 							</v-col><v-col
 								cols="12"
@@ -126,9 +126,9 @@
 								cols="12"
 							>
 								<p>
-									{{ $t('strings.tools.welcome1a') }}
+									{{ $t('strings.content.welcome1a') }}
 									<a :href="externalGithub" target="_blank">{{ externalGithub }}</a>
-									{{ $t('strings.tools.welcome1b') }}
+									{{ $t('strings.content.welcome1b') }}
 								</p>
 							</v-col> 
 							-->
@@ -195,7 +195,7 @@ export default {
 		const initializeCompleted = ref(false);
 
 		const info = computed(() => {
-			let temp = instance.ctx.serviceStore.state.tools;
+			let temp = instance.ctx.serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
@@ -203,7 +203,7 @@ export default {
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
 		const tools = computed(() => {
-			let temp = instance.ctx.serviceStore.state.tools;
+			let temp = instance.ctx.serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.tools)

@@ -30,6 +30,13 @@ export default {
 				// },
 				{
 					category: 'client',
+					name: 'html2canvas',
+					url: 'https://github.com/niklasvh/html2canvas',
+					licenseName: 'MIT',
+					licenseUrl: 'https://github.com/niklasvh/html2canvas/blob/master/LICENSE'
+				},
+				{
+					category: 'client',
 					name: 'papaparse',
 					url: 'https://github.com/mholt/PapaParse',
 					licenseName: 'MIT',
@@ -37,10 +44,10 @@ export default {
 				},
 				{
 					category: 'client',
-					name: 'rocket_tools-client',
-					url: 'https://github.com/thzero/rocket_tools-client',
+					name: 'rocket_sidekick-client',
+					url: 'https://github.com/thzero/rocket_sidekick-client',
 					licenseName: 'MIT',
-					licenseUrl: 'https://github.com/thzero/rocket_tools-client/blob/master/license.md'
+					licenseUrl: 'https://github.com/thzero/rocket_sidekick-client/blob/master/license.md'
 				},
 				{
 					category: 'client',
