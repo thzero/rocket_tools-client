@@ -7,7 +7,6 @@
 <script>
 import { computed } from 'vue';
 
-// import base from '@/library_vue/components/base';
 import { useBaseComponent } from '@/library_vue/components/base';
 
 export default {
@@ -47,15 +46,7 @@ export default {
 			success,
 			innerVersion
 		};
-	},
-	// data () {
-	// 	return {};
-	// },
-	// computed: {
-	// 	innerVersion() {
-	// 		return this.value;
-	// 	}
-	// }
+	}
 };
 </script>
 

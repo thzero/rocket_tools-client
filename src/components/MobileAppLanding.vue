@@ -101,7 +101,7 @@ export default {
 			serviceStore,
 			text,
 		});
-	},
+	}
 };
 </script>
 

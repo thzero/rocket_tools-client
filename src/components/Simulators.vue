@@ -358,6 +358,6 @@ export default {
 		return Object.assign(base.setup(props), {
 			initializeDependenciesClient
 		});
-	},
+	}
 };
 </script>

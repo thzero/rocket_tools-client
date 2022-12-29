@@ -73,7 +73,7 @@ export default {
 	// 	displayClass() {
 	// 		return this.negativeColor ? (this.value < 0 ? 'text-negative' : null) : null;
 	// 	},
-	// },
+	// }
 };
 </script>
 

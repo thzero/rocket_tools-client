@@ -35,7 +35,7 @@ export default {
 	setup(props) {
 		return Object.assign(baseNotFound.setup(props), {
 		});
-	},
+	}
 };
 </script>
 

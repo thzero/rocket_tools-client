@@ -24,7 +24,6 @@ import LibraryConstants from '@thzero/library_client/constants';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import LibraryUtility from '@thzero/library_common/utility';
 
-// import base from '@/library_vue/components/base';
 import { useBaseComponent } from '@/library_vue/components/base';
 
 import VCopyright from './VCopyright';
@@ -56,7 +55,6 @@ export default {
 		const version = ref({});
 
 		const breakpointName = computed(() => {
-			// return LibraryUtility.isDev ? $vuetify.display.name : '';
 			return LibraryUtility.isDev ? useDisplayI.name : '';
 		});
 		const isDev = computed(() => {
@@ -82,22 +80,7 @@ export default {
 			isDev,
 			version
 		};
-	},
-	// data: () => ({
-	// 	version: {}
-	// }),
-	// computed: {
-	// 	breakpointName() {
-	// 		return LibraryUtility.isDev ? this.$vuetify.display.name : '';
-	// 	},
-	// 	isDev() {
-	// 		return LibraryUtility.isDev;
-	// 	}
-	// },
-	// async created() {
-	// 	await GlobalUtility.$store.dispatcher.root.requestVersion(this.correlationId());
-	// 	this.version = GlobalUtility.$store.state.version;
-	// }
+	}
 };
 </script>
 

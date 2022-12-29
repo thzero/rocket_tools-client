@@ -47,7 +47,6 @@ import { computed } from 'vue';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import VueUtility from '@thzero/library_client_vue3/utility/index';
 
-// import baseConfirmationDialog from '@/library_vue/components/baseConfirmationDialog';
 import { useBaseConfirmationDialogComponent } from '@/library_vue/components/baseConfirmationDialogComponent';
 import { useBaseConfirmationDialogProps } from '@/library_vue/components/baseConfirmationDialogProps';
 
@@ -107,11 +106,6 @@ export default {
 			internalItem,
 			internalMessage
 		};
-	},
-	// methods: {
-	// 	handleError(response, correlationId) {
-	// 		VueUtility.handleError(this.$refs.obs, this.serverErrors, response, correlationId);
-	// 	}
-	// }
+	}
 };
 </script>

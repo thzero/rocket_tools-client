@@ -31,7 +31,6 @@
 </template>
 
 <script>
-// import baseAuth from '@/library_vue/components/baseAuth';
 import { useBaseAuthComponent } from '@/library_vue/components/baseAuth';
 
 export default {

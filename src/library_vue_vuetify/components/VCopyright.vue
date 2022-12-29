@@ -13,7 +13,6 @@
 <script>
 import { computed } from 'vue';
 
-// import base from '@/library_vue/components/base';
 import { useBaseComponent } from '@/library_vue/components/base';
 
 export default {
@@ -69,27 +68,7 @@ export default {
 			hasAuthor,
 			hasCopyright,
 		};
-	},
-	// data () {
-	// 	return {};
-	// },
-	// computed: {
-	// 	author() {
-	// 		return this.version.client && this.version.client.author ? this.version.client.author : '';
-	// 	},
-	// 	authorUrl() {
-	// 		return this.version.client && this.version.client.author ? this.version.client.author_url : '';
-	// 	},
-	// 	copyright() {
-	// 		return this.version.client && this.version.client.copyright ? this.version.client.copyright : '';
-	// 	},
-	// 	hasAuthor() {
-	// 		return this.version.client && this.version.client.author && this.version.client.author_url;
-	// 	},
-	// 	hasCopyright() {
-	// 		return this.version.client && this.version.client.copyright;
-	// 	}
-	// }
+	}
 };
 </script>
 

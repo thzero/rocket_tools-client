@@ -62,6 +62,6 @@ export default {
 		return Object.assign(vOpenSource.setup(props), {
 			initializeDependenciesClient
 		});
-	},
+	}
 };
 </script>

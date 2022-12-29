@@ -173,7 +173,7 @@ export default {
 			data,
 			serviceStore
 		});
-	},
+	}
 };
 </script>
 
