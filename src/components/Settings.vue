@@ -194,28 +194,20 @@ import { computed, ref, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 
 import Constants from '@/constants';
-// import SharedConstants from '@/common/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
-// import LibraryUtility from '@thzero/library_common/utility';
 
-// import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
 import VSelectWithValidation from '@/library_vue_vuetify/components/form//VSelectWithValidation';
 import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
 
-// import DialogSupport from '@/library_vue/components/support/dialog';
-
-// import baseSettings from '@/library_vue/components/baseSettings';
 import { useBaseSettingsComponent } from '@/library_vue/components/baseSettings';
 
 import { helpers, minLength, maxLength, required } from '@vuelidate/validators';
-// const validatorGamerTag = helpers.regex(/^[a-zA-Z0-9 ,']{3}/, /\d/);
 
 export default {
 	name: 'AppSettings',
 	components: {
-		// VConfirmationDialog,
 		VFormControl,
 		VSelectWithValidation,
 		VTextFieldWithValidation
@@ -334,13 +326,13 @@ export default {
 				settings.measurementUnits = {};
 
 			gamerTag.value = !String.isNullOrEmpty(settings.gamerTag) ? settings.gamerTag : '';
-			// measurementUnitsId.value = settings.measurementUnits.id;
-			// measurementUnitAccelerationId.value = settings.measurementUnits.acceleration;
-			// measurementUnitAreaId.value = settings.measurementUnits.area;
-			// measurementUnitDistanceId.value = settings.measurementUnits.distance;
-			// measurementUnitVelocityId.value = settings.measurementUnits.velocity;
-			// measurementUnitVolumeId.value = settings.measurementUnits.volume;
-			// measurementUnitWeightId.value = settings.measurementUnits.weight;
+			measurementUnitsId.value = settings.measurementUnits.id;
+			measurementUnitAccelerationId.value = settings.measurementUnits.acceleration;
+			measurementUnitAreaId.value = settings.measurementUnits.area;
+			measurementUnitDistanceId.value = settings.measurementUnits.distance;
+			measurementUnitVelocityId.value = settings.measurementUnits.velocity;
+			measurementUnitVolumeId.value = settings.measurementUnits.volume;
+			measurementUnitWeightId.value = settings.measurementUnits.weight;
 			measurementUnitsId.value = settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english.id;
 
 			const measurementUnitAccelerationIdT = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
@@ -356,12 +348,12 @@ export default {
 			const measurementUnitWeightIdT = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
 			measurementUnitWeightId.value = resetFormIdCheck(measurementUnitWeightIdT, measurementUnitsWeight.value);
 
-			// measurementUnitAccelerationId.value = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
-			// measurementUnitAreaId.value = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
-			// measurementUnitDistanceId.value = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
-			// measurementUnitVelocityId.value = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
-			// measurementUnitVolumeId.value = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
-			// measurementUnitWeightId.value = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
+			measurementUnitAccelerationId.value = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
+			measurementUnitAreaId.value = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
+			measurementUnitDistanceId.value = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
+			measurementUnitVelocityId.value = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
+			measurementUnitVolumeId.value = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
+			measurementUnitWeightId.value = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
 		};
 		const resetFormIdCheck = (id, values) => {
 			const temp = values.find(l => l.id === id);

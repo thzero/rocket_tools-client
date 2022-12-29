@@ -172,7 +172,6 @@ import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import CommonUtility from '@thzero/library_common/utility';
 
-// import base from '@/library_vue/components/base';
 import { useBaseComponent } from '@/library_vue/components/base';
 
 import News from '@/components/News';
@@ -186,7 +185,7 @@ export default {
 		News,
 		VLoadingOverlay
 	},
-	setup(props) {
+	setup(props, context) {
 		const {
 			correlationId,
 			error,
@@ -197,7 +196,7 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
-		} = useBaseComponent(props);
+		} = useBaseComponent(props, context);
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
@@ -261,58 +260,6 @@ export default {
 			user,
 			userDisplayName
 		};
-	},
-	// computed: {
-	// 	isLoggedIn() {
-	// 		return this.serviceStore.user && this.serviceStore.userAuthIsLoggedIn;
-	// 	},
-	// 	newsCount() {
-	// 		if (!this.serviceStore.state.news.latest)
-	// 			return 0;
-
-	// 		const news = this.serviceStore.state.news.latest.slice(0);
-	// 		return news.length;
-	// 	},
-	// 	user() {
-	// 		return this.serviceStore.user;
-	// 	},
-	// 	userDisplayName() {
-	// 		return AppUtility.userDisplayName(this.correlationId(), this.serviceStore.user);
-	// 	}
-	// },
-	// created() {
-	// 	this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-	// 	const self = this;
-	// 	GlobalUtility.$EventBus.on('initialize-completed', (value) => {
-	// 		self.initializeCompleted = value;
-	// 	});
-	// },
-	// eslint-disable-next-line
-	async beforeRouteEnter (to, from, next) {
-		// called before the route that renders this component is confirmed.
-		// does NOT have access to `this` component instance,
-		// because it has not been created yet when this guard is called!
-		(async () => {
-			try {
-				GlobalUtility.$EventBus.emit('initialize-completed', false);
-
-				const correlationId = CommonUtility.generateId();
-
-				await Promise.all([
-					GlobalUtility.$store.dispatcher.news.getLatest(correlationId)
-				]);
-			}
-			finally {
-				const timeout = setTimeout(function () {
-					GlobalUtility.$EventBus.emit('initialize-completed', true);
-					clearTimeout(timeout);
-				}, DelayMs);
-			}
-		})().catch(err => {
-			// eslint-disable-next-line
-			console.error(err);
-		});
-		next();
 	},
 	// eslint-disable-next-line
 	async beforeRouteUpdate (to, from, next) {

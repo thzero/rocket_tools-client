@@ -43,8 +43,8 @@ import CommonUtility from '@thzero/library_common/utility';
 import LibraryUtility from '@thzero/library_common/utility';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// import base from '@/library_vue/components/base';
 import { useBaseComponent } from '@/library_vue/components/base';
+
 import VMarkdown from '@/library_vue_vuetify/components/markup/VMarkdown';
 
 export default {
@@ -52,7 +52,7 @@ export default {
 	components: {
 		VMarkdown
 	},
-	setup(props) {
+	setup(props, context) {
 		const {
 			correlationId,
 			error,
@@ -62,10 +62,8 @@ export default {
 			logger,
 			noBreakingSpaces,
 			notImplementedError,
-			success,
-		} = useBaseComponent(props);
-
-		
+			success
+		} = useBaseComponent(props, context);
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		
@@ -94,15 +92,6 @@ export default {
 			news
 		};
 	}
-	// computed: {
-	// 	news() {
-	// 		if (!this.$store.state.news.latest)
-	// 			return [];
-	// 		const newsS = Utility.sortByTimestamp(this.$store.state.news.latest.filter(l => l.sticky));
-	// 		const news = Utility.sortByTimestamp(this.$store.state.news.latest.filter(l => !l.sticky));
-	// 		return newsS.concat(news);
-	// 	}
-	// }
 };
 </script>
 

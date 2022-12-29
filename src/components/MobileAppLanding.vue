@@ -47,7 +47,8 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
+
 import VMarkdown from '@/library_vue_vuetify/components/markup/VMarkdown';
 
 export default {
@@ -57,6 +58,18 @@ export default {
 	},
 	extends: base,
 	setup(props) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success
+		} = useBaseComponent(props);
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		const deviceAndroidUrl = ref(Constants.External.store.android);
@@ -93,14 +106,23 @@ export default {
 // `;
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			deviceAndroidUrl,
 			deviceiOsUrl,
 			deviceAndroidAvailable,
 			deviceiOsAvailable,
 			serviceStore,
 			text,
-		});
+		};
 	}
 };
 </script>

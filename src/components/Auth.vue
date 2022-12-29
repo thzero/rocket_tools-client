@@ -5,8 +5,7 @@ export default {
 	name: 'Auth',
 	extends: vAuth,
 	setup(props, context) {
-		return Object.assign(vAuth.setup(props, context), {
-		});
+		return vAuth.setup(props, context);
 	}
 };
 </script>

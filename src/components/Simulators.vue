@@ -349,15 +349,34 @@ See the
 </template>
 
 <script>
-import base from '@/library_vue/components/base.vue';
+import { useBaseComponent } from '@/library_vue/components/base.vue';
 
 export default {
-	name: 'OpenSource',
-	extends: baseVue,
-	setup(props) {
-		return Object.assign(base.setup(props), {
-			initializeDependenciesClient
-		});
+	name: 'Simulators',
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseComponent(props, context);
+
+		return {
+      correlationId,
+      error,
+      hasFailed,
+      hasSucceeded,
+      initialize,
+      logger,
+      noBreakingSpaces,
+      notImplementedError,
+      success
+		};
 	}
 };
 </script>

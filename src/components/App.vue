@@ -9,7 +9,6 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// import baseApp from '@/library_vue/components/baseApp';
 import { useBaseAppComponent } from '@/library_vue/components/baseApp';
 
 export default {
@@ -72,14 +71,7 @@ export default {
 			initialize,
 			serviceStore
 		};
-	},
-	// methods: {
-	// 	initialize(correlationId) {
-	// 		return [
-	// 			GlobalUtility.$store.dispatcher.root.initialize(correlationId),
-	// 		];
-	// 	}
-	// }
+	}
 };
 </script>
 
