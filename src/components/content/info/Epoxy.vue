@@ -143,24 +143,33 @@
 </template>
 		
 <script>
-import { computed, getCurrentInstance, ref } from 'vue';
+import { computed } from 'vue';
 
 import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import contentBase from '@/components/content/contentBase';
+import { useContentBaseComponent } from '@/components/content/contentBase';
 
 export default {
 	name: 'Epxoy',
-	extends: contentBase,
-	setup(props) {
-		const instance = getCurrentInstance();
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success
+		} = useContentBaseComponent(props, context);
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		
 		const data = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
@@ -169,10 +178,19 @@ export default {
 			return content ? content.data : [];
 		});
 
-		return Object.assign(contentBase.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			data,
 			serviceStore
-		});
+		};
 	}
 };
 </script>
