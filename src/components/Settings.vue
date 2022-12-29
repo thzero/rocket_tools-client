@@ -185,20 +185,6 @@
 					</v-card>
 				</v-col>
 			</v-row>
-			<!-- <VConfirmationDialog
-				:non-recoverable="true"
-				:signal="dialogLocationDeleteSignal.signal"
-				:pre-complete-ok="dialogLocationDeletePreCompleteOk"
-				@cancel="dialogLocationDeleteCancel"
-				@ok="dialogLocationDeleteOk"
-			/> -->
-			<!-- <v-snackbar
-				ref="snackbar"
-				v-model="snackbar"
-				:timeout="timeout"
-			>
-				{{ $t('messages.saved') }}
-			</v-snackbar> -->
 		</v-container>
 	</VFormControl>
 </template>
@@ -208,7 +194,6 @@ import { computed, ref, watch } from 'vue';
 import useVuelidate from '@vuelidate/core';
 
 import Constants from '@/constants';
-import LibraryConstants from '@thzero/library_client/constants';
 // import SharedConstants from '@/common/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';

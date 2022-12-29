@@ -9,7 +9,7 @@
 		:label="$attrs.label"
 		:multiple="multiple"
       	density="compact"
-		@update:modelValue="change"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:details>
 			<div
@@ -29,19 +29,13 @@ import { onMounted, ref, watch } from 'vue';
 
 // import baseControlEdit from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtSelectWithValidation',
 	// extends: baseControlEdit,
 	props: {
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
-		},
+		...useBaseControlEditProps,
 		items: {
 			type: [Object, Array],
 			default: null
@@ -55,10 +49,6 @@ export default {
 			default: 'id'
 		},
 		multiple: {
-			type: Boolean,
-			default: false
-		},
-		readonly: {
 			type: Boolean,
 			default: false
 		}
@@ -83,7 +73,7 @@ export default {
 			hideDetails,
 			innerValue,
 			initValue,
-			watchInner
+			innerValueUpdate
 		} = useBaseControlEditComponent(props, context);
 		
 		const innerItems = ref([]);
@@ -123,7 +113,7 @@ export default {
 			hideDetails,
 			innerValue,
 			initValue,
-			watchInner,
+			innerValueUpdate,
 			innerItems,
 			text
 		};

@@ -9,7 +9,7 @@
 		:label="$attrs.label"
 		:counter="maxcount"
 		@blur="blur"
-		@update:modelValue="change"
+		@update:modelValue="innerValueUpdate"
 	>
 		<template v-slot:append>
 			<span :class="countClass">{{ count }}</span>
@@ -36,22 +36,16 @@ import { computed } from 'vue';
 
 // import baseControlEdit from '@/library_vue/components/baseControlEdit';
 import { useBaseControlEditComponent } from '@/library_vue/components/baseControlEdit';
+import { useBaseControlEditProps } from '@/library_vue/components/baseControlEditProps';
 
 export default {
 	name: 'VtTextFieldWithValidation',
 	// extends: baseControlEdit,
 	props: {
+		...useBaseControlEditProps,
 		blur: {
 			type: Function,
 			default: () => {}
-		},
-		change: {
-			type: Function,
-			default: () => {}
-		},
-		disabled: {
-			type: Boolean,
-			default: false
 		},
 		maxcount: {
 			type: Number,
@@ -60,10 +54,6 @@ export default {
 		mincount: {
 			type: Number,
 			default: null
-		},
-		readonly: {
-			type: Boolean,
-			default: false
 		}
 	},
 	setup (props, context) {
@@ -85,8 +75,8 @@ export default {
 			errorsI,
 			hideDetails,
 			innerValue,
-			initValue,
-			watchInner
+			innerValueUpdate,
+			initValue
 		} = useBaseControlEditComponent(props, context);
 		
 		const count = computed(() => {
@@ -115,7 +105,7 @@ export default {
 			hideDetails,
 			innerValue,
 			initValue,
-			watchInner,
+			innerValueUpdate,
 			count,
 			countClass
 		};

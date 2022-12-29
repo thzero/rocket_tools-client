@@ -129,6 +129,14 @@
 			@ok="handleDeleteConfirmOk"
 		/>
 	</div>
+	<v-snackbar
+		ref="notifyRef"
+		v-model="notifySignal"
+		:color="notifyColor"
+		:timeout="notifyTimeout"
+    >
+		{{ notifyMessage }}
+	</v-snackbar>
 </template>
 
 <script>
@@ -176,12 +184,17 @@ export default {
 			handleClear,
 			handleDelete,
 			handleDeleteConfirmOk,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
 			reset,
-			submit,
+			setNotify,
+			submit
 		} = useBaseFormControlComponent(props, context);
 		
 		return {
-				correlationId,
+			correlationId,
 			error,
 			hasFailed,
 			hasSucceeded,
@@ -204,8 +217,13 @@ export default {
 			handleClear,
 			handleDelete,
 			handleDeleteConfirmOk,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
 			reset,
-			submit,
+			setNotify,
+			submit
 		};
 	},
 }
