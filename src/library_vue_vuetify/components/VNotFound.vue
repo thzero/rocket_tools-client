@@ -27,14 +27,38 @@
 </template>
 
 <script>
-import baseNotFound from '@/library_vue/components/baseNotFound';
+import { useBaseNotFoundComponent } from '@/library_vue/components/baseNotFound';
 
 export default {
 	name: 'VNotFound',
-	extends: baseNotFound,
-	setup(props) {
-		return Object.assign(baseNotFound.setup(props), {
-		});
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			clickHome,
+			imageWidth
+		} = useBaseNotFoundComponent(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			clickHome,
+			imageWidth
+		};
 	}
 };
 </script>

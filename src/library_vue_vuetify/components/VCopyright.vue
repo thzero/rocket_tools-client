@@ -1,5 +1,5 @@
 <template>
-	<span v-if="version !== null">
+	<span v-if="modelValue !== null">
 		© <span v-if="hasCopyright">{{ copyright }}</span>
 		<a
 			v-if="hasAuthor"
@@ -11,14 +11,12 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-
-import { useBaseComponent } from '@/library_vue/components/base';
+import { useBaseCopyrightComponent } from '@/library_vue/components/baseCopyright';
 
 export default {
 	name: 'VtCopyright',
 	props: {
-		version: {
+		modelValue: {
 			type: Object,
 			default: null
 		}
@@ -34,23 +32,13 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
-		} = useBaseComponent(props, context);
-
-		const author = computed(() => {
-			return props.version && props.version.client && props.version.client.author ? props.version.client.author : '';
-		});
-		const authorUrl = computed(() => {
-			return props.version && props.version.client && props.version.client.author && props.version.client.author_url ? props.version.client.author_url : '';
-		});
-		const copyright = computed(() => {
-			return props.version && props.version.client && props.version.client.copyright ? props.version.client.copyright : '';
-		});
-		const hasAuthor = computed(() => {
-			return props.version && props.version.client && props.version.client.author ? props.version.client.author : '';
-		});
-		const hasCopyright = computed(() => {
-			return props.version && props.version.client && props.version.client.copyright ? props.version.client.copyright : '';
-		});
+			author,
+			authorUrl,
+			copyright,
+			hasAuthor,
+			hasAuthorUrl,
+			hasCopyright
+		} = useBaseCopyrightComponent(props, context);
 
 		return {
 			correlationId,
@@ -66,7 +54,8 @@ export default {
 			authorUrl,
 			copyright,
 			hasAuthor,
-			hasCopyright,
+			hasAuthorUrl,
+			hasCopyright
 		};
 	}
 };

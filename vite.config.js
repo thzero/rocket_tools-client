@@ -52,7 +52,7 @@ for (const item of dirs) {
 }
 
 try {
-  const openSourceJs = `/* eslint-disable */\n/* GENERATED FILE - DO NOT EDIT */\nexport default () => { return [ ${items.join(`, `)} ]; }`;
+  const openSourceJs = `/* eslint-disable */\n/* GENERATED FILE - DO NOT EDIT */\nexport function useDependenciesClientBase () { return [ ${items.join(`, `)} ]; }`;
   fs.writeFileSync(path.join(__dirname, 'src', 'openSource.js'), openSourceJs);
 } catch (err) {
   console.log(err);

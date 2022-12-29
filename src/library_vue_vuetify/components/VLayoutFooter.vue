@@ -3,9 +3,9 @@
 		app
 		absolute
 	>
-		<VVersion :version="version" />
+		<VVersion v-model="version" />
 		<v-spacer />
-		<VCopyright :version="version" />
+		<VCopyright v-model="version" />
 		<span
 			v-if="isDev"
 			style="padding-left: 4px;"
