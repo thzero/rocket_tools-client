@@ -82,27 +82,6 @@ export default {
 		});
 		const text = computed(() => {
 			return GlobalUtility.$trans.t('mobileApp.text1');
-// 			return `
-// The RocketSidekick mobile application (for Android, and eventually iOSd) provides additional capabilities that 
-// provides some additional capabilities that are focused in the field usage.  Not all of the capabilities will be available on both
-// applications.
-
-// The mobile applications capabilities are:
-
-// * Ability to calculate Thrust to Weight ratios
-// * Ability to search motors via ThrurstCurve.org's applications
-// * Search results are cached on the mobile device
-//   * Create and maintain <sup>1</sup>
-//   * Launch preparation checklists
-//   * Rocket inventory
-//   * Parachute inventory
-//   * Altimeter inventory
-//   * GPS Tracker inventory
-// * Execute a preparation checklist for a launch
-// * Track launches and success or failure of the launch <sup>1</sup>
-
-// <sup>1</sup>&nbsp;Items marked with an asterik will also sync with the web application and may also be available to maintain within the web application.
-// `;
 		});
 
 		return {
