@@ -431,9 +431,6 @@ export default {
 			validation: useVuelidate({ $scope: 'AppSettings' }),
 		};
 	},
-	// data: () => ({
-	// 	gamerTag: null
-	// }),
 	validations () {
 		return {
 			gamerTag: { 
