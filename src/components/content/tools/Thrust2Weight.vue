@@ -250,10 +250,6 @@ export default {
 		};
 		const reset = async (correlationId) => {
 			await formThrust2WeightRef.value.reset(correlationId, false);
-			// setTimeout(async () => {
-			// 	await formThrust2WeightRef.value.reset(correlationId);
-			// },
-			// 150);
 		};
 
 		const resetForm = (correlationId) => {
@@ -270,7 +266,7 @@ export default {
 		const selectMotor = async (item)=> {
 			const correlationIdI = correlationId();
 
-			// this.notify('messages.thrust2Weight.motor.selected');
+			setNotify(correlationId, 'messages.thrust2Weight.motor.selected');
 
 			const response = await serviceStore.dispatcher.requestMotor(correlationIdI, item.motorId);
 			if (response) {
