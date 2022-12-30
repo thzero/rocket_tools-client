@@ -342,7 +342,7 @@ export default {
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
 		};
-	}
+	},
 	validations () {
 		return {
 			mass: { required, decimal, between: between(0, 9999), $autoDirty: true },
