@@ -56,8 +56,7 @@ export default {
 	components: {
 		VMarkdown
 	},
-	extends: base,
-	setup(props) {
+	setup(props, context) {
 		const {
 			correlationId,
 			error,
@@ -68,7 +67,7 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success
-		} = useBaseComponent(props);
+		} = useBaseComponent(props, context);
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
