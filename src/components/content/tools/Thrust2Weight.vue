@@ -13,6 +13,7 @@
 					:resetForm="resetForm"
 					buttonClearName="buttons.reset"
 					buttonOkName="buttons.calculate"
+					notifyMessageSaved="messages.calculated"
 					@ok="calculationOk"
 				>
 					<template v-slot:default>
@@ -148,7 +149,7 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
 import { between, decimal, required } from '@vuelidate/validators';
@@ -160,7 +161,8 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import DialogSupport from '@/library_vue/components/support/dialog';
 
-import toolBase from '@/components/content/tools/toolBase';
+import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
+
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
 
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
@@ -175,10 +177,32 @@ export default {
 		VNumberFieldWithValidation,
 		VTextField
 	},
-	extends: toolBase,
-	setup (props) {
-		const instance = getCurrentInstance();
-		
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notify,
+			notifyColor,
+			notifyMessage,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify
+		} = useToolsBaseComponent(props, context);
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 
@@ -187,11 +211,13 @@ export default {
 			calculated: false
 		});
 		const dialogMotorSearch = ref(new DialogSupport());
+		const form = ref(null);
 		const mass = ref(null);
 		const maxLaunchRodTime = ref(null);
 		const maxLaunchRodTimeDefault = ref(0.3);
 		const motor = ref(null);
 		const motorId = ref(null);
+		const motorSearchDialog = ref(null);
 		const thrustAverage = ref(null);
 		const thrustInitial = ref(null);
 		const thrustPeak = ref(null);
@@ -203,9 +229,9 @@ export default {
 
 		const calculationOk = async () => {
 			calculationResults.value.calculated = false;
-			const correlationId = instance.ctx.correlationId();
-			instance.ctx.initCalculationData(correlationId);
-			const response = await instance.ctx.serviceToolThrust2Weight.calculate(correlationId, calculationData.value);
+			const correlationIdI = correlationId();
+			initCalculationData(correlationIdI);
+			const response = await serviceToolThrust2Weight.calculate(correlationIdI, calculationData.value);
 			if (response && response.success) {
 				calculationResults.value = response.results;
 				calculationResults.value.calculated = true;
@@ -213,9 +239,9 @@ export default {
 			}
 		};
 		const clickMotorSearch = async () => {
-			await instance.ctx.$refs.motorSearchDialog.reset(instance.ctx.correlationId(), {});
+			await motorSearchDialog.reset(correlationId(), {});
 			// this.dialogMotorSearch.value.open(); // if using setup...
-			instance.ctx.dialogMotorSearch.open();
+			dialogMotorSearch.open();
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.mass = mass.value;
@@ -226,9 +252,9 @@ export default {
 		};
 
 		const reset = (correlationId) => {
-			// instance.ctx.$refs.frm.reset();
-			setTimeout(() => {
-				instance.ctx.$refs.form.reset(correlationId);
+			// form.value.reset();
+			setTimeout(async () => {
+				await form.value.reset(correlationId);
 			},
 			150);
 
@@ -257,14 +283,14 @@ export default {
 		};
 
 		const selectMotor = async (item)=> {
-			const correlationId = instance.ctx.correlationId();
+			const correlationIdI = correlationId();
 
 			// this.notify('messages.thrust2Weight.motor.selected');
 
-			const response = await instance.ctx.serviceStore.dispatcher.requestMotor(correlationId, item.motorId);
+			const response = await serviceStore.dispatcher.requestMotor(correlationIdI, item.motorId);
 			if (response) {
-				instance.ctx.initCalculationData(correlationId);
-				const response2 = await instance.ctx.serviceToolThrust2Weight.update(correlationId, response, instance.ctx.calculationData);
+				initCalculationData(correlationIdI);
+				const response2 = await serviceToolThrust2Weight.update(correlationIdI, response, calculationData);
 				if (response2 && response2.success) {
 					motor.value = item.designation;
 					motorId.value = item.motorId;
@@ -275,23 +301,46 @@ export default {
 				}
 			}
 
-			instance.ctx.dialogMotorSearch.ok();
+			dialogMotorSearch.ok();
 		}
 
 		onMounted(async () => {
-			instance.ctx.reset(false);
+			reset(false);
 
-			settings.value = instance.ctx.serviceStore.getters.user.getUserSettings();
+			settings.value = serviceStore.getters.user.getUserSettings();
 
-			calculationData.value = instance.ctx.serviceToolThrust2Weight.initialize(instance.ctx.correlationId());
+			calculationData.value = serviceToolThrust2Weight.initialize(correlationId());
 		});
 
-		return Object.assign(toolBase.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notify,
+			notifyColor,
+			notifyMessage,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify,
 			calculationData,
 			calculationOk,
 			calculationResults,
 			clickMotorSearch,
 			dialogMotorSearch,
+			form,
 			initCalculationData,
 			mass,
 			maxLaunchRodTime,
@@ -299,6 +348,7 @@ export default {
 			measurementUnitsWeight,
 			motor,
 			motorId,
+			motorSearchDialog,
 			reset,
 			resetForm,
 			selectMotor,
@@ -310,7 +360,7 @@ export default {
 			thrustPeak,
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
-		});
+		};
 	},
 	// data: () => ({
 	// 	calculationData: null,
@@ -346,69 +396,69 @@ export default {
 
 	// 	this.calculationData = this.serviceToolThrust2Weight.initialize(this.correlationId());
 	// },
-	methods: {
-		// async calculationOk() {
-		// 	this.calculationResults.calculated = false;
-		// 	const correlationId = this.correlationId();
-		// 	this.initCalculationData(correlationId);
-		// 	const response = await this.serviceToolThrust2Weight.calculate(correlationId, this.calculationData);
-		// 	if (response && response.success) {
-		// 		this.calculationResults = response.results;
-		// 		this.calculationResults.calculated = true;
-		// 		// this.notify('messages.thrust2Weight.calculated');
-		// 	}
-		// },
-		// async clickMotorSearch() {
-		// 	// await this.$refs.motorSearchDialog.reset(this.correlationId(), {});
-		// 	// // this.dialogMotorSearch.value.open(); // if using setup...
-		// 	// this.dialogMotorSearch.open();
-		// },
-		// initCalculationData(correlationId) {
-		// 	this.calculationData.mass = this.mass;
-		// 	this.calculationData.maxLaunchRodTime = this.maxLaunchRodTime;
-		// 	this.calculationData.thrustAverage = this.thrustAverage;
-		// 	this.calculationData.thrustInitial = this.thrustInitial;
-		// 	this.calculationData.thrustPeak = this.thrustPeak;
-		// },
-		// reset(correlationId, notify) {
-		// 	this.$refs.frm.reset();
+	// methods: {
+	// 	// async calculationOk() {
+	// 	// 	this.calculationResults.calculated = false;
+	// 	// 	const correlationId = this.correlationId();
+	// 	// 	this.initCalculationData(correlationId);
+	// 	// 	const response = await this.serviceToolThrust2Weight.calculate(correlationId, this.calculationData);
+	// 	// 	if (response && response.success) {
+	// 	// 		this.calculationResults = response.results;
+	// 	// 		this.calculationResults.calculated = true;
+	// 	// 		// this.notify('messages.thrust2Weight.calculated');
+	// 	// 	}
+	// 	// },
+	// 	// async clickMotorSearch() {
+	// 	// 	// await this.$refs.motorSearchDialog.reset(this.correlationId(), {});
+	// 	// 	// // this.dialogMotorSearch.value.open(); // if using setup...
+	// 	// 	// this.dialogMotorSearch.open();
+	// 	// },
+	// 	// initCalculationData(correlationId) {
+	// 	// 	this.calculationData.mass = this.mass;
+	// 	// 	this.calculationData.maxLaunchRodTime = this.maxLaunchRodTime;
+	// 	// 	this.calculationData.thrustAverage = this.thrustAverage;
+	// 	// 	this.calculationData.thrustInitial = this.thrustInitial;
+	// 	// 	this.calculationData.thrustPeak = this.thrustPeak;
+	// 	// },
+	// 	// reset(correlationId, notify) {
+	// 	// 	this.$refs.frm.reset();
 
-		// 	// notify = (notify !== null && notify !== undefined) ? notify : true;
-		// 	// if (notify)
-		// 	// 	this.notify('messages.reset');
-		// },
-		// resetForm() {
-		// 	this.calculationResults.calculated = false;
-		// 	this.mass = null;
-		// 	this.thrustAverage = null;
-		// 	this.thrustInitial = null;
-		// 	this.thrustPeak = null;
-		// 	this.maxLaunchRodTime = this.maxLaunchRodTimeDefault;
-		// 	this.motor = null;
-		// 	this.motorId = null;
-		// },
-		// async selectMotor(item) {
-		// 	// const correlationId = this.correlationId();
+	// 	// 	// notify = (notify !== null && notify !== undefined) ? notify : true;
+	// 	// 	// if (notify)
+	// 	// 	// 	this.notify('messages.reset');
+	// 	// },
+	// 	// resetForm() {
+	// 	// 	this.calculationResults.calculated = false;
+	// 	// 	this.mass = null;
+	// 	// 	this.thrustAverage = null;
+	// 	// 	this.thrustInitial = null;
+	// 	// 	this.thrustPeak = null;
+	// 	// 	this.maxLaunchRodTime = this.maxLaunchRodTimeDefault;
+	// 	// 	this.motor = null;
+	// 	// 	this.motorId = null;
+	// 	// },
+	// 	// async selectMotor(item) {
+	// 	// 	// const correlationId = this.correlationId();
 
-		// 	// // this.notify('messages.thrust2Weight.motor.selected');
+	// 	// 	// // this.notify('messages.thrust2Weight.motor.selected');
 
-		// 	// const response = await this.serviceStore.dispatcher.getMotor(correlationId, item.motorId);
-		// 	// if (response) {
-		// 	// 	this.initCalculationData(correlationId);
-		// 	// 	const response2 = await this.serviceToolThrust2Weight.update(correlationId, response, this.calculationData);
-		// 	// 	if (response2 && response2.success) {
-		// 	// 		this.motor = item.designation;
-		// 	// 		this.motorId = item.motorId;
-		// 	// 		this.calculationData = response2.results;
-		// 	// 		this.thrustAverage = this.calculationData.thrustAverage;
-		// 	// 		this.thrustInitial = this.calculationData.thrustInitial;
-		// 	// 		this.thrustPeak = this.calculationData.thrustPeak;
-		// 	// 	}
-		// 	// }
+	// 	// 	// const response = await this.serviceStore.dispatcher.getMotor(correlationId, item.motorId);
+	// 	// 	// if (response) {
+	// 	// 	// 	this.initCalculationData(correlationId);
+	// 	// 	// 	const response2 = await this.serviceToolThrust2Weight.update(correlationId, response, this.calculationData);
+	// 	// 	// 	if (response2 && response2.success) {
+	// 	// 	// 		this.motor = item.designation;
+	// 	// 	// 		this.motorId = item.motorId;
+	// 	// 	// 		this.calculationData = response2.results;
+	// 	// 	// 		this.thrustAverage = this.calculationData.thrustAverage;
+	// 	// 	// 		this.thrustInitial = this.calculationData.thrustInitial;
+	// 	// 	// 		this.thrustPeak = this.calculationData.thrustPeak;
+	// 	// 	// 	}
+	// 	// 	// }
 
-		// 	// this.dialogMotorSearch.ok();
-		// }
-	},
+	// 	// 	// this.dialogMotorSearch.ok();
+	// 	// }
+	// },
 	validations () {
 		return {
 			mass: { required, decimal, between: between(0, 9999), $autoDirty: true },

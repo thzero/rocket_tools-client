@@ -416,6 +416,7 @@
 		"thrustcurve": "ThrustCurve.org"
 	},
 	"messages": {
+		"calculated": "Calculated",
 		"clickOrHover": {
 			"description": "Click or hover to see description..."
 		},
