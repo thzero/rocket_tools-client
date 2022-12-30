@@ -1,7 +1,7 @@
 <script>
 import { useBaseComponent } from '@/library_vue/components/base';
 
-export function useContentBaseComponent(props, context, initializeI) {
+export function useContentBaseComponent(props, context, options) {
 	const {
 		correlationId,
 		error,
@@ -12,7 +12,7 @@ export function useContentBaseComponent(props, context, initializeI) {
 		noBreakingSpaces,
 		notImplementedError,
 		success
-	} = useBaseComponent(props, context, initializeI);
+	} = useBaseComponent(props, context, options);
 
 	return {
 		correlationId,

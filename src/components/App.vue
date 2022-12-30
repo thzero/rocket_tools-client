@@ -27,10 +27,12 @@ export default {
 		} = useBaseAppComponent(
 			props, 
 			context,
-			async () => {
-				return [
-					serviceStore.dispatcher.initialize(correlationId())
-				];
+			{
+				initializeI: async () => {
+					return [
+						serviceStore.dispatcher.initialize(correlationId())
+					];
+				}
 			}
 		);
 

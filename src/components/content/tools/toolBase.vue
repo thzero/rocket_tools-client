@@ -5,7 +5,7 @@ import { useContentBaseComponent } from '@/components/content/contentBase';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-export function useToolsBaseComponent(props, context, initializeI) {
+export function useToolsBaseComponent(props, context, options) {
 	const {
 		correlationId,
 		error,
@@ -16,7 +16,7 @@ export function useToolsBaseComponent(props, context, initializeI) {
 		noBreakingSpaces,
 		notImplementedError,
 		success
-	} = useContentBaseComponent(props, context, initializeI);
+	} = useContentBaseComponent(props, context, options);
 
 	const errors = ref(null);
 	const errorMessage = ref(null);

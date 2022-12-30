@@ -246,10 +246,10 @@ export default {
 			reset,
 			serviceStore,
 			serviceUsers,
-			snackbar,
-			timeout,
 			user
-		} = useBaseSettingsComponent(props, context, null, formSettingsRef);
+		} = useBaseSettingsComponent(props, context, {
+			formRef: formSettingsRef
+		}, );
 
 		const gamerTag = ref('');
 		const measurementUnitsId = ref(null);
@@ -406,8 +406,6 @@ export default {
 			reset,
 			serviceStore,
 			serviceUsers,
-			snackbar,
-			timeout,
 			user,
 			gamerTag,
 			measurementUnitTrans,
