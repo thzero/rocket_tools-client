@@ -8,7 +8,7 @@
 		<v-row dense>
 			<v-col cols="12">
 				<VFormControl
-					ref="form"
+					ref="formThrust2WeightRef"
 					:validation="validation"
 					:resetForm="resetForm"
 					buttonClearName="buttons.reset"
@@ -139,11 +139,10 @@
 			</v-col>
 		</v-row>
 	</div>
-
 	<MotorLookupDialog
-		ref="motorSearchDialog"
-		:signal="dialogMotorSearch.signal"
-		@close="dialogMotorSearch.cancel()"
+		ref="dialogMotorSearchRef"
+		:signal="dialogMotorSearchManager.signal"
+		@close="dialogMotorSearchManager.cancel()"
 		@ok="selectMotor"
 	/>
 </template>
@@ -210,14 +209,14 @@ export default {
 		const calculationResults = ref({
 			calculated: false
 		});
-		const dialogMotorSearch = ref(new DialogSupport());
-		const form = ref(null);
+		const dialogMotorSearchRef = ref(null);
+		const dialogMotorSearchManager = ref(new DialogSupport());
+		const formThrust2WeightRef = ref(null);
 		const mass = ref(null);
 		const maxLaunchRodTime = ref(null);
 		const maxLaunchRodTimeDefault = ref(0.3);
 		const motor = ref(null);
 		const motorId = ref(null);
-		const motorSearchDialog = ref(null);
 		const thrustAverage = ref(null);
 		const thrustInitial = ref(null);
 		const thrustPeak = ref(null);
@@ -239,9 +238,8 @@ export default {
 			}
 		};
 		const clickMotorSearch = async () => {
-			await motorSearchDialog.reset(correlationId(), {});
-			// this.dialogMotorSearch.value.open(); // if using setup...
-			dialogMotorSearch.open();
+			await dialogMotorSearchRef.value.reset(correlationId());
+			dialogMotorSearchManager.value.open();
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.mass = mass.value;
@@ -250,26 +248,13 @@ export default {
 			calculationData.value.thrustInitial = thrustInitial.value;
 			calculationData.value.thrustPeak = thrustPeak.value;
 		};
-
-		const reset = (correlationId) => {
-			// form.value.reset();
-			setTimeout(async () => {
-				await form.value.reset(correlationId);
-			},
-			150);
-
-			// notify = (notify !== null && notify !== undefined) ? notify : true;
-			// if (notify)
-			// 	this.notify('messages.reset');
+		const reset = async (correlationId) => {
+			await formThrust2WeightRef.value.reset(correlationId, false);
+			// setTimeout(async () => {
+			// 	await formThrust2WeightRef.value.reset(correlationId);
+			// },
+			// 150);
 		};
-		// const reset = (correlationId) => {
-		// 	const self = instance.ctx;
-		// 	setTimeout(() => {
-		// 		self.resetI(correlationId);
-		// 	},
-		// 	150);
-		// };
-		// eslint-disable-next-line
 
 		const resetForm = (correlationId) => {
 			calculationResults.value.calculated = false;
@@ -301,7 +286,7 @@ export default {
 				}
 			}
 
-			dialogMotorSearch.ok();
+			dialogMotorSearchManager.value.ok();
 		}
 
 		onMounted(async () => {
@@ -339,8 +324,9 @@ export default {
 			calculationOk,
 			calculationResults,
 			clickMotorSearch,
-			dialogMotorSearch,
-			form,
+			dialogMotorSearchRef,
+			dialogMotorSearchManager,
+			formThrust2WeightRef,
 			initCalculationData,
 			mass,
 			maxLaunchRodTime,
@@ -348,7 +334,6 @@ export default {
 			measurementUnitsWeight,
 			motor,
 			motorId,
-			motorSearchDialog,
 			reset,
 			resetForm,
 			selectMotor,

@@ -1,6 +1,6 @@
 <template>
 	<VFormControl
-		ref="form"
+		ref="formSettingsRef"
 		:validation="validation"
 		:resetForm="resetForm"
 		buttonClearName="buttons.reset"
@@ -213,7 +213,7 @@ export default {
 		VTextFieldWithValidation
 	},
 	setup(props, context) {
-		const form = ref(null);
+		const formSettingsRef = ref(null);
 
 		const {
 			correlationId,
@@ -249,7 +249,7 @@ export default {
 			snackbar,
 			timeout,
 			user
-		} = useBaseSettingsComponent(props, context, null, form);
+		} = useBaseSettingsComponent(props, context, null, formSettingsRef);
 
 		const gamerTag = ref('');
 		const measurementUnitsId = ref(null);
@@ -428,7 +428,7 @@ export default {
 			preCompleteOk,
 			resetForm,
 			resetFormIdCheck,
-			form,
+			formSettingsRef,
 			scope: 'AppSettings',
 			validation: useVuelidate({ $scope: 'AppSettings' }),
 		};

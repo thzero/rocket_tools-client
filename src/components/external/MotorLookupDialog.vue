@@ -1,6 +1,6 @@
 <template>
 	<VFormListingDialog
-		ref="dlg"
+		ref="dialogMotorLookup"
 		:label="$t('titles.external.motorSearch')"
 		:signal="signal"
 		:preCompleteOk="preCompleteOk"
@@ -169,11 +169,10 @@
 		</template>
 	</VFormListingDialog>
 	<VConfirmationDialog
-		ref="dlgConfirm"
-		:message="dlgConfirmMessage"
+		:message="dialogResetMessage"
 		:messageRaw=true
-		:signal="dialogReset.signal"
-		@cancel="dialogReset.cancel()"
+		:signal="dialogResetManager.signal"
+		@cancel="dialogResetManager.cancel()"
 		@ok="dialogResetOk"
 	/>
 </template>
@@ -234,9 +233,9 @@ export default {
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 
-		const dlg = ref(null);
-		const dlgConfirmMessage = ref(null);
-		const dialogReset = ref(new DialogSupport());
+		const dialogResetMessage = ref(null);
+		const dialogMotorLookup = ref(null);
+		const dialogResetManager = ref(new DialogSupport());
 		const diameter = ref(null);
 		const impulseClass = ref(null);
 		const manufacturer = ref(null);
@@ -259,7 +258,7 @@ export default {
 			return ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
 		});
 		const manufacturers = computed(() => {
-			return manufacturersCache.map((item) => { return { id: item.abbrev, name: item.name }; });
+			return manufacturersCache.value.map((item) => { return { id: item.abbrev, name: item.name }; });
 		});
 		const searchLocaleName = computed(() => {
 			return serviceExternalMotorSearch.nameLocale();
@@ -273,7 +272,7 @@ export default {
 		};
 
 		const clickMotorSearch = async () => {
-			await dlg.value.submit();
+			await dialogMotorLookup.value.submit(correlationId());
 			// const correlationId = this.correlationId();
 
 			// const result = await this.validation.$validate();
@@ -299,7 +298,7 @@ export default {
 			// this.results = response || [];
 		};
 		const clickMotorSearchClear = async () => {
-			await dlg.value.reset();
+			await dialogMotorLookup.value.reset(correlationId(), null, true);
 		};
 		const clickMotorSearchReset = async () => {
 			const last = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.last : 0;
@@ -336,15 +335,15 @@ export default {
 			}
 			message = message + '<br>' + GlobalUtility.$trans.t('motorSearch.motor_reset_message_confirm');
 
-			dlgConfirmMessage.value = message;
-			dialogReset.value.open();
+			dialogResetMessage.value = message;
+			dialogResetManager.value.open();
 		};
 		const clickMotorSelect = async (item) => {
 			context.emit('ok', item);
 			return true;
 		};
 		const dialogResetOk = async () => {
-			dialogReset.value.ok();
+			dialogResetManager.value.ok();
 			const correlationIdI = correlationId();
 			await serviceStore.dispatcher.requestMotorSearchReset(correlationIdI);
 			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
@@ -385,7 +384,7 @@ export default {
 			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 		};
 		// eslint-disable-next-line
-		const resetDialog = async (correlationId) => {
+		const resetDialog = async (correlationId, ignoreSettings) => {
 			impulseClass.value = null;
 			manufacturer.value = null;
 			motor.value = null;
@@ -393,6 +392,9 @@ export default {
 
 			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 
+			if (ignoreSettings)
+				return;
+				
 			const data = await serviceStore.getters.getMotorSearchCriteria();
 			if (!data)
 				return;
@@ -411,7 +413,7 @@ export default {
 			await preCompleteOk(correlationId);
 		};
 		const reset = async (correlationId) => {
-			await dlg.value.reset();
+			await dialogMotorLookup.value.reset(correlationId, false);
 		};
 
 		onMounted(async () => {
@@ -437,11 +439,12 @@ export default {
 			clickMotorSearchResetDisabled,
 			clickMotorSelect,
 			close,
-			dialogReset,
+			dialogResetManager,
 			dialogResetOk,
 			diameter,
 			diameters,
-			dlgConfirmMessage,
+			dialogResetMessage,
+			dialogMotorLookup,
 			impulseClass,
 			impulseClasses,
 			manufacturer,

@@ -19,7 +19,7 @@
 		<v-row dense>
 			<v-col cols="3">
 				<VFormControl
-					ref="form"
+					ref="formFlightInfoRef"
 					:validation="validation"
 					:resetForm="resetInput"
 					buttonClearName="buttons.reset"
@@ -633,7 +633,7 @@
 					<tr>
 						<td>
 							<flightInfoChart
-								ref="flightInfoChart"
+								ref="flightInfoChartRef"
 								:chart-data="flightInfoChartData"
 							/>
 						</td>
