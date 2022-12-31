@@ -20,6 +20,7 @@ const Constants = {
 		SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER: 'serviceFlightInfoProcessorEggtimer',
 		SERVICE_FLIGHT_PATH_PROCESSOR: 'serviceFlightPathProcessor',
 		SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT: 'serviceFlightPathProcessorFeatherweight',
+		SERVICE_TOOLS_CALCULATION_ENGINE: 'serviceToolsCalculationEngine',
 		SERVICE_TOOLS_THRUST2WEIGHT: 'serviceToolsThrust2Weight',
 		SERVICE_EXTERNAL_MOTOR_SEARCH: 'serviceExternalMotorSearch'
 	},

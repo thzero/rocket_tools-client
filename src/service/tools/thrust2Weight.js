@@ -1,3 +1,9 @@
+import { create, all }from 'mathjs';
+
+import Constants from '@/constants';
+
+import LibraryUtility from '@thzero/library_common/utility/index';
+
 import BaseService from '@thzero/library_client/service/index';
 
 class Thrust2WeightToolsService extends BaseService {
@@ -6,6 +12,7 @@ class Thrust2WeightToolsService extends BaseService {
 	}
 
     init(injector) {
+		this._serviceCalculationEngine = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE);
     }
 
 	async calculate(correlationId, data) {
@@ -23,11 +30,85 @@ class Thrust2WeightToolsService extends BaseService {
 			calcuated: true
 		};
 
-		const mass = (massInKg * 9.8);
-		results.initial = data.thrustInitial != null ? Number(data.thrustInitial) / mass : null;
-		results.peak = data.thrustPeak != null ? Number(data.thrustPeak) / mass : null;
-		results.average = data.thrustAverage != null ? Number(data.thrustAverage) / mass : null;
-		return this._successResponse(results, correlationId);
+		/*
+		Thrust to Weight ratio - force in newtons divided by weight in newtons
+		F = ma
+		N = 1 kg⋅m/s2 = ma
+		W (in Newtons) = m * 9.8ms−2
+		*/
+
+		// const massInNewtons = (massInKg * 9.8);
+		// // N = 1 kg⋅m/s2
+		// results.initial = data.thrustInitial != null ? Number(data.thrustInitial) / massInNewtons : null;
+		// results.peak = data.thrustPeak != null ? Number(data.thrustPeak) / massInNewtons : null;
+		// results.average = data.thrustAverage != null ? Number(data.thrustAverage) / massInNewtons : null;
+
+		const calculationSteps = [
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'gravity',
+				value: 9.8
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massInKg',
+				value: massInKg
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'thrustInitial',
+				value: Number(data.thrustInitial)
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'thrustPeak',
+				value: Number(data.thrustPeak)
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'thrustAverage',
+				value: Number(data.thrustAverage)
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'massInNewtons',
+				evaluate: 'massInNewtons = massInKg * gravity'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'initial',
+				evaluate: 'initial = thrustInitial / massInNewtons',
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'peak',
+				evaluate: 'peak = thrustPeak != null ? thrustPeak / massInNewtons : null',
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'average',
+				evaluate: 'average = thrustAverage != null ? thrustAverage / massInNewtons : null',
+				result: true
+			}
+		];
+
+		// const instance = this._serviceCalculationEngine.initialize(correlationId);
+		// instance.addListener(correlationId, (type, name, value) => {
+		// 	console.log('type', type);
+		// 	console.log(name, value);
+		// });
+		// const responseCalculate = instance.calculate(correlationId, calculationSteps);
+		// if (this._hasFailed(responseCalculate))
+		// 	return responseCalculate;
+
+		// return this._successResponse(responseCalculate.results, correlationId);
+		
+		return this._successResponse({
+			steps: calculationSteps,
+			instance: this._serviceCalculationEngine.initialize(correlationId)
+		}, correlationId);
 	}
 
 	initialize() {

@@ -95,45 +95,57 @@
 			<v-col cols="12">
 				<v-card>
 					<v-card-text>
-						<div class="text-center text-h5 pb-2">
-							{{ $t('strings.content.tools.thrust2Weight.calculated') }}
-						</div>
-						<div v-if="calculationResults.calculated">
-							<v-row class="pb-2" dense>
-								<v-col cols="4">
-									<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-							</v-row>
-							<v-row 
-								class="pb-2"
-								dense
-								v-if="!calculationResults.success"
+						<v-row dense class="pb-2">
+							<v-col class="text-center text-h5">
+								{{ $t('strings.content.tools.thrust2Weight.calculated') }}
+							</v-col>
+						</v-row>
+						<v-row dense class="pb-2" v-if="calculationResults.calculated">
+							<v-col>
+								<v-row class="pb-2" dense>
+									<v-col cols="4">
+										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+						<v-row dense class="pb-4">
+							<v-col>
+								{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
+								<div v-if="motor">
+									<br>
+									{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
+								</div>
+							</v-col>
+						</v-row>
+						<v-row dense style="overflow: auto; max-height: 100vh;">
+							<v-col
+								style="overflow: overflow-y; height: 150px;"
 							>
-								failed
-							</v-row>
-						</div>
-						<div class="">
-							{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
-							<div v-if="motor">
-								<br>
-								{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
-							</div>
-						</div>
+								<v-code lang="javascript">
+									<template
+										v-for="value in doh"
+									>
+										{{ value }}<br/>
+									</template>
+								</v-code>
+							</v-col>
+						</v-row>
 					</v-card-text>
 				</v-card>
 			</v-col>
@@ -221,20 +233,35 @@ export default {
 		const thrustInitial = ref(null);
 		const thrustPeak = ref(null);
 		const settings = ref(null);
+		const doh = ref([]);
 
 		const measurementUnitsWeight = computed(() => {
 			return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits.value + '.weight');
 		});
 
 		const calculationOk = async () => {
+			doh.value = [];
+
 			calculationResults.value.calculated = false;
 			const correlationIdI = correlationId();
 			initCalculationData(correlationIdI);
 			const response = await serviceToolThrust2Weight.calculate(correlationIdI, calculationData.value);
 			if (response && response.success) {
-				calculationResults.value = response.results;
-				calculationResults.value.calculated = true;
-				// this.notify('messages.thrust2Weight.calculated');
+				// calculationResults.value = response.results;
+				// calculationResults.value.calculated = true;
+				response.results.instance.addListener(correlationIdI, (type, name, value) => {
+					// console.log('type', type);
+					// console.log(name, value);
+					if (type === response.results.instance.symTypeEvaluate)
+						doh.value.push(`${name}`);
+					else if (type === response.results.instance.symTypeSet)
+						doh.value.push(`${name} = ${value}`);
+				});
+				const responseCalc = response.results.instance.calculate(correlationIdI, response.results.steps);
+				if (responseCalc && responseCalc.success) {
+					calculationResults.value = responseCalc.results;
+					calculationResults.value.calculated = true;
+				}
 			}
 		};
 		const clickMotorSearch = async () => {
@@ -339,6 +366,7 @@ export default {
 			thrustAverage,
 			thrustInitial,
 			thrustPeak,
+			doh,
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
 		};
