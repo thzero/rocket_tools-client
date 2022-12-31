@@ -55,6 +55,13 @@ export default {
 				},
 				{
 					category: 'client',
+					name: 'mathjs',
+					url: 'https://github.com/josdejong/mathjs',
+					licenseName: 'Apache 2.0',
+					licenseUrl: 'https://github.com/josdejong/mathjs/blob/develop/LICENSE'
+				},
+				{
+					category: 'client',
 					name: 'papaparse',
 					url: 'https://github.com/mholt/PapaParse',
 					licenseName: 'MIT',
