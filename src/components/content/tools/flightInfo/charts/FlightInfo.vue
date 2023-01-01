@@ -34,14 +34,15 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import { Chart, registerables } from 'chart.js';
 
 // import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+// import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
 Chart.register(...registerables);
 
@@ -51,9 +52,22 @@ export default {
 		chartData: Object,
 		optionsOverride: Object
 	},
-	extends: base,
-	setup(props) {
-		const instance = getCurrentInstance();
+	// extends: base,
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success
+		} = useBaseComponent(
+			props, 
+			context
+		);
 		
 		const chart = ref(null);
 		const chartContext = ref(null);
@@ -203,14 +217,23 @@ export default {
 				chart.value = new Chart(chartContext.value, props.chartData);
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			chart,
 			chartContext,
 			date,
 			location,
 			options,
 			title
-		});
+		};
 	},
 	// data: () => ({
 	// 	date: '',

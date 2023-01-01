@@ -239,256 +239,6 @@
 										</v-expansion-panel-text>
 									</v-expansion-panel>
 								</v-expansion-panels>
-								<!-- <v-card-actions>
-									{{ $t('flightInfo.style.title') }}
-									<q-space></q-space>
-									<q-btn
-										color="grey"
-										round
-										dense
-										flat
-										:icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-										@click="expanded = !expanded"
-									></q-btn>
-								</v-card-actions> -->
-
-								<!-- <q-slide-transition>
-									<div v-show="expanded"> -->
-										<!-- <q-separator></q-separator> -->
-										<!-- <v-card-item class="text-subitle2">
-											<v-row dense>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleAltitudeFColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.altitude.filtered')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleAltitudeFColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleAltitudeFColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleAltitudeColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.altitude.title')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleAltitudeColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleAltitudeColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-											</v-row>
-											<v-row dense>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleVelocityFColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.velocity.filtered')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleVelocityFColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleVelocityFColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleVelocityColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.velocity.title')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleVelocityColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleVelocityColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-											</v-row>
-											<v-row dense>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventApogeeColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.apogee.title')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventApogeeColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventApogeeColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventApogeeBorderColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.apogee.border')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventApogeeBorderColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventApogeeBorderColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-											</v-row>
-											<v-row dense>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventDrogueColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.drogue.title')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventDrogueColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventDrogueColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventDrogueBorderColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.drogue.border')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventDrogueBorderColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventDrogueBorderColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-											</v-row>
-											<v-row dense>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventMainColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.main.title')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventMainColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventMainColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-												<v-col cols="12" lg="6">
-													<q-input
-														v-model="flightInfoStyleEventMainBorderColor"
-														filled
-														dense
-														:label="$t('flightInfo.style.event.main.border')"
-													>
-														<template v-slot:prepend>
-															<div :style="'height: 25px; width: 25px; background-color: ' + flightInfoStyleEventMainBorderColor">
-															</div>
-														</template>
-														<template v-slot:append>
-															<q-icon name="colorize" class="cursor-pointer">
-																<q-popup-proxy cover transition-show="scale" transition-hide="scale">
-																	<q-color v-model="flightInfoStyleEventMainBorderColor" />
-																</q-popup-proxy>
-															</q-icon>
-														</template>
-													</q-input>
-												</v-col>
-											</v-row>
-											<v-row dense>
-												<v-col cols="12">
-													<div class="float-right mt-2">
-														<q-btn
-															class="q-mr-sm"
-															dense
-															color="primary"
-															:label="$t('buttons.save')"
-															:disable="!flightInfoProcessor"
-															@click="flightInfoStyleSave"
-														/>
-														<q-btn
-															dense
-															color="primary"
-															:label="$t('buttons.reset')"
-															@click="flightInfoStyleReset"
-														/>
-													</div>
-												</v-col>
-											</v-row>
-										</v-card-item> -->
-									<!-- </div>
-								</q-slide-transition> -->
 							</v-card>
 						</div>
 					</template>
@@ -650,7 +400,7 @@
 		</v-row>
 	</div>
 	<v-snackbar
-		v-model="notify"
+		v-model="notifySignal"
 		:color="notifyColor"
 		:timeout="notifyTimeout"
     >
@@ -659,7 +409,7 @@
 </template>
 
 <script>
-import { getCurrentInstance, onMounted, ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
 import { required, requiredUnless } from '@vuelidate/validators';
@@ -674,10 +424,11 @@ import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import VuetifyUtility from '@/library_vue_vuetify/utility/index';
 
-import flightInfoData from '@/components/content/tools/FlightInfoData';
-import flightInfoChart from '@/components/content/tools/charts/FlightInfo';
+import flightInfoData from '@/components/content/tools/flightInfo/FlightInfoData';
+import flightInfoChart from '@/components/content/tools/flightInfo/charts/FlightInfo';
 
-import toolBase from '@/components/content/tools/toolBase';
+// import toolBase from '@/components/content/tools/toolBase';
+import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 import VCheckboxWithValidation from '@/library_vue_vuetify/components/form/VCheckboxWithValidation';
 import VColorWithValidation from '@/library_vue_vuetify/components/form/VColorWithValidation';
@@ -692,7 +443,7 @@ import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTex
 
 export default {
 	name: 'FlightInfo',
-	extends: toolBase,
+	// extends: toolBase,
 	components: {
 		flightInfoData,
 		flightInfoChart,
@@ -707,8 +458,34 @@ export default {
 		VTextField,
 		VTextFieldWithValidation
 	},
-	setup(props) {
-		const instance = getCurrentInstance();
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify
+		} = useToolsBaseComponent(
+			props, 
+			context
+		);
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
 		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR);
@@ -755,12 +532,12 @@ export default {
 
 		watch(() => flightInfoDataTypeActual.value,
 			(value) => {
-				instance.ctx.checkFlightInfoDataTypeUse();
+				checkFlightInfoDataTypeUse();
 			}
 		);
 		watch(() => flightInfoDataTypeFiltered.value,
 			(value) => {
-				instance.ctx.checkFlightInfoDataTypeUse();
+				checkFlightInfoDataTypeUse();
 			}
 		);
 		watch(() => flightInfoProcessor.value,
@@ -768,27 +545,28 @@ export default {
 				if (!value)
 					return;
 
-				instance.ctx.flightInfoStyleLoad(value);
+				flightInfoStyleLoad(correlationId(), value);
 			}
 		);
 
 		onMounted(async () => {
-			instance.ctx.reset();
+			const correlationIdI = correlationId();
+			reset(correlationIdI);
 
-			instance.ctx.flightInfoStyleReset(false);
+			flightInfoStyleReset(correlationIdI, false);
 
-			flightInfoDate.value = instance.ctx.serviceStore.getters.getFlightDate();
-			flightInfoLocation.value = instance.ctx.serviceStore.getters.getFlightLocation();
-			flightInfoMeasurementUnits.value = instance.ctx.serviceStore.getters.getFlightMeasurementUnits();
-			flightInfoTitle.value = instance.ctx.serviceStore.getters.getFlightTitle();
+			flightInfoDate.value = serviceStore.getters.getFlightDate();
+			flightInfoLocation.value = serviceStore.getters.getFlightLocation();
+			flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+			flightInfoTitle.value = serviceStore.getters.getFlightTitle();
 
-			flightInfoDataTypeUse.value = instance.ctx.serviceStore.getters.getFlightInfoDataTypeUse();
-			flightInfoProcessor.value = instance.ctx.serviceStore.getters.getFlightInfoProcessor();
+			flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
+			flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 
-			flightInfoProcessors.value = VuetifyUtility.selectOptions(instance.ctx.serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'forms.content.tools.flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
+			flightInfoProcessors.value = VuetifyUtility.selectOptions(serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'forms.content.tools.flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
 			flightInfoMeasurementUnitsOptions.value = VuetifyUtility.selectOptions(AppUtility.measurementUnitsOptions(), GlobalUtility.$trans.t, 'measurementUnits');
 
-			resolution.value = instance.ctx.serviceStore.getters.getFlightInfoResolution() ?? Constants.FlightInfo.Resolution;
+			resolution.value = serviceStore.getters.getFlightInfoResolution(correlationIdI) ?? Constants.FlightInfo.Resolution;
 		});
 		
 		const checkFlightInfoDataTypeUse = () => {
@@ -803,16 +581,17 @@ export default {
 		const clickResolution = (resolution2) => {
 			resolution.value = resolution2;
 
-			instance.ctx.serviceStore.dispatcher.setFlightInfoResolution(instance.ctx.correlationId(), resolution2);
+			const correlationIdI = correlationId();
+			serviceStore.dispatcher.setFlightInfoResolution(correlationIdI, resolution2);
 
 			if (processing.value )
-				instance.ctx.flightInfoProcess();
+				flightInfoProcess(correlationIdI);
 		};
-		const flightInfoStyleLoad = () => {
+		const flightInfoStyleLoad = (correlationId) => {
 			if (String.isNullOrEmpty(flightInfoProcessor.value ))
 				return;
 
-			const style = instance.ctx.serviceStore.getters.getFlightInfoStyle(flightInfoProcessor.value );
+			const style = serviceStore.getters.getFlightInfoStyle(flightInfoProcessor.value );
 			if (!style)
 				return;
 
@@ -827,22 +606,23 @@ export default {
 			flightInfoStyleVelocityColor.value = style.velocity.color;
 			flightInfoStyleVelocityFColor.value = style.velocityF.color;
 		};
-		const flightInfoStyleReset = (notify) => {
-			flightInfoStyleAltitudeColor.value = instance.ctx.serviceFlightInfo.styleDefault.altitude.color;
-			flightInfoStyleAltitudeFColor.value = instance.ctx.serviceFlightInfo.styleDefault.altitudeF.color;
-			flightInfoStyleEventApogeeColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.apogee.color;
-			flightInfoStyleEventApogeeBorderColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.apogeeBorder.color;
-			flightInfoStyleEventDrogueColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.drogue.color;
-			flightInfoStyleEventDrogueBorderColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.drogueBorder.color;
-			flightInfoStyleEventMainColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.main.color;
-			flightInfoStyleEventMainBorderColor.value = instance.ctx.serviceFlightInfo.styleDefault.event.mainBorder.color;
-			flightInfoStyleVelocityColor.value = instance.ctx.serviceFlightInfo.styleDefault.velocity.color;
-			flightInfoStyleVelocityFColor.value = instance.ctx.serviceFlightInfo.styleDefault.velocityF.color;
+		const flightInfoStyleReset = (correlationId, notify) => {
+			flightInfoStyleAltitudeColor.value = serviceFlightInfo.styleDefault.altitude.color;
+			flightInfoStyleAltitudeFColor.value = serviceFlightInfo.styleDefault.altitudeF.color;
+			flightInfoStyleEventApogeeColor.value = serviceFlightInfo.styleDefault.event.apogee.color;
+			flightInfoStyleEventApogeeBorderColor.value = serviceFlightInfo.styleDefault.event.apogeeBorder.color;
+			flightInfoStyleEventDrogueColor.value = serviceFlightInfo.styleDefault.event.drogue.color;
+			flightInfoStyleEventDrogueBorderColor.value = serviceFlightInfo.styleDefault.event.drogueBorder.color;
+			flightInfoStyleEventMainColor.value = serviceFlightInfo.styleDefault.event.main.color;
+			flightInfoStyleEventMainBorderColor.value = serviceFlightInfo.styleDefault.event.mainBorder.color;
+			flightInfoStyleVelocityColor.value = serviceFlightInfo.styleDefault.velocity.color;
+			flightInfoStyleVelocityFColor.value = serviceFlightInfo.styleDefault.velocityF.color;
 
 			if (notify)
-				instance.ctx.setNotify('messages.reset');
+				setNotify(correlationId(), 'messages.reset');
 		};
 		const flightInfoStyleSave = () => {
+			const correlationIdI = correlationId();
 			if (String.isNullOrEmpty(flightInfoProcessor.value))
 				return;
 
@@ -882,19 +662,19 @@ export default {
 				}
 			};
 
-			instance.ctx.serviceStore.setFlightInfoStyle(instance.ctx.correlationId(), style);
+			serviceStore.setFlightInfoStyle(correlationIdI, style);
 
-			instance.ctx.setNotify('messages.saved');
+			setNotify(correlationIdI, 'messages.saved');
 		};
-		const flightInfoExport = () => {
-			//const barRef = instance.ctx.$refs.bar;
+		const flightInfoExport = (correlationId) => {
+			//const barRef = $refs.bar;
 			try {
 				const el = document.getElementById('flight-info');
-				instance.ctx.getScreenshotOfElement(el, ((data) => {
-					const name = instance.ctx.flightInfoExportName('png');
+				getScreenshotOfElement(correlationId, el, ((data) => {
+					const name = flightInfoExportName('png');
 					// barRef.start();
 
-					instance.ctx.serviceDownload.downloadUrl(instance.ctx.correlationId(), 'data:image/png;base64,' + data,
+					serviceDownload.downloadUrl(correlationIdI, 'data:image/png;base64,' + data,
 						name,
 						() => {
 							AppUtility.debug2('download', 'completed');
@@ -916,12 +696,12 @@ export default {
 				// barRef.stop();
 			}
 		};
-		const flightInfoExportDownload = (output, extension) => {
+		const flightInfoExportDownload = (correlationId, output, extension) => {
 			try {
-				const name = instance.ctx.flightInfoExportName(extension);
+				const name = flightInfoExportName(correlationId, extension);
 				downloadProgress.value = true;
 
-				instance.ctx.serviceDownload.download(instance.ctx.correlationId(), output,
+				serviceDownload.download(correlationId, output,
 					name,
 					() => {
 						AppUtility.debug2('download', 'completed');
@@ -942,14 +722,16 @@ export default {
 			}
 		};
 		const flightInfoExportImage = () => {
-			const output = instance.ctx.serviceFlightInfo.processOutputJson(flightInfo.value);
-			flightInfoExportDownload(output, 'json');
+			const correlationIdI = correlationId();
+			const output = serviceFlightInfo.processOutputJson(correlationIdI, flightInfo.value);
+			flightInfoExportDownload(correlationIdI, output, 'json');
 		};
 		const flightInfoExportJson = () => {
-			const output = instance.ctx.serviceFlightInfo.processOutputJson(flightInfo.value);
-			flightInfoExportDownload(output, 'json');
+			const correlationIdI = correlationId();
+			const output = serviceFlightInfo.processOutputJson(correlationIdI, flightInfo.value);
+			flightInfoExportDownload(correlationIdI, output, 'json');
 		};
-		const flightInfoExportName = (extension) => {
+		const flightInfoExportName = (correlationId, extension) => {
 			extension = !String.isNullOrEmpty(extension) ? extension : 'png';
 
 			const currentDate = flightInfoDate.value ? new Date(flightInfoDate.value) : new Date();
@@ -960,24 +742,25 @@ export default {
 			return 'flight-input-' + day + '-' + month + '-' + year + '.' + extension;
 		};
 		const flightInfoExportText = () => {
-			const output = instance.ctx.serviceFlightInfo.processOutputText(flightInfo.value);
-			instance.ctx.flightInfoExportDownload(output, 'txt');
+			const correlationIdI = correlationId();
+			const output = serviceFlightInfo.processOutputText(correlationIdI, flightInfo.value);
+			flightInfoExportDownload(correlationIdI, output, 'txt');
 		};
-		const flightInfoProcess = () => {
-			instance.ctx.reset();
-			instance.ctx.setNotify('messages.processing');
+		const flightInfoProcess = (correlationId) => {
+			reset(correlationId);
+			setNotify(correlationId, 'messages.processing');
 
 			processing.value = true;
 
 			setTimeout(() => {
 				if (String.isNullOrEmpty(flightInfoInput.value)) {
-					instance.ctx.setError(GlobalUtility.$trans.t('errors.process.noInput'));
+					setError(GlobalUtility.$trans.t('errors.process.noInput'));
 					return;
 				}
 
 				const data = Papa.parse(flightInfoInput.value.trim());
 				if (data.errors && data.errors.length > 0) {
-					instance.ctx.setError(GlobalUtility.$trans.t('errors.process.unableToConvert'));
+					setError(GlobalUtility.$trans.t('errors.process.unableToConvert'));
 					return;
 				}
 
@@ -987,11 +770,11 @@ export default {
 					use: flightInfoDataTypeUse.value
 				};
 
-				const flightInfoResults = instance.ctx.serviceFlightInfo.process(data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
+				const flightInfoResults = serviceFlightInfo.process(correlationId, data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
 				AppUtility.debug2('flightInfoResults', flightInfoResults);
 				if (flightInfoResults.errors && data.errors.length > 0) {
 					const errors = flightInfoResults.errors.map(e => GlobalUtility.$trans.t(e) + '<br/>');
-					instance.ctx.setError(errors);
+					setError(errors);
 					return;
 				}
 
@@ -1003,7 +786,7 @@ export default {
 				if (!String.isNullOrEmpty(flightInfoLocation.value))
 					flightInfoResults.info.location = flightInfoLocation.value;
 				if (!String.isNullOrEmpty(flightInfoMeasurementUnits.value))
-					flightInfoResults.info.measurementUnit = flightInfoMeasurementUnits.value;
+					flightInfoResults.info.measurementUnits = flightInfoMeasurementUnits.value;
 
 				flightInfoResults.info.style.altitude = flightInfoStyleAltitudeColor.value;
 				flightInfoResults.info.style.altitudeF = flightInfoStyleAltitudeFColor.value;
@@ -1019,30 +802,30 @@ export default {
 				flightInfoChartData.value = flightInfoResults.info;
 				flightInfo.value = flightInfoResults.info;
 
-				instance.ctx.serviceStore.dispatcher.setFlightDate(instance.ctx.correlationId(), flightInfoDate.value);
-				instance.ctx.serviceStore.dispatcher.setFlightLocation(instance.ctx.correlationId(), flightInfoLocation.value);
-				instance.ctx.serviceStore.dispatcher.setFlightMeasurementUnits(instance.ctx.correlationId(), flightInfoMeasurementUnits.value);
-				instance.ctx.serviceStore.dispatcher.setFlightTitle(instance.ctx.correlationId(), flightInfoTitle.value);
+				serviceStore.dispatcher.setFlightDate(correlationId, flightInfoDate.value);
+				serviceStore.dispatcher.setFlightLocation(correlationId, flightInfoLocation.value);
+				serviceStore.dispatcher.setFlightMeasurementUnits(correlationId, flightInfoMeasurementUnits.value);
+				serviceStore.dispatcher.setFlightTitle(correlationId, flightInfoTitle.value);
 
-				instance.ctx.serviceStore.dispatcher.setFlightInfoDataTypeUse(instance.ctx.correlationId(), flightInfoDataTypeUse.value);
-				instance.ctx.serviceStore.dispatcher.setFlightInfoProcessor(instance.ctx.correlationId(), flightInfoProcessor.value);
+				serviceStore.dispatcher.setFlightInfoDataTypeUse(correlationId, flightInfoDataTypeUse.value);
+				serviceStore.dispatcher.setFlightInfoProcessor(correlationId, flightInfoProcessor.value);
 
-				flightInfoMeasurementUnits.value = instance.ctx.serviceStore.getters.getFlightMeasurementUnits();
-				flightInfoTitle.value = instance.ctx.serviceStore.getters.getFlightTitle();
+				flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+				flightInfoTitle.value = serviceStore.getters.getFlightTitle();
 
-				flightInfoDataTypeUse.value = instance.ctx.serviceStore.getters.getFlightInfoDataTypeUse();
-				flightInfoProcessor.value = instance.ctx.serviceStore.getters.getFlightInfoProcessor();
+				flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
+				flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 
-				instance.ctx.setNotify('messages.processed');
+				setNotify(correlationId, 'messages.processed');
 
-				instance.ctx.$nextTick(() =>
+				nextTick(() =>
             		document.getElementById('top').scrollIntoView({behavior: 'smooth'})
         		);
 
 				buttons.value.export.disabled = false;
 			}, 50);
 		};
-		const getScreenshotOfElement = (element, callback, posX, posY, width, height) => {
+		const getScreenshotOfElement = (correlationId, element, callback, posX, posY, width, height) => {
 			html2canvas(element).then(canvas => {
 				// document.body.appendChild(canvas);
 				posX = posX ?? 0;
@@ -1061,33 +844,26 @@ export default {
 				callback(outputCanvas.toDataURL().replace('data:image/png;base64,', ''));
 			});
 		};
-		const hasError = () => {
-			return (
-				instance.ctx.$refs.flightInfoInput.hasError ||
-				instance.ctx.$refs.flightInfoProcessor.hasError ||
-				instance.ctx.$refs.flightInfoMeasurementUnits.hasError ||
-				flightInfoDataTypeError.value
-			);
-		};
 		// const onChangeDate = (value) => {
-		// 	instance.ctx.serviceStore.dispatcher.setFlightDate(instance.ctx.correlationId(), value);
+		// 	serviceStore.dispatcher.setFlightDate(correlationId(), value);
 		// };
 		// const onChangeLocation = (value) => {
-		// 	instance.ctx.serviceStore.dispatcher.setFlightLocation(instance.ctx.correlationId(), value);
+		// 	serviceStore.dispatcher.setFlightLocation(correlationId(), value);
 		// };
 		// const onChangeTitle = (value) => {
-		// 	instance.ctx.serviceStore.dispatcher.setFlightTitle(instance.ctx.correlationId(), value);
+		// 	serviceStore.dispatcher.setFlightTitle(correlationId(), value);
 		// };
-		const reset = () => {
+		const reset = (correlationId) => {
 			buttons.value.export.disabled = true;
-			instance.ctx.setErrorMessage(null);
-			instance.ctx.setErrorTimer(null);
+			setErrorMessage(null);
+			setErrorTimer(null);
 			flightInfo.value = null;
 			flightInfoChartData.value = null;
 			processing.value = false;
 		};
 		const resetInput = () => {
-			instance.ctx.reset();
+			const correlationIdI = correlationId();
+			reset(correlationIdI);
 			flightInfoDataTypeActual.value = true;
 			flightInfoDataTypeFiltered.value = true;
 			flightInfoDataTypeUse.value = true;
@@ -1099,10 +875,32 @@ export default {
 			flightInfoTitle.value = null;
 			buttons.value.process.disabled = true;
 
-			instance.ctx.setNotify('messages.reset');
+			setNotify(correlationIdI, 'messages.reset');
 		};
 
-		return Object.assign(toolBase.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify,
 			buttons,
 			downloadProgress,
 			expanded,
@@ -1150,12 +948,11 @@ export default {
 			flightInfoExport,
 			flightInfoProcess,
 			getScreenshotOfElement,
-			hasError,
 			reset,
 			resetInput,
 			scope: 'FlightInfo',
 			validation: useVuelidate({ $scope: 'FlightInfo' })
-		});
+		};
 	},
 	validations () {
 		return {

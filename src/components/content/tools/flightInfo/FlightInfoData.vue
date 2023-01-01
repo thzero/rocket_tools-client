@@ -221,13 +221,14 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 import Constants from '@/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import toolBase from '@/components/content/tools/toolBase';
+// import toolBase from '@/components/content/tools/toolBase';
+import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 export default {
 	name: 'flightInfo',
@@ -237,9 +238,35 @@ export default {
 			default: () => { return {}; }
 		}
 	},
-	extends: toolBase,
-	setup(props) {
-		const instance = getCurrentInstance();
+	// extends: toolBase,
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify
+		} = useToolsBaseComponent(
+			props, 
+			context
+		);
 
 		const flightInfoInner = ref(null);
 
@@ -247,16 +274,16 @@ export default {
 			return flightInfoInner.value?.measurementUnits ?? Constants.MeasurementUnits.english.id;
 		});
 		const measurementAcceleration = computed(() => {
-			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + instance.ctx.measurementUnits + '.acceleration.abbr') : '';
+			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + measurementUnits.value + '.acceleration.abbr') : '';
 		});
 		const measurementAltitude = computed(() => {
-			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + instance.ctx.measurementUnits + '.altitude.abbr') : '';
+			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + measurementUnits.value + '.altitude.abbr') : '';
 		});
 		const measurementTime = computed(() => {
-			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + instance.ctx.measurementUnits + '.time.abbr') : '';
+			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + measurementUnits.value + '.time.abbr') : '';
 		});
 		const measurementVelocity = computed(() => {
-			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + instance.ctx.measurementUnits + '.velocity.abbr') : '';
+			return flightInfoInner.value ? GlobalUtility.$trans.t('measurements.' + measurementUnits.value + '.velocity.abbr') : '';
 		});
 
 		const valueType = (value, valueF) => {
@@ -269,7 +296,29 @@ export default {
 			}
 		);
 
-		return Object.assign(toolBase.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify,
 			flightInfoInner,
 			measurementUnits,
 			measurementAcceleration,
@@ -277,7 +326,7 @@ export default {
 			measurementTime,
 			measurementVelocity,
 			valueType
-		});
+		};
 	},
 	// computed: {
 	// 	measurementUnits() { return this.flightInfoInner?.measurementUnits ?? AppUtility.measurementUnitEnglish; },

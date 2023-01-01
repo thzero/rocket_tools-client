@@ -248,7 +248,7 @@ const routes = [
 			{
 				path: '',
 				name: 'flightInfo',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/FlightInfo.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/flightInfo/FlightInfo.vue'),
 				meta: {
 					requiresAuth: false
 				}

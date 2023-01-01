@@ -21,9 +21,9 @@ export function useToolsBaseComponent(props, context, options) {
 	const errors = ref(null);
 	const errorMessage = ref(null);
 	const errorTimer = ref(null);
-	const notify = ref(false);
 	const notifyColor = ref(null);
 	const notifyMessage = ref(null);
+	const notifySignal = ref(false);
 	const notifyTimeout = ref(3000);
 
 	const dateFormat = computed(() => {
@@ -50,10 +50,17 @@ export function useToolsBaseComponent(props, context, options) {
 			clearTimeout(errorTimer.value);
 		errorTimer.value = timer;
 	};
-	const setNotify = (message) => {
+	const setNotify = (correlationId, message, transformed) => {
+		if (String.isNullOrEmpty(message))
+			return;
+
+		message = (!transformed ? GlobalUtility.$trans.t(message) : message);
+		if (String.isNullOrEmpty(message))
+			return;
+
 		notifyColor.value = null;
-		notifyMessage.value = GlobalUtility.$trans.t(message);
-		notify.value = true;
+		notifyMessage.value = (!transformed ? GlobalUtility.$trans.t(message) : message);
+		notifySignal.value = true;
 	};
 
 	return {
@@ -72,9 +79,9 @@ export function useToolsBaseComponent(props, context, options) {
 		errors,
 		errorTimer,
 		formatNumber,
-		notify,
 		notifyColor,
 		notifyMessage,
+		notifySignal,
 		notifyTimeout,
 		setErrorMessage,
 		setErrorTimer,
