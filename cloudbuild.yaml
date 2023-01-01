@@ -16,6 +16,8 @@ steps:
       ls -a ./src
       echo "src/common..."
       ls -a ./src/common
+      echo "recursive"
+      ls -R
   # Firebase
 #   - name: 'gcr.io/cloud-builders/git'
 #     entrypoint: 'bash'
