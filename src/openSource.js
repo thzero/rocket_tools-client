@@ -1,6 +1,6 @@
 /* eslint-disable */
 /* GENERATED FILE - DO NOT EDIT */
-export default () => { return [  () => {
+export function useDependenciesClientBase () { return [  () => {
     return [
         {
             category: 'client',

@@ -1,11 +1,29 @@
 <script>
 import vOpenSource from '@/library_vue_vuetify/components/VOpenSource';
+import { useFrameworkOpenSourceComponent } from '@/library_vue_vuetify/components/frameworkOpenSource';
 
 export default {
 	name: 'OpenSource',
 	extends: vOpenSource,
-	setup(props) {
-		const initializeDependenciesClient = async () => {
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			combineDependencies,
+			data,
+			dependenciesClient,
+			dependenciesServer,
+			initializeDependenciesClientBase,
+			key,
+			serviceStore
+		} = useFrameworkOpenSourceComponent(props, context, () => {
 			return [
 				{
 					category: 'client',
@@ -37,6 +55,13 @@ export default {
 				},
 				{
 					category: 'client',
+					name: 'mathjs',
+					url: 'https://github.com/josdejong/mathjs',
+					licenseName: 'Apache 2.0',
+					licenseUrl: 'https://github.com/josdejong/mathjs/blob/develop/LICENSE'
+				},
+				{
+					category: 'client',
 					name: 'papaparse',
 					url: 'https://github.com/mholt/PapaParse',
 					licenseName: 'MIT',
@@ -57,11 +82,26 @@ export default {
 					licenseUrl: 'https://github.com/Teun/thenBy.js/blob/master/LICENSE.TXT'
 				}
 			];
-		};
-
-		return Object.assign(vOpenSource.setup(props), {
-			initializeDependenciesClient
 		});
-	},
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			combineDependencies,
+			data,
+			dependenciesClient,
+			dependenciesServer,
+			initializeDependenciesClientBase,
+			key,
+			serviceStore
+		};
+	}
 };
 </script>

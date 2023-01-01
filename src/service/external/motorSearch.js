@@ -51,6 +51,7 @@ class MotorSearchExternalService extends BaseService {
 		}
 		catch (err) {
 			this._logger.exception('MotorSearchExternalService', 'manufacturers', err, correlationId);
+			return this._error('MotorSearchExternalService', 'manufacturers', null, err, null, null, correlationId);
 		}
 	}
 

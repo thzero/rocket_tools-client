@@ -7,6 +7,7 @@ import flightInfoProcessorService from '@/service/flightInfo/index';
 import flightInfoProcessorEggtimerService from '@/service/flightInfo/processors/eggtimer';
 import flightPathProcessorService from '@/service/flightPath/index';
 import flightPathProcessorFeatherweightService from '@/service/flightPath/processors/featherweight';
+import mathJsCalculationEngineToolService from '@/service/tools/engine/mathjs/index';
 import restCommunicationService from '@thzero/library_client_service_rest_axios';
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
 import thrustCurveMotoSearchExternalService from '@/service/external/motorSearchThrustCurve';
@@ -33,6 +34,7 @@ class Services extends BaseServices {
 		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR, new flightPathProcessorService());
 		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT, new flightPathProcessorFeatherweightService());
 
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolService());
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT, new thrust2WeightToolsService());
 
 		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotoSearchExternalService());

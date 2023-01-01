@@ -326,13 +326,14 @@
 </template>
 
 <script>
-import { computed, getCurrentInstance, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import baseMainLayout from '@/library_vue/layouts/baseMainLayout';
+// import baseMainLayout from '@/library_vue/layouts/baseMainLayout';
+import { useBaseMainLayout } from '@/library_vue/layouts/baseMainLayout';
 
 // import CharacterNewDialog from '@/components/gameSystems/CharacterNewDialog';
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
@@ -351,19 +352,42 @@ export default {
 		VLayoutFooter,
 		VLoadingOverlay
 	},
-	extends: baseMainLayout,
 	setup(props) {
-		const instance = getCurrentInstance();
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			features,
+			closeOnContentClick,
+			clickAbout,
+			clickOpenSource,
+			clickSignIn,
+			clickSignOut,
+			clickSupport,
+			dialogSignOut,
+			dialogSignOutOk,
+			drawer,
+			isAuthCompleted,
+			isLoggedIn,
+			serviceAuth,
+			serviceStore,
+			toggleDrawer
+		} = useBaseMainLayout(props);
 
 		const serviceMarkup = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_MARKUP_PARSER);
 
-		const closeOnContentClick = ref(true);
 		const dialogDisplayMarkupSignal = ref(new DialogSupport());
 		const displayMarkupValue = ref(null);
 		const dialogNewCharacter = ref(new DialogSupport());
 
 		const info = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
@@ -371,7 +395,7 @@ export default {
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
 		const links = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.links)
@@ -379,7 +403,7 @@ export default {
 			return temp.links.sort((a, b) => a.order >= b.order);
 		});
 		const tools = computed(() => {
-			let temp = instance.ctx.serviceStore.state.content;
+			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.tools)
@@ -394,16 +418,39 @@ export default {
 			dialogDisplayMarkupSignal.value.ok();
 		};
 		const markup = (correlationId, value) => {
-			displayMarkupValue.value = value ? instance.ctx.serviceMarkup.trimResults(correlationId, instance.ctx.serviceMarkup.render(correlationId, value)) : null;
+			displayMarkupValue.value = value ? serviceMarkup.trimResults(correlationId, serviceMarkup.render(correlationId, value)) : null;
 		};
 		
 		GlobalUtility.$EventBus.on('display-markup', (value) => {
-			instance.ctx.markup(instance.ctx.correlationId(), value);
+			markup(correlationId(), value);
 			dialogDisplayMarkupSignal.value.open();
 		});
 
-		return Object.assign(baseMainLayout.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			features,
 			closeOnContentClick,
+			clickAbout,
+			clickOpenSource,
+			clickSignIn,
+			clickSignOut,
+			clickSupport,
+			dialogSignOut,
+			dialogSignOutOk,
+			drawer,
+			isAuthCompleted,
+			isLoggedIn,
+			serviceAuth,
+			serviceStore,
+			toggleDrawer,
 			dialogDisplayMarkupCancel,
 			dialogDisplayMarkupOk,
 			dialogDisplayMarkupSignal,
@@ -414,7 +461,7 @@ export default {
 			markup,
 			serviceMarkup,
 			tools
-		});
+		};
 	},
 	// data: () => ({
 	// 	closeOnContentClick: true,

@@ -1,6 +1,6 @@
 <template>
 	<VFormListingDialog
-		ref="dlg"
+		ref="dialogMotorLookup"
 		:label="$t('titles.external.motorSearch')"
 		:signal="signal"
 		:preCompleteOk="preCompleteOk"
@@ -169,17 +169,16 @@
 		</template>
 	</VFormListingDialog>
 	<VConfirmationDialog
-		ref="dlgConfirm"
-		:message="dlgConfirmMessage"
+		:message="dialogResetMessage"
 		:messageRaw=true
-		:signal="dialogReset.signal"
-		@cancel="dialogReset.cancel()"
+		:signal="dialogResetManager.signal"
+		@cancel="dialogResetManager.cancel()"
 		@ok="dialogResetOk"
 	/>
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
 import { helpers, minLength, requiredUnless } from '@vuelidate/validators';
@@ -190,7 +189,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 import CommonUtility from '@thzero/library_common/utility/index';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 import VFormListingDialog from '@/library_vue_vuetify/components/form/VFormListingDialog';
@@ -207,7 +206,6 @@ export default {
 		VSelectWithValidation,
 		VTextFieldWithValidation
 	},
-	extends: base,
 	props: {
 		selectable: {
 			type: Boolean,
@@ -219,14 +217,25 @@ export default {
 		}
 	},
 	emits: ['close', 'ok'],
-	setup (props) {
-		const instance = getCurrentInstance();
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success
+		} = useBaseComponent(props, context);
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const serviceExternalMotorSearch = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH);
 
-		const dlgConfirmMessage = ref(null);
-		const dialogReset = ref(new DialogSupport());
+		const dialogResetMessage = ref(null);
+		const dialogMotorLookup = ref(null);
+		const dialogResetManager = ref(new DialogSupport());
 		const diameter = ref(null);
 		const impulseClass = ref(null);
 		const manufacturer = ref(null);
@@ -238,7 +247,7 @@ export default {
 		const ttl = ref(0);
 
 		const clickMotorSearchResetDisabled = computed(() => {
-			// const ttl = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			// const ttl = .serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 			const now = CommonUtility.getTimestamp();
 			return (ttl.value < now);
 		});
@@ -249,21 +258,21 @@ export default {
 			return ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'].map((item) => { return { id: item, name: item }; });
 		});
 		const manufacturers = computed(() => {
-			return instance.ctx.manufacturersCache.map((item) => { return { id: item.abbrev, name: item.name }; });
+			return manufacturersCache.value.map((item) => { return { id: item.abbrev, name: item.name }; });
 		});
 		const searchLocaleName = computed(() => {
-			return instance.ctx.serviceExternalMotorSearch.nameLocale();
+			return serviceExternalMotorSearch.nameLocale();
 		});
 		const searchUrl = computed(() => {
-			return instance.ctx.serviceExternalMotorSearch.urlHuman();
+			return serviceExternalMotorSearch.urlHuman();
 		});
 
 		const close = () => {
-			instance.ctx.$emit('close');
+			context.emit('close');
 		};
 
 		const clickMotorSearch = async () => {
-			await instance.ctx.$refs.dlg.submit();
+			await dialogMotorLookup.value.submit(correlationId());
 			// const correlationId = this.correlationId();
 
 			// const result = await this.validation.$validate();
@@ -289,11 +298,11 @@ export default {
 			// this.results = response || [];
 		};
 		const clickMotorSearchClear = async () => {
-			await instance.ctx.$refs.dlg.reset();
+			await dialogMotorLookup.value.reset(correlationId(), null, true);
 		};
 		const clickMotorSearchReset = async () => {
-			const last = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.last : 0;
-			// const ttl2 = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			const last = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.last : 0;
+			// const ttl2 = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 			const ttl2 = ttl.value;
 
 			const now = CommonUtility.getTimestamp();
@@ -326,27 +335,27 @@ export default {
 			}
 			message = message + '<br>' + GlobalUtility.$trans.t('motorSearch.motor_reset_message_confirm');
 
-			dlgConfirmMessage.value = message;
-			dialogReset.value.open();
+			dialogResetMessage.value = message;
+			dialogResetManager.value.open();
 		};
 		const clickMotorSelect = async (item) => {
-			instance.ctx.$emit('ok', item);
+			context.emit('ok', item);
 			return true;
 		};
 		const dialogResetOk = async () => {
-			dialogReset.value.ok();
-			const correlationId = instance.ctx.correlationId();
-			await instance.ctx.serviceStore.dispatcher.requestMotorSearchReset(correlationId);
-			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
-			await instance.ctx.preCompleteOk(correlationId);
+			dialogResetManager.value.ok();
+			const correlationIdI = correlationId();
+			await serviceStore.dispatcher.requestMotorSearchReset(correlationIdI);
+			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
+			await preCompleteOk(correlationIdI);
 		};
 		const motorCaseInfo = (motor) => {
 			if (motor.type === 'SU')
-				return instance.ctx.$t('motorSearch.motor_type_singleuse');
+				return GlobalUtility.$trans.t('motorSearch.motor_type_singleuse');
 
 			if (motor.type === 'hybrid' || motor.type === 'reload') {
 				if (motor.caseInfo !== null) {
-					const type = instance.ctx.$t('motorSearch.motor_type_' + motor.type.toLowerCase());
+					const type = GlobalUtility.$trans.t('motorSearch.motor_type_' + motor.type.toLowerCase());
 					return '(' + motor.caseInfo + '; ' + type + ')';
 				}
 			}
@@ -354,7 +363,7 @@ export default {
 			return '';
 		};
 		const motorUrl = (motor) => {
-			return instance.ctx.serviceExternalMotorSearch.urlMotor(motor);
+			return serviceExternalMotorSearch.urlMotor(motor);
 		};
 		const preCompleteOk = async (correlationId) => {
 			results.value = null;
@@ -368,22 +377,25 @@ export default {
 				sparky: sparky.value
 			};
 
-			instance.ctx.serviceStore.dispatcher.setMotorSearchCriteria(correlationId, request);
+			serviceStore.dispatcher.setMotorSearchCriteria(correlationId, request);
 
-			const response = await instance.ctx.serviceStore.dispatcher.requestMotorSearchResults(correlationId, request);
+			const response = await serviceStore.dispatcher.requestMotorSearchResults(correlationId, request);
 			results.value = response || [];
-			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 		};
 		// eslint-disable-next-line
-		const resetDialog = async (correlationId) => {
+		const resetDialog = async (correlationId, ignoreSettings) => {
 			impulseClass.value = null;
 			manufacturer.value = null;
 			motor.value = null;
 			results.value = null;
 
-			ttl.value = instance.ctx.serviceStore.state.motorSearchResults ? instance.ctx.serviceStore.state.motorSearchResults.ttl : 0;
+			ttl.value = serviceStore.state.motorSearchResults ? serviceStore.state.motorSearchResults.ttl : 0;
 
-			const data = await instance.ctx.serviceStore.getters.getMotorSearchCriteria();
+			if (ignoreSettings)
+				return;
+				
+			const data = await serviceStore.getters.getMotorSearchCriteria();
 			if (!data)
 				return;
 
@@ -395,34 +407,44 @@ export default {
 			singleUse.value = !CommonUtility.isNull(data.singleUse) ? data.singleUse : false;
 
 			// (async () => {
-			// 	// await instance.ctx.clickMotorSearch();
-			// 	await instance.ctx.preCompleteOk(correlationId);
+			// 	// await clickMotorSearch();
+			// 	await preCompleteOk(correlationId);
 			// })();
-			await instance.ctx.preCompleteOk(correlationId);
+			await preCompleteOk(correlationId);
 		};
 		const reset = async (correlationId) => {
-			await instance.ctx.$refs.dlg.reset();
+			await dialogMotorLookup.value.reset(correlationId, false);
 		};
 
 		onMounted(async () => {
 			if (manufacturersCache.value !== null)
 				return;
 
-			manufacturersCache.value = await serviceStore.dispatcher.requestMotorManufacturers(instance.ctx.correlationId());
+			manufacturersCache.value = await serviceStore.dispatcher.requestMotorManufacturers(correlationId());
 		});
 
-		return Object.assign(base.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
 			clickMotorSearch,
 			clickMotorSearchClear,
 			clickMotorSearchReset,
 			clickMotorSearchResetDisabled,
 			clickMotorSelect,
 			close,
-			dialogReset,
+			dialogResetManager,
 			dialogResetOk,
 			diameter,
 			diameters,
-			dlgConfirmMessage,
+			dialogResetMessage,
+			dialogMotorLookup,
 			impulseClass,
 			impulseClasses,
 			manufacturer,
@@ -443,7 +465,7 @@ export default {
 			singleUse,
 			scope: 'MotorLookupDialog',
 			validation: useVuelidate({ $scope: 'MotorLookupDialog' })
-		});
+		};
 	},
 	// data: () => ({
 	// 	dlgConfirmMessage: null,

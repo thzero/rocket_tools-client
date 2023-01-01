@@ -7,14 +7,14 @@ class FlightInfoProcessorService extends BaseService {
 		throw Error('Not Implemented');
 	}
 
-	process(results, input, measurementUnits) {
-		this._enforceNotNull('FlightInfoProcessorService', 'process', results, 'results');
-		this._enforceNotNull('FlightInfoProcessorService', 'process', input, 'input');
-		this._enforceNotEmpty('FlightInfoProcessorService', 'process', measurementUnits, 'measurementUnits');
+	process(correlationId, results, input, measurementUnits) {
+		this._enforceNotNull('FlightInfoProcessorService', 'process', results, 'results', correlationId);
+		this._enforceNotNull('FlightInfoProcessorService', 'process', input, 'input', correlationId);
+		this._enforceNotEmpty('FlightInfoProcessorService', 'process', measurementUnits, 'measurementUnits', correlationId);
 
 		this._data = new FlightData();
 
-		this._processInput(input);
+		this._processInput(correlationId, input);
 
 		let altitude;
 		let altitudeF;
@@ -451,12 +451,12 @@ class FlightInfoProcessorService extends BaseService {
 		return value;
 	}
 
-	_processInput(input) {
+	_processInput(correlationId, input) {
 		throw Error('Not Implemented');
 	}
 
-	_publish(time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground) {
-		this._data.publish(time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground);
+	_publish(correlationId, time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground) {
+		this._data.publish(correlationId, time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground);
 	}
 
 	_round(value, places = 2) {
@@ -473,7 +473,7 @@ class FlightData {
 		return this._rows;
 	}
 
-	publish(time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground) {
+	publish(correlationId, time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground) {
 		this._rows.push({
 			altitude: Number(altitude),
 			altitudeF: altitudeF ? Number(altitudeF) : null,

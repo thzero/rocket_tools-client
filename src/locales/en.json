@@ -416,6 +416,7 @@
 		"thrustcurve": "ThrustCurve.org"
 	},
 	"messages": {
+		"calculated": "Calculated",
 		"clickOrHover": {
 			"description": "Click or hover to see description..."
 		},
@@ -436,7 +437,7 @@
 	},
 	"mobileApp": {
 		"notYetAvailable": "Coming Soon!",
-		"text1": "The RocketSidekick mobile application (for Android, and eventually iOSd) provides additional capabilities that \nprovides some additional capabilities that are focused in the field usage.  Not all of the capabilities will be available on both\napplications.\n\nThe mobile applications capabilities are:\n\n* Ability to calculate Thrust to Weight ratios\n* Ability to search motors via ThrurstCurve.org's applications\n* Search results are cached on the mobile device\n\t* Create and maintain <sup>1</sup>\n\t* Launch preparation checklists\n\t* Rocket inventory\n\t* Parachute inventory\n\t* Altimeter inventory\n\t* GPS Tracker inventory\n* Execute a preparation checklist for a launch\n* Track launches and success or failure of the launch <sup>1</sup>\n\n<sup>1</sup> Items marked with an asterik will also sync with the web application and may also be available to maintain within the web application."
+		"text1": "The RocketSidekick mobile application (for Android, and eventually iOS) provides additional capabilities that \nprovides some additional capabilities that are focused in the field usage.  Not all of the capabilities will be available on both\napplications.\n\nThe mobile applications capabilities are:\n\n* Ability to calculate Thrust to Weight ratios\n* Ability to search motors via ThrurstCurve.org's applications\n* Search results are cached on the mobile device\n\t* Create and maintain <sup>1</sup>\n\t* Launch preparation checklists\n\t* Rocket inventory\n\t* Parachute inventory\n\t* Altimeter inventory\n\t* GPS Tracker inventory\n* Execute a preparation checklist for a launch\n* Track launches and success or failure of the launch <sup>1</sup>\n\n<sup>1</sup> Items marked with an asterik will also sync with the web application and may also be available to maintain within the web application."
 	},
 	"motorSearch": {
 		"title": "Motor Search",

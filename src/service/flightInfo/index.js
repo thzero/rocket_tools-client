@@ -61,11 +61,11 @@ class FlightInfoProcessorService extends BaseService {
 		return this._serviceProcessors;
 	}
 
-	process(data, processorId, measurementUnits, dataTypes) {
-		this._enforceNotNull('FlightInfoProcessorService', 'process', data, 'data');
-		this._enforceNotEmpty('FlightInfoProcessorService', 'process', processorId, 'processorId');
-		this._enforceNotEmpty('FlightInfoProcessorService', 'process', measurementUnits, 'measurementUnits');
-		this._enforceNotEmpty('FlightInfoProcessorService', 'process', dataTypes, 'dataTypes');
+	process(correlationId, data, processorId, measurementUnits, dataTypes) {
+		this._enforceNotNull('FlightInfoProcessorService', 'process', data, 'data', correlationId);
+		this._enforceNotEmpty('FlightInfoProcessorService', 'process', processorId, 'processorId', correlationId);
+		this._enforceNotEmpty('FlightInfoProcessorService', 'process', measurementUnits, 'measurementUnits', correlationId);
+		this._enforceNotEmpty('FlightInfoProcessorService', 'process', dataTypes, 'dataTypes', correlationId);
 
 		const results = new Results();
 
@@ -79,7 +79,7 @@ class FlightInfoProcessorService extends BaseService {
 			return results;
 		}
 
-		const processor = this._determineProcessor(processorId);
+		const processor = this._determineProcessor(correlationId, processorId);
 		if (!processor) {
 			results.setError('errors.process.noProcessor');
 			return results;
@@ -87,20 +87,20 @@ class FlightInfoProcessorService extends BaseService {
 
 		results.info = this._initialize();
 		results.info.dataTypes = dataTypes;
-		processor.process(results, data, measurementUnits);
+		processor.process(correlationId, results, data, measurementUnits);
 		AppUtility.debug2(results.info);
 
 		return results;
 	}
 
-	processOutputJson(flightInfo) {
-		this._enforceNotNull('FlightInfoProcessorService', 'processOutputJson', flightInfo, 'flightInfo');
+	processOutputJson(correlationId, flightInfo) {
+		this._enforceNotNull('FlightInfoProcessorService', 'processOutputJson', flightInfo, 'flightInfo', correlationId);
 
 		return JSON.stringify(flightInfo);
 	}
 
-	processOutputText(flightInfo) {
-		this._enforceNotNull('FlightInfoProcessorService', 'processOutputJson', flightInfo, 'flightInfo');
+	processOutputText(correlationId, flightInfo) {
+		this._enforceNotNull('FlightInfoProcessorService', 'processOutputJson', flightInfo, 'flightInfo', correlationId);
 
 		/*
 			const output = `
@@ -138,8 +138,8 @@ Events
 */
 	}
 
-	_determineProcessor(processorId) {
-		this._enforceNotEmpty('FlightInfoProcessorService', '_determineProcessor', processorId, 'processorId');
+	_determineProcessor(correlationId, processorId) {
+		this._enforceNotEmpty('FlightInfoProcessorService', '_determineProcessor', processorId, 'processorId', correlationId);
 
 		const processor = this._serviceProcessors.find(s => {
 			return s.id.toLowerCase() === processorId.toLowerCase();
@@ -147,7 +147,7 @@ Events
 		return processor;
 	}
 
-	_initialize() {
+	_initialize(correlationId) {
 		return {
 			acceleration: {
 				avg: {

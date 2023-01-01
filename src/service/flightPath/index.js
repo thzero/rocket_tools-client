@@ -45,11 +45,11 @@ class FlightPathProcessorService extends BaseService {
 		return this._serviceProcessors;
 	}
 
-	process(data, processorId, measurementUnits, flightInfo) {
-		this._enforceNotNull('FlightPathProcessorService', 'process', data, 'data');
-		this._enforceNotEmpty('FlightPathProcessorService', 'process', processorId, 'processorId');
-		this._enforceNotEmpty('FlightPathProcessorService', 'process', measurementUnits, 'measurementUnits');
-		this._enforceNotNull('FlightPathProcessorService', 'process', flightInfo, 'flightInfo');
+	process(correlationId, data, processorId, measurementUnits, flightInfo) {
+		this._enforceNotNull('FlightPathProcessorService', 'process', data, 'data', correlationId);
+		this._enforceNotEmpty('FlightPathProcessorService', 'process', processorId, 'processorId', correlationId);
+		this._enforceNotEmpty('FlightPathProcessorService', 'process', measurementUnits, 'measurementUnits', correlationId);
+		this._enforceNotNull('FlightPathProcessorService', 'process', flightInfo, 'flightInfo', correlationId);
 
 		const results = new Results();
 
@@ -63,21 +63,21 @@ class FlightPathProcessorService extends BaseService {
 			return results;
 		}
 
-		const processor = this._determineProcessor(processorId);
+		const processor = this._determineProcessor(correlationId, processorId);
 		if (!processor) {
 			results.setError('errors.process.noProcessor');
 			return results;
 		}
 
-		results.info = this._initialize(flightInfo);
-		processor.process(results, data, measurementUnits);
+		results.info = this._initialize(correlationId, flightInfo);
+		processor.process(correlationId, results, data, measurementUnits);
 		AppUtility.debug2('results.info', results.info);
 
 		return results;
 	}
 
-	_determineProcessor(processorId) {
-		this._enforceNotEmpty('FlightPathProcessorService', '_determineProcessor', processorId, 'processorId');
+	_determineProcessor(correlationId, processorId) {
+		this._enforceNotEmpty('FlightPathProcessorService', '_determineProcessor', processorId, 'processorId', correlationId);
 
 		const processor = this._serviceProcessors.find(s => {
 			return s.id.toLowerCase() === processorId.toLowerCase();
@@ -85,8 +85,8 @@ class FlightPathProcessorService extends BaseService {
 		return processor;
 	}
 
-	_initialize(flightInfo) {
-		this._enforceNotNull('FlightPathProcessorService', '_initialize', flightInfo, 'flightInfo');
+	_initialize(correlationId, flightInfo) {
+		this._enforceNotNull('FlightPathProcessorService', '_initialize', flightInfo, 'flightInfo', correlationId);
 
 		flightInfo.flightPath = [];
 		return flightInfo;

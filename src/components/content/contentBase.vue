@@ -1,12 +1,29 @@
 <script>
-import base from '@/library_vue/components/base';
+import { useBaseComponent } from '@/library_vue/components/base';
 
-export default {
-	name: 'contentBase',
-	extends: base,
-	setup(props) {
-		return Object.assign(base.setup(props), {
-		});
-	}
+export function useContentBaseComponent(props, context, options) {
+	const {
+		correlationId,
+		error,
+		hasFailed,
+		hasSucceeded,
+		initialize,
+		logger,
+		noBreakingSpaces,
+		notImplementedError,
+		success
+	} = useBaseComponent(props, context, options);
+
+	return {
+		correlationId,
+		error,
+		hasFailed,
+		hasSucceeded,
+		initialize,
+		logger,
+		noBreakingSpaces,
+		notImplementedError,
+		success
+	};
 };
 </script>

@@ -8,11 +8,12 @@
 		<v-row dense>
 			<v-col cols="12">
 				<VFormControl
-					ref="form"
+					ref="formThrust2WeightRef"
 					:validation="validation"
 					:resetForm="resetForm"
 					buttonClearName="buttons.reset"
 					buttonOkName="buttons.calculate"
+					notifyMessageSaved="messages.calculated"
 					@ok="calculationOk"
 				>
 					<template v-slot:default>
@@ -94,61 +95,72 @@
 			<v-col cols="12">
 				<v-card>
 					<v-card-text>
-						<div class="text-center text-h5 pb-2">
-							{{ $t('strings.content.tools.thrust2Weight.calculated') }}
-						</div>
-						<div v-if="calculationResults.calculated">
-							<v-row class="pb-2" dense>
-								<v-col cols="4">
-									<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-								<v-col cols="4">
-									<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
-								</v-col>
-							</v-row>
-							<v-row 
-								class="pb-2"
-								dense
-								v-if="!calculationResults.success"
+						<v-row dense class="pb-2">
+							<v-col class="text-center text-h5">
+								{{ $t('strings.content.tools.thrust2Weight.calculated') }}
+							</v-col>
+						</v-row>
+						<v-row dense class="pb-2" v-if="calculationResults.calculated">
+							<v-col>
+								<v-row class="pb-2" dense>
+									<v-col cols="4">
+										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span class="text-bold" v-if="calculationResults.peak">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span>{{ calculationResults.initial.toFixed(2) + ' '  + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span v-if="calculationResults.peak">{{ calculationResults.peak.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+									<v-col cols="4">
+										<span v-if="calculationResults.average">{{ calculationResults.average.toFixed(2) + ' ' + $t('strings.content.tools.thrust2Weight.newtons_abbr') +'/' + $t('strings.content.tools.thrust2Weight.mass_metric_abbr') }}</span>
+									</v-col>
+								</v-row>
+							</v-col>
+						</v-row>
+						<v-row dense class="pb-4">
+							<v-col>
+								{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
+								<div v-if="motor">
+									<br>
+									{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
+								</div>
+							</v-col>
+						</v-row>
+						<v-row dense style="overflow: auto; max-height: 100vh;">
+							<v-col
+								style="overflow: overflow-y; height: 150px;"
 							>
-								failed
-							</v-row>
-						</div>
-						<div class="">
-							{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
-							<div v-if="motor">
-								<br>
-								{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
-							</div>
-						</div>
+								<v-code lang="javascript">
+									<template
+										v-for="value in doh"
+									>
+										{{ value }}<br/>
+									</template>
+								</v-code>
+							</v-col>
+						</v-row>
 					</v-card-text>
 				</v-card>
 			</v-col>
 		</v-row>
 	</div>
-
 	<MotorLookupDialog
-		ref="motorSearchDialog"
-		:signal="dialogMotorSearch.signal"
-		@close="dialogMotorSearch.cancel()"
+		ref="dialogMotorSearchRef"
+		:signal="dialogMotorSearchManager.signal"
+		@close="dialogMotorSearchManager.cancel()"
 		@ok="selectMotor"
 	/>
 </template>
 
 <script>
-import { computed, getCurrentInstance, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
 import { between, decimal, required } from '@vuelidate/validators';
@@ -160,7 +172,8 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import DialogSupport from '@/library_vue/components/support/dialog';
 
-import toolBase from '@/components/content/tools/toolBase';
+import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
+
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
 
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
@@ -175,10 +188,32 @@ export default {
 		VNumberFieldWithValidation,
 		VTextField
 	},
-	extends: toolBase,
-	setup (props) {
-		const instance = getCurrentInstance();
-		
+	setup (props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify
+		} = useToolsBaseComponent(props, context);
+
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 
@@ -186,7 +221,9 @@ export default {
 		const calculationResults = ref({
 			calculated: false
 		});
-		const dialogMotorSearch = ref(new DialogSupport());
+		const dialogMotorSearchRef = ref(null);
+		const dialogMotorSearchManager = ref(new DialogSupport());
+		const formThrust2WeightRef = ref(null);
 		const mass = ref(null);
 		const maxLaunchRodTime = ref(null);
 		const maxLaunchRodTimeDefault = ref(0.3);
@@ -196,26 +233,40 @@ export default {
 		const thrustInitial = ref(null);
 		const thrustPeak = ref(null);
 		const settings = ref(null);
+		const doh = ref([]);
 
 		const measurementUnitsWeight = computed(() => {
 			return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits.value + '.weight');
 		});
 
 		const calculationOk = async () => {
+			doh.value = [];
+
 			calculationResults.value.calculated = false;
-			const correlationId = instance.ctx.correlationId();
-			instance.ctx.initCalculationData(correlationId);
-			const response = await instance.ctx.serviceToolThrust2Weight.calculate(correlationId, calculationData.value);
+			const correlationIdI = correlationId();
+			initCalculationData(correlationIdI);
+			const response = await serviceToolThrust2Weight.calculate(correlationIdI, calculationData.value);
 			if (response && response.success) {
-				calculationResults.value = response.results;
-				calculationResults.value.calculated = true;
-				// this.notify('messages.thrust2Weight.calculated');
+				// calculationResults.value = response.results;
+				// calculationResults.value.calculated = true;
+				response.results.instance.addListener(correlationIdI, (type, name, value) => {
+					// console.log('type', type);
+					// console.log(name, value);
+					if (type === response.results.instance.symTypeEvaluate)
+						doh.value.push(`${name}`);
+					else if (type === response.results.instance.symTypeSet)
+						doh.value.push(`${name} = ${value}`);
+				});
+				const responseCalc = response.results.instance.calculate(correlationIdI, response.results.steps);
+				if (responseCalc && responseCalc.success) {
+					calculationResults.value = responseCalc.results;
+					calculationResults.value.calculated = true;
+				}
 			}
 		};
 		const clickMotorSearch = async () => {
-			await instance.ctx.$refs.motorSearchDialog.reset(instance.ctx.correlationId(), {});
-			// this.dialogMotorSearch.value.open(); // if using setup...
-			instance.ctx.dialogMotorSearch.open();
+			await dialogMotorSearchRef.value.reset(correlationId());
+			dialogMotorSearchManager.value.open();
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.mass = mass.value;
@@ -224,26 +275,9 @@ export default {
 			calculationData.value.thrustInitial = thrustInitial.value;
 			calculationData.value.thrustPeak = thrustPeak.value;
 		};
-
-		const reset = (correlationId) => {
-			// instance.ctx.$refs.frm.reset();
-			setTimeout(() => {
-				instance.ctx.$refs.form.reset(correlationId);
-			},
-			150);
-
-			// notify = (notify !== null && notify !== undefined) ? notify : true;
-			// if (notify)
-			// 	this.notify('messages.reset');
+		const reset = async (correlationId) => {
+			await formThrust2WeightRef.value.reset(correlationId, false);
 		};
-		// const reset = (correlationId) => {
-		// 	const self = instance.ctx;
-		// 	setTimeout(() => {
-		// 		self.resetI(correlationId);
-		// 	},
-		// 	150);
-		// };
-		// eslint-disable-next-line
 
 		const resetForm = (correlationId) => {
 			calculationResults.value.calculated = false;
@@ -257,14 +291,14 @@ export default {
 		};
 
 		const selectMotor = async (item)=> {
-			const correlationId = instance.ctx.correlationId();
+			const correlationIdI = correlationId();
 
-			// this.notify('messages.thrust2Weight.motor.selected');
+			setNotify(correlationId, 'messages.thrust2Weight.motor.selected');
 
-			const response = await instance.ctx.serviceStore.dispatcher.requestMotor(correlationId, item.motorId);
+			const response = await serviceStore.dispatcher.requestMotor(correlationIdI, item.motorId);
 			if (response) {
-				instance.ctx.initCalculationData(correlationId);
-				const response2 = await instance.ctx.serviceToolThrust2Weight.update(correlationId, response, instance.ctx.calculationData);
+				initCalculationData(correlationIdI);
+				const response2 = await serviceToolThrust2Weight.update(correlationIdI, response, calculationData);
 				if (response2 && response2.success) {
 					motor.value = item.designation;
 					motorId.value = item.motorId;
@@ -275,23 +309,47 @@ export default {
 				}
 			}
 
-			instance.ctx.dialogMotorSearch.ok();
+			dialogMotorSearchManager.value.ok();
 		}
 
 		onMounted(async () => {
-			instance.ctx.reset(false);
+			reset(false);
 
-			settings.value = instance.ctx.serviceStore.getters.user.getUserSettings();
+			settings.value = serviceStore.getters.user.getUserSettings();
 
-			calculationData.value = instance.ctx.serviceToolThrust2Weight.initialize(instance.ctx.correlationId());
+			calculationData.value = serviceToolThrust2Weight.initialize(correlationId());
 		});
 
-		return Object.assign(toolBase.setup(props), {
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+			dateFormat,
+			dateFormatMask,
+			errorMessage,
+			errors,
+			errorTimer,
+			formatNumber,
+			notifyColor,
+			notifyMessage,
+			notifySignal,
+			notifyTimeout,
+			setErrorMessage,
+			setErrorTimer,
+			setNotify,
 			calculationData,
 			calculationOk,
 			calculationResults,
 			clickMotorSearch,
-			dialogMotorSearch,
+			dialogMotorSearchRef,
+			dialogMotorSearchManager,
+			formThrust2WeightRef,
 			initCalculationData,
 			mass,
 			maxLaunchRodTime,
@@ -308,106 +366,10 @@ export default {
 			thrustAverage,
 			thrustInitial,
 			thrustPeak,
+			doh,
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
-		});
-	},
-	// data: () => ({
-	// 	calculationData: null,
-	// 	calculationResults: {
-	// 		calculated: false
-	// 	},
-	// 	dialogMotorSearch: new DialogSupport(),
-	// 	mass: null,
-	// 	maxLaunchRodTime: null,
-	// 	maxLaunchRodTimeDefault: 0.3,
-	// 	motor: null,
-	// 	motorId: null,
-	// 	thrustAverage: null,
-	// 	thrustInitial: null,
-	// 	thrustPeak: null,
-	// 	serviceStore: null,
-	// 	serviceToolThrust2Weight: null,
-	// 	settings: null
-	// }),
-	// computed: {
-	// 	measurementUnitsWeight() {
-	// 		return GlobalUtility.$trans.t('measurementUnits.' + this.measurementUnits + '.weight');
-	// 	}
-	// },
-	// created() {
-	// 	this.serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-	// 	this.serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
-	// },
-	// mounted() {
-	// 	this.reset(false);
-
-	// 	this.settings = this.serviceStore.getters.user.getUserSettings();
-
-	// 	this.calculationData = this.serviceToolThrust2Weight.initialize(this.correlationId());
-	// },
-	methods: {
-		// async calculationOk() {
-		// 	this.calculationResults.calculated = false;
-		// 	const correlationId = this.correlationId();
-		// 	this.initCalculationData(correlationId);
-		// 	const response = await this.serviceToolThrust2Weight.calculate(correlationId, this.calculationData);
-		// 	if (response && response.success) {
-		// 		this.calculationResults = response.results;
-		// 		this.calculationResults.calculated = true;
-		// 		// this.notify('messages.thrust2Weight.calculated');
-		// 	}
-		// },
-		// async clickMotorSearch() {
-		// 	// await this.$refs.motorSearchDialog.reset(this.correlationId(), {});
-		// 	// // this.dialogMotorSearch.value.open(); // if using setup...
-		// 	// this.dialogMotorSearch.open();
-		// },
-		// initCalculationData(correlationId) {
-		// 	this.calculationData.mass = this.mass;
-		// 	this.calculationData.maxLaunchRodTime = this.maxLaunchRodTime;
-		// 	this.calculationData.thrustAverage = this.thrustAverage;
-		// 	this.calculationData.thrustInitial = this.thrustInitial;
-		// 	this.calculationData.thrustPeak = this.thrustPeak;
-		// },
-		// reset(correlationId, notify) {
-		// 	this.$refs.frm.reset();
-
-		// 	// notify = (notify !== null && notify !== undefined) ? notify : true;
-		// 	// if (notify)
-		// 	// 	this.notify('messages.reset');
-		// },
-		// resetForm() {
-		// 	this.calculationResults.calculated = false;
-		// 	this.mass = null;
-		// 	this.thrustAverage = null;
-		// 	this.thrustInitial = null;
-		// 	this.thrustPeak = null;
-		// 	this.maxLaunchRodTime = this.maxLaunchRodTimeDefault;
-		// 	this.motor = null;
-		// 	this.motorId = null;
-		// },
-		// async selectMotor(item) {
-		// 	// const correlationId = this.correlationId();
-
-		// 	// // this.notify('messages.thrust2Weight.motor.selected');
-
-		// 	// const response = await this.serviceStore.dispatcher.getMotor(correlationId, item.motorId);
-		// 	// if (response) {
-		// 	// 	this.initCalculationData(correlationId);
-		// 	// 	const response2 = await this.serviceToolThrust2Weight.update(correlationId, response, this.calculationData);
-		// 	// 	if (response2 && response2.success) {
-		// 	// 		this.motor = item.designation;
-		// 	// 		this.motorId = item.motorId;
-		// 	// 		this.calculationData = response2.results;
-		// 	// 		this.thrustAverage = this.calculationData.thrustAverage;
-		// 	// 		this.thrustInitial = this.calculationData.thrustInitial;
-		// 	// 		this.thrustPeak = this.calculationData.thrustPeak;
-		// 	// 	}
-		// 	// }
-
-		// 	// this.dialogMotorSearch.ok();
-		// }
+		};
 	},
 	validations () {
 		return {

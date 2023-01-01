@@ -15,8 +15,8 @@ class UserService extends VueBaseUserService {
 	async init(injector) {
 		await super.init(injector);
 
-		this._serviceCommunicationRest = this._injector.getService(LibraryConstants.InjectorKeys.SERVICE_COMMUNICATION_REST);
-		this._serviceStore = this._injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		this._serviceCommunicationRest = injector.getService(LibraryConstants.InjectorKeys.SERVICE_COMMUNICATION_REST);
+		this._serviceStore = injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 	}
 
 	async fetchFavoritesByGamerId(correlationId, user) {

@@ -20,15 +20,35 @@
 </template>
 
 <script>
-import baseSupport from '@/library_vue/components/baseSupport';
+import { useBaseSupportComponent } from '@/library_vue/components/baseSupport';
 
 export default {
 	name: 'Support',
-	extends: baseSupport,
-	setup(props) {
-		return Object.assign(baseSupport.setup(props), {
-		});
-	},
+	setup(props, context) {
+		const {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		} = useBaseSupportComponent(props, context);
+
+		return {
+			correlationId,
+			error,
+			hasFailed,
+			hasSucceeded,
+			initialize,
+			logger,
+			noBreakingSpaces,
+			notImplementedError,
+			success,
+		};
+	}
 };
 </script>
 
