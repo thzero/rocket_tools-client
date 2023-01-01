@@ -7,7 +7,7 @@ steps:
     - |
       git config -f .gitmodules submodule."src/common".url https://source.developers.google.com/p/rocketsidekick/r/github_thzero_rocket_sidekick-common
       git submodule init
-      git submodule update
+      git submodule update --remote
       echo "one up..."
       ls -a ../
       echo "current..."
