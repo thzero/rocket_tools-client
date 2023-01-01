@@ -210,10 +210,7 @@ const routes = [
 							requiresAuth: false
 						}
 					}
-				],
-				meta: {
-					requiresAuth: false
-				}
+				]
 			}
 		]
 	},
@@ -229,15 +226,12 @@ const routes = [
 				// 	{
 						path: '',
 						name: 'epoxy',
-						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/info/Epoxy.vue'),
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-info" */ './components/content/info/Epoxy.vue'),
 						meta: {
 							requiresAuth: false
 						}
 				// 	}
-				// ],
-				// meta: {
-				// 	requiresAuth: false
-				// }
+				// ]
 			}
 		]
 	},
@@ -248,10 +242,38 @@ const routes = [
 			{
 				path: '',
 				name: 'flightInfo',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/flightInfo/FlightInfo.vue'),
-				meta: {
-					requiresAuth: false
-				}
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
+				children: [
+					{
+						path: '',
+						name: 'flightInfo',
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/flightInfo/FlightInfo.vue'),
+						meta: {
+							requiresAuth: false
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		path: '/content/tools/flightPath',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				name: 'flightPath',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
+				children: [
+					{
+						path: '',
+						name: 'flightPath',
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/flightPath/FlightPath.vue'),
+						meta: {
+							requiresAuth: false
+						}
+					}
+				]
 			}
 		]
 	},

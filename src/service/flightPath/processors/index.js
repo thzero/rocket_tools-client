@@ -8,14 +8,14 @@ class FlightPathProcessorService extends BaseService {
 		throw Error('Not Implemented');
 	}
 
-	process(results, input, measurementUnits) {
-		this._enforceNotNull('FlightPathProcessorService', 'process', results, 'results');
-		this._enforceNotNull('FlightPathProcessorService', 'process', input, 'input');
-		this._enforceNotEmpty('FlightPathProcessorService', 'process', measurementUnits, 'measurementUnits');
+	process(correlationId, results, input, measurementUnits) {
+		this._enforceNotNull('FlightPathProcessorService', 'process', results, 'results', correlationId);
+		this._enforceNotNull('FlightPathProcessorService', 'process', input, 'input', correlationId);
+		this._enforceNotEmpty('FlightPathProcessorService', 'process', measurementUnits, 'measurementUnits', correlationId);
 
 		this._data = new FlightPath();
 
-		this._processInput(input);
+		this._processInput(correlationId, input);
 
 		const path = [];
 		const divisor = (measurementUnits === AppUtility.measurementUnitEnglish ? 3.281 : 1);
@@ -31,12 +31,12 @@ class FlightPathProcessorService extends BaseService {
 		}
 
 		results.info.coords = path;
-		results.info.flightPath = this._kml(results.info, path.join('\n'));
+		results.info.flightPath = this._kml(correlationId, results.info, path.join('\n'));
 
 		return results;
 	}
 
-	_processInput(input) {
+	_processInput(correlationId, input) {
 		throw Error('Not Implemented');
 	}
 
@@ -52,9 +52,9 @@ class FlightPathProcessorService extends BaseService {
 		return str.replace('#', '').split('').reverse().join('');
 	}
 
-	_kml(flightInfo, data) {
-		this._enforceNotNull('FlightPathProcessorService', '_kml', flightInfo, 'flightInfo');
-		this._enforceNotNull('FlightPathProcessorService', '_kml', data, 'data');
+	_kml(correlationId, flightInfo, data) {
+		this._enforceNotNull('FlightPathProcessorService', '_kml', flightInfo, 'flightInfo', correlationId);
+		this._enforceNotNull('FlightPathProcessorService', '_kml', data, 'data', correlationId);
 
 		flightInfo.style.path.flight.color = this._reverseRgb(flightInfo.style.path.flight.color);
 		flightInfo.style.path.ground.color = this._reverseRgb(flightInfo.style.path.ground.color);
@@ -177,7 +177,7 @@ class FlightPath {
 		return this._rows;
 	}
 
-	publish(time, altitude, latitude, longitude, velocityH, velocityV) {
+	publish(correlationId, time, altitude, latitude, longitude, velocityH, velocityV) {
 		this._rows.push({
 			altitude: Number(altitude),
 			latitude: Number(latitude),

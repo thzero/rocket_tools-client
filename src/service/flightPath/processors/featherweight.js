@@ -5,8 +5,8 @@ class FeatherweightFlightPathProcessorService extends FlightPathProcessorService
 		return 'featherweight';
 	}
 
-	_processInput(input) {
-		this._enforceNotNull('FeatherweightFlightPathProcessorService', '_processInput', input, 'input');
+	_processInput(correlationId, input) {
+		this._enforceNotNull('FeatherweightFlightPathProcessorService', '_processInput', input, 'input'), correlationId;
 
 		const regex = /^[a-z]+$/i;
 		const temp = input.data[0][4];

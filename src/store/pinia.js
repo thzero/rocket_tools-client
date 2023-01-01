@@ -23,6 +23,7 @@ class AppStore extends BaseStore {
 					'flightInfoResolution',
 					'flightInfoStyle',
 					'flightMeasurementUnits',
+					'flightPathProcessor',
 					'flightPathStyle',
 					'motorManufacturers',
 					'motorSearchCriteria',
@@ -56,6 +57,7 @@ class AppStore extends BaseStore {
 				flightInfoStyle: [],
 				flightLocation: '',
 				flightMeasurementUnits: null,
+				flightPathProcessor: null,
 				flightPathStyle: [],
 				flightTitle: '',
 				motorManufacturers: [],
@@ -132,6 +134,9 @@ class AppStore extends BaseStore {
 				async setFlightMeasurementUnits(correlationId, value) {
 					this.flightMeasurementUnits = value;
 				},
+				async setFlightPathProcessor(correlationId, value) {
+					this.flightPathProcessor = value;
+				},
 				async setFlightPathStyle(correlationId, value) {
 					if (String.isNullOrEmpty(value.id))
 						return;
@@ -179,6 +184,9 @@ class AppStore extends BaseStore {
 				},
 				getFlightMeasurementUnits() {
 					return GlobalUtility.$store.flightMeasurementUnits;
+				},
+				getFlightPathProcessor() {
+					return GlobalUtility.$store.flightPathProcessor;
 				},
 				getFlightPathStyle() {
 					if (!GlobalUtility.$store.flightPathStyle)
@@ -228,6 +236,9 @@ class AppStore extends BaseStore {
 				},
 				async setFlightMeasurementUnits(correlationId, value) {
 					await GlobalUtility.$store.setFlightMeasurementUnits(correlationId, value);
+				},
+				async setFlightPathProcessor(correlationId, value) {
+					await GlobalUtility.$store.setFlightPathProcessor(correlationId, value);
 				},
 				async setFlightPathStyle(correlationId, value) {
 					await GlobalUtility.$store.setFlightPathStyle(correlationId, value);
