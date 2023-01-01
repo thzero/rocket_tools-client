@@ -43,8 +43,8 @@
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.title')"
 											/>
-												</v-col>
-												<v-col cols="12">
+										</v-col>
+										<v-col cols="12">
 											<VTextFieldWithValidation
 												ref="flightInfoLocationRef"
 												vid="flightInfoLocation"
@@ -52,8 +52,8 @@
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.location')"
 											/>
-												</v-col>
-												<v-col cols="12">
+										</v-col>
+										<v-col cols="12">
 											<VDateTimeField
 												ref="flightInfoDateRef"
 												vid="flightInfoDate"
@@ -61,33 +61,8 @@
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.date')"
 											/>
-											<!-- <q-input
-												v-model="flightInfoDate"
-												filled
-												dense
-												:mask="dateFormatMask"
-												:label="$t('flightInfo.date')"
-											>
-												<template v-slot:append>
-													<q-icon name="event" class="cursor-pointer">
-														<q-popup-proxy ref="qDateProxy" cover transition-show="scale" transition-hide="scale">
-															<q-date
-																v-model="flightInfoDate"
-																:mask="dateFormat"
-																@update:model-value="(v) => { onChangeDate(v); }"
-															>
-																<v-row dense class="items-center justify-end">
-																	<v-col cols="12">
-																		<q-btn v-close-popup label="Close" color="primary" flat />
-																	</v-col>
-																</v-row>
-															</q-date>
-														</q-popup-proxy>
-													</q-icon>
-												</template>
-											</q-input> -->
-												</v-col>
-												<v-col cols="12">
+										</v-col>
+										<v-col cols="12">
 											<VSelectWithValidation
 												ref="flightInfoMeasurementUnitsRef"
 												v-model="flightInfoMeasurementUnits"
@@ -96,8 +71,8 @@
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.measurementUnits')"
 											/>
-												</v-col>
-												<v-col cols="12">
+										</v-col>
+										<v-col cols="12">
 											<VSelectWithValidation
 												ref="flightInfoProcessorRef"
 												v-model="flightInfoProcessor"
@@ -106,25 +81,9 @@
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.processors.title')"
 											/>
-												</v-col>
-												<v-col cols="12">
+										</v-col>
+										<v-col cols="12">
 											<v-row dense>
-												<!-- <v-col cols="12" class="pr-12">
-													<VCheckboxWithValidation
-														ref="flightInfoDataTypeActualRef"
-														v-model="flightInfoDataTypeActual"
-														vid="flightInfoDataTypeActual"
-														:validation="validation"
-														:label="$t('forms.content.tools.flightInfo.actual')"
-													/>
-													<VCheckboxWithValidation
-														ref="flightInfoDataTypeFilteredRef"
-														v-model="flightInfoDataTypeFiltered"
-														vid="flightInfoDataTypeFiltered"
-														:validation="validation"
-														:label="$t('forms.content.tools.flightInfo.filtered')"
-													/>
-												</v-col> -->
 												<v-col cols="12">
 													<v-row dense no-gutters align="center" class="fill-height">
 														<v-col cols="4">
@@ -141,10 +100,6 @@
 																vid="flightInfoDataTypeUse"
 																:validation="validation"
 															/>
-															<!-- <q-toggle
-																v-model="flightInfoDataTypeUse"
-																:disable="flightInfoDataTypeUseDisabled"
-															/> -->
 														</v-col>
 														<v-col cols="4" class="align-center justify-center">
 															<span
@@ -352,7 +307,6 @@
 											/>
 										</td>
 										<td style="white-space: nowrap;">
-											<!-- <q-btn dense flat label="set" color="primary" @click="clickResolution(this.resolution)" /> -->
 											<v-btn
 												class="ml-8 ml-4"
         										size="small"
@@ -427,7 +381,6 @@ import VuetifyUtility from '@/library_vue_vuetify/utility/index';
 import flightInfoData from '@/components/content/tools/flightInfo/FlightInfoData';
 import flightInfoChart from '@/components/content/tools/flightInfo/charts/FlightInfo';
 
-// import toolBase from '@/components/content/tools/toolBase';
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 import VCheckboxWithValidation from '@/library_vue_vuetify/components/form/VCheckboxWithValidation';
@@ -591,7 +544,7 @@ export default {
 			if (String.isNullOrEmpty(flightInfoProcessor.value ))
 				return;
 
-			const style = serviceStore.getters.getFlightInfoStyle(flightInfoProcessor.value );
+			const style = serviceStore.getters.getFlightInfoStyle(flightInfoProcessor.value);
 			if (!style)
 				return;
 
@@ -667,22 +620,21 @@ export default {
 			setNotify(correlationIdI, 'messages.saved');
 		};
 		const flightInfoExport = (correlationId) => {
-			//const barRef = $refs.bar;
 			try {
 				const el = document.getElementById('flight-info');
-				getScreenshotOfElement(correlationId, el, ((data) => {
+				getScreenshotOfElement(correlationId, el, (data) => {
 					const name = flightInfoExportName('png');
-					// barRef.start();
+					downloadProgress.value = true;
 
 					serviceDownload.downloadUrl(correlationIdI, 'data:image/png;base64,' + data,
 						name,
 						() => {
 							AppUtility.debug2('download', 'completed');
-							// barRef.stop();
+							downloadProgress.value = false;
 						},
 						() => {
 							AppUtility.debug2('download', 'cancelled');
-							// barRef.stop();
+							downloadProgress.value = false;
 						},
 						(arg) => {
 							AppUtility.debug2('download', 'progress');
@@ -690,10 +642,10 @@ export default {
 						}
 					);
 				// eslint-disable-next-line
-				}).bind(instance.ctx));
+				});
 			}
 			catch (err) {
-				// barRef.stop();
+				downloadProgress.value = false;
 			}
 		};
 		const flightInfoExportDownload = (correlationId, output, extension) => {
@@ -753,76 +705,85 @@ export default {
 			processing.value = true;
 
 			setTimeout(() => {
-				if (String.isNullOrEmpty(flightInfoInput.value)) {
-					setError(GlobalUtility.$trans.t('errors.process.noInput'));
-					return;
+				try {
+					if (String.isNullOrEmpty(flightInfoInput.value)) {
+						setError(GlobalUtility.$trans.t('errors.process.noInput'));
+						processing.value = false;
+						return;
+					}
+
+					const data = Papa.parse(flightInfoInput.value.trim());
+					if (data.errors && data.errors.length > 0) {
+						setError(GlobalUtility.$trans.t('errors.process.unableToConvert'));
+						processing.value = false;
+						return;
+					}
+
+					const flightInfoDataTypes = {
+						actual: flightInfoDataTypeActual.value,
+						filtered: flightInfoDataTypeFiltered.value,
+						use: flightInfoDataTypeUse.value
+					};
+
+					const flightInfoResults = serviceFlightInfo.process(correlationId, data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
+					AppUtility.debug2('flightInfoResults', flightInfoResults);
+					if (flightInfoResults.errors && data.errors.length > 0) {
+						const errors = flightInfoResults.errors.map(e => GlobalUtility.$trans.t(e) + '<br/>');
+						setError(errors);
+						processing.value = false;
+						return;
+					}
+
+					flightInfoResults.info.title = GlobalUtility.$trans.t('charts.flightInfo.title');
+					if (!String.isNullOrEmpty(flightInfoTitle.value && flightInfoTitle.value))
+						flightInfoResults.info.title = flightInfoTitle.value;
+					if (!String.isNullOrEmpty(flightInfoDate.value))
+						flightInfoResults.info.date = flightInfoDate.value;
+					if (!String.isNullOrEmpty(flightInfoLocation.value))
+						flightInfoResults.info.location = flightInfoLocation.value;
+					if (!String.isNullOrEmpty(flightInfoMeasurementUnits.value))
+						flightInfoResults.info.measurementUnits = flightInfoMeasurementUnits.value;
+
+					flightInfoResults.info.style.altitude = flightInfoStyleAltitudeColor.value;
+					flightInfoResults.info.style.altitudeF = flightInfoStyleAltitudeFColor.value;
+					flightInfoResults.info.style.event.apogee = flightInfoStyleEventApogeeColor.value;
+					flightInfoResults.info.style.event.apogeeBorder = flightInfoStyleEventApogeeBorderColor.value;
+					flightInfoResults.info.style.event.drogue = flightInfoStyleEventDrogueColor.value;
+					flightInfoResults.info.style.event.drogueBorder = flightInfoStyleEventDrogueBorderColor.value;
+					flightInfoResults.info.style.event.main = flightInfoStyleEventMainColor.value;
+					flightInfoResults.info.style.event.mainBorder = flightInfoStyleEventMainBorderColor.value;
+					flightInfoResults.info.style.velocity = flightInfoStyleVelocityColor.value;
+					flightInfoResults.info.style.velocityF = flightInfoStyleVelocityFColor.value;
+
+					flightInfoChartData.value = flightInfoResults.info;
+					flightInfo.value = flightInfoResults.info;
+
+					serviceStore.dispatcher.setFlightDate(correlationId, flightInfoDate.value);
+					serviceStore.dispatcher.setFlightLocation(correlationId, flightInfoLocation.value);
+					serviceStore.dispatcher.setFlightMeasurementUnits(correlationId, flightInfoMeasurementUnits.value);
+					serviceStore.dispatcher.setFlightTitle(correlationId, flightInfoTitle.value);
+
+					serviceStore.dispatcher.setFlightInfoDataTypeUse(correlationId, flightInfoDataTypeUse.value);
+					serviceStore.dispatcher.setFlightInfoProcessor(correlationId, flightInfoProcessor.value);
+
+					flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+					flightInfoTitle.value = serviceStore.getters.getFlightTitle();
+
+					flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
+					flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
+
+					setNotify(correlationId, 'messages.processed');
+
+					nextTick(() =>
+						document.getElementById('top').scrollIntoView({behavior: 'smooth'})
+					);
+
+					buttons.value.export.disabled = false;
+					processing.value = false;
 				}
-
-				const data = Papa.parse(flightInfoInput.value.trim());
-				if (data.errors && data.errors.length > 0) {
-					setError(GlobalUtility.$trans.t('errors.process.unableToConvert'));
-					return;
+				catch (err) {
+					processing.value = false;
 				}
-
-				const flightInfoDataTypes = {
-					actual: flightInfoDataTypeActual.value,
-					filtered: flightInfoDataTypeFiltered.value,
-					use: flightInfoDataTypeUse.value
-				};
-
-				const flightInfoResults = serviceFlightInfo.process(correlationId, data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
-				AppUtility.debug2('flightInfoResults', flightInfoResults);
-				if (flightInfoResults.errors && data.errors.length > 0) {
-					const errors = flightInfoResults.errors.map(e => GlobalUtility.$trans.t(e) + '<br/>');
-					setError(errors);
-					return;
-				}
-
-				flightInfoResults.info.title = GlobalUtility.$trans.t('charts.flightInfo.title');
-				if (!String.isNullOrEmpty(flightInfoTitle.value && flightInfoTitle.value))
-					flightInfoResults.info.title = flightInfoTitle.value;
-				if (!String.isNullOrEmpty(flightInfoDate.value))
-					flightInfoResults.info.date = flightInfoDate.value;
-				if (!String.isNullOrEmpty(flightInfoLocation.value))
-					flightInfoResults.info.location = flightInfoLocation.value;
-				if (!String.isNullOrEmpty(flightInfoMeasurementUnits.value))
-					flightInfoResults.info.measurementUnits = flightInfoMeasurementUnits.value;
-
-				flightInfoResults.info.style.altitude = flightInfoStyleAltitudeColor.value;
-				flightInfoResults.info.style.altitudeF = flightInfoStyleAltitudeFColor.value;
-				flightInfoResults.info.style.event.apogee = flightInfoStyleEventApogeeColor.value;
-				flightInfoResults.info.style.event.apogeeBorder = flightInfoStyleEventApogeeBorderColor.value;
-				flightInfoResults.info.style.event.drogue = flightInfoStyleEventDrogueColor.value;
-				flightInfoResults.info.style.event.drogueBorder = flightInfoStyleEventDrogueBorderColor.value;
-				flightInfoResults.info.style.event.main = flightInfoStyleEventMainColor.value;
-				flightInfoResults.info.style.event.mainBorder = flightInfoStyleEventMainBorderColor.value;
-				flightInfoResults.info.style.velocity = flightInfoStyleVelocityColor.value;
-				flightInfoResults.info.style.velocityF = flightInfoStyleVelocityFColor.value;
-
-				flightInfoChartData.value = flightInfoResults.info;
-				flightInfo.value = flightInfoResults.info;
-
-				serviceStore.dispatcher.setFlightDate(correlationId, flightInfoDate.value);
-				serviceStore.dispatcher.setFlightLocation(correlationId, flightInfoLocation.value);
-				serviceStore.dispatcher.setFlightMeasurementUnits(correlationId, flightInfoMeasurementUnits.value);
-				serviceStore.dispatcher.setFlightTitle(correlationId, flightInfoTitle.value);
-
-				serviceStore.dispatcher.setFlightInfoDataTypeUse(correlationId, flightInfoDataTypeUse.value);
-				serviceStore.dispatcher.setFlightInfoProcessor(correlationId, flightInfoProcessor.value);
-
-				flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
-				flightInfoTitle.value = serviceStore.getters.getFlightTitle();
-
-				flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
-				flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
-
-				setNotify(correlationId, 'messages.processed');
-
-				nextTick(() =>
-            		document.getElementById('top').scrollIntoView({behavior: 'smooth'})
-        		);
-
-				buttons.value.export.disabled = false;
 			}, 50);
 		};
 		const getScreenshotOfElement = (correlationId, element, callback, posX, posY, width, height) => {
