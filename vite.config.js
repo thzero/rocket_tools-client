@@ -22,7 +22,7 @@ if (config) {
 }
 else
 	configEnv = 'development';
-console.log('vue.config.NODE_ENV', configEnv);
+console.log('vue.config._CONFIG_ENV', configEnv);
 
 const dir = path.join(__dirname, 'node_modules', '@thzero');
 const dirs = fs.readdirSync(dir);
