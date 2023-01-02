@@ -3,14 +3,14 @@ import Constants from '@/constants';
 import apiService from '@/service/api';
 import authService from '@thzero/library_client_firebase/service';
 import downloadService from '@/service/download';
-import flightInfoProcessorService from '@/service/flightInfo/index';
-import flightInfoProcessorEggtimerService from '@/service/flightInfo/processors/eggtimer';
-import flightPathProcessorService from '@/service/flightPath/index';
-import flightPathProcessorFeatherweightService from '@/service/flightPath/processors/featherweight';
-import mathJsCalculationEngineToolService from '@/service/tools/engine/mathjs/index';
+import flightInfoProcessorToolsService from '@/service/flightInfo/index';
+import flightInfoProcessorEggtimerToolsService from '@/service/flightInfo/processors/eggtimer';
+import flightPathProcessorToolsService from '@/service/flightPath/index';
+import flightPathProcessorFeatherweightToolsService from '@/service/flightPath/processors/featherweight';
+import mathJsCalculationEngineToolsService from '@/service/tools/engine/mathjs/index';
 import restCommunicationService from '@thzero/library_client_service_rest_axios';
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
-import thrustCurveMotoSearchExternalService from '@/service/external/motorSearchThrustCurve';
+import thrustCurveMotorSearchExternalService from '@/service/external/motorSearchThrustCurve';
 import settingsService from '@/service/settings';
 import storeService from '@thzero/library_client_vue3_store_pinia/service/store/index'; // STORE TYPE
 // import storeService from '@thzero/library_client_vue3/service/store/vuex'; // STORE TYPE
@@ -29,15 +29,15 @@ class Services extends BaseServices {
 		this._injectService(Constants.InjectorKeys.SERVICE_API, new apiService());
 		this._injectService(Constants.InjectorKeys.SERVICE_DOWNLOAD, new downloadService());
 
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR, new flightInfoProcessorService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER, new flightInfoProcessorEggtimerService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR, new flightPathProcessorService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT, new flightPathProcessorFeatherweightService());
+		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR, new flightInfoProcessorToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER, new flightInfoProcessorEggtimerToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR, new flightPathProcessorToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT, new flightPathProcessorFeatherweightToolsService());
 
-		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolService());
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolsService());
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT, new thrust2WeightToolsService());
 
-		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotoSearchExternalService());
+		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotorSearchExternalService());
 	}
 
 	_initializeAuth() {
