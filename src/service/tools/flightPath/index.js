@@ -16,7 +16,7 @@ class FlightPathProcessorService extends BaseService {
 
 	init(injector) {
 		// TODO: Convert to library
-		const serviceFlightPathProcessorFeatherweight = injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT);
+		const serviceFlightPathProcessorFeatherweight = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT);
 		this.registerProcessor(serviceFlightPathProcessorFeatherweight);
 	}
 

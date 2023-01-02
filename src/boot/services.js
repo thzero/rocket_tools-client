@@ -29,15 +29,16 @@ class Services extends BaseServices {
 		this._injectService(Constants.InjectorKeys.SERVICE_API, new apiService());
 		this._injectService(Constants.InjectorKeys.SERVICE_DOWNLOAD, new downloadService());
 
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR, new flightInfoProcessorToolsService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER, new flightInfoProcessorEggtimerToolsService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR, new flightPathProcessorToolsService());
-		this._injectService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT, new flightPathProcessorFeatherweightToolsService());
-
-		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolsService());
-		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT, new thrust2WeightToolsService());
-
 		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotorSearchExternalService());
+		
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolsService());
+
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR, new flightInfoProcessorToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR_EGGTIMER, new flightInfoProcessorEggtimerToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR, new flightPathProcessorToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT, new flightPathProcessorFeatherweightToolsService());
+
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT, new thrust2WeightToolsService());
 	}
 
 	_initializeAuth() {

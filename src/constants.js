@@ -16,13 +16,13 @@ const Constants = {
 	InjectorKeys: {
 		SERVICE_API: 'serviceApi',
 		SERVICE_DOWNLOAD: 'serviceDownload',
-		SERVICE_FLIGHT_INFO_PROCESSOR: 'serviceFlightInfoProcessor',
-		SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER: 'serviceFlightInfoProcessorEggtimer',
-		SERVICE_FLIGHT_PATH_PROCESSOR: 'serviceFlightPathProcessor',
-		SERVICE_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT: 'serviceFlightPathProcessorFeatherweight',
+		SERVICE_EXTERNAL_MOTOR_SEARCH: 'serviceExternalMotorSearch',
 		SERVICE_TOOLS_CALCULATION_ENGINE: 'serviceToolsCalculationEngine',
-		SERVICE_TOOLS_THRUST2WEIGHT: 'serviceToolsThrust2Weight',
-		SERVICE_EXTERNAL_MOTOR_SEARCH: 'serviceExternalMotorSearch'
+		SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR: 'serviceToolsFlightInfoProcessor',
+		SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR_EGGTIMER: 'serviceToolsFlightInfoProcessorEggtimer',
+		SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR: 'serviceToolsFlightPathProcessor',
+		SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR_FEATHERWEIGHT: 'serviceToolsFlightPathProcessorFeatherweight',
+		SERVICE_TOOLS_THRUST2WEIGHT: 'serviceToolsThrust2Weight'
 	},
 	DateTime: {
 		DEFAULT_DATE_FORMAT: 'MM/DD/YYYY',

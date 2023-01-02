@@ -435,7 +435,7 @@ export default {
 		);
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
-		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR);
+		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR);
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		const buttons = ref({
