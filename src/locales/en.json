@@ -184,6 +184,22 @@
 					},
 					"touchdown": "Touchdown"
 				},
+				"foam": {
+					"bodyTubeID": "Body Tube ID",
+					"bodyTubeID_hint": "Inside diameter of the body tube.",
+					"motorTubeOD": "Motor Tube OD",
+					"motorTubeOD_hint": "Outside diameter of the motor tube.",
+					"finRootLength": "Fin Root Length",
+					"finRootLength_hint": "Length of the fin root.",
+					"finTabLength": "Fin Tab Length",
+					"finTabLength_hint": "Length of the fin tab if diffent than the fin root length.",
+					"finWidth": "Fin Width",
+					"finWidth_hint": "Width of the fin.",
+					"numberFins": "Number of Fins",
+					"numberFins_hint": "",
+					"totalVolume": "Total Volume",
+					"totalVolume_hint": "Total volume of left over space in the fin can."
+				},
 				"thrust2Weight": {
 					"mass": "Rocket Weight",
 					"mass_hint": "Weight of the rocket fully loaded including engines.",
@@ -386,7 +402,7 @@
 				"ejectionCharges": "Ejection Charges",
 				"flightInfo": "Flight Info",
 				"flightPath": "Flight Path",
-				"foam": "Foam",
+				"foam": "Fin Can Foam Calculator",
 				"staticPortHoles": "Static Port Holes",
 				"title": "Tools", 
 				"thrust2Weight": "Thrust 2 Weight"
@@ -429,7 +445,6 @@
 		"reset": "Reset",
 		"saved": "Saved",
 		"thrust2Weight": {
-			"calculated": "Calculated",
 			"motor": {
 				"selected": "Selected Motor"
 			}
@@ -523,7 +538,9 @@
 					"desc": ""
 				},
 				"foam": {
-					"desc": ""
+					"title": "Foam Volume for Fin Cans",
+					"desc": "Calculations of required volume of expanding foam for a given fin can dimensions.",
+					"calculated": "Calculated Foam Volumes"
 				},
 				"staticPortHoles": {
 					"desc": ""
@@ -578,6 +595,7 @@
 			"tools": {
 				"flightInfo": "Flight Info",
 				"flightPath": "Flight Path",
+				"foam": "Fin Can Foam Calculator",
 				"thrust2Weight": "Thrust 2 Weight"
 			}
 		},

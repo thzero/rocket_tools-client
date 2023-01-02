@@ -6,6 +6,8 @@ class CalculationEngineToolService extends BaseService {
 		
 		this._listeners = [];
 
+		this.symConvertNumber = Symbol('number');
+		
 		this.symTypeEvaluate = Symbol('evaluate');
 		this.symTypeSet = Symbol('set');
 	}

@@ -225,7 +225,7 @@ const routes = [
 				// children: [
 				// 	{
 						path: '',
-						name: 'epoxy',
+						name: 'content_epoxy',
 						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-info" */ './components/content/info/Epoxy.vue'),
 						meta: {
 							requiresAuth: false
@@ -241,12 +241,12 @@ const routes = [
 		children: [
 			{
 				path: '',
-				name: 'flightInfo',
+				name: 'content_tools_flightInfo',
 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
 				children: [
 					{
 						path: '',
-						name: 'flightInfo',
+						name: 'content_tools_flightInfo',
 						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/flightInfo/FlightInfo.vue'),
 						meta: {
 							requiresAuth: false
@@ -262,13 +262,34 @@ const routes = [
 		children: [
 			{
 				path: '',
-				name: 'flightPath',
+				name: 'content_tools_flightPath',
 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
 				children: [
 					{
 						path: '',
-						name: 'flightPath',
+						name: 'content_tools_flightPath',
 						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/flightPath/FlightPath.vue'),
+						meta: {
+							requiresAuth: false
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		path: '/content/tools/foam',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				name: 'content_tools_foam',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				children: [
+					{
+						path: '',
+						name: 'content_tools_foam',
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/Foam.vue'),
 						meta: {
 							requiresAuth: false
 						}
@@ -283,12 +304,12 @@ const routes = [
 		children: [
 			{
 				path: '',
-				name: 'thrust2Weight',
+				name: 'content_tools_thrust2Weight',
 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
-						name: 'thrust2Weight',
+						name: 'content_tools_thrust2Weight',
 						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/Thrust2Weight.vue'),
 						meta: {
 							requiresAuth: false

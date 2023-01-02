@@ -3,10 +3,11 @@ import Constants from '@/constants';
 import apiService from '@/service/api';
 import authService from '@thzero/library_client_firebase/service';
 import downloadService from '@/service/download';
-import flightInfoProcessorToolsService from '@/service/flightInfo/index';
-import flightInfoProcessorEggtimerToolsService from '@/service/flightInfo/processors/eggtimer';
-import flightPathProcessorToolsService from '@/service/flightPath/index';
-import flightPathProcessorFeatherweightToolsService from '@/service/flightPath/processors/featherweight';
+import flightInfoProcessorToolsService from '@/service/tools/flightInfo/index';
+import flightInfoProcessorEggtimerToolsService from '@/service/tools/flightInfo/processors/eggtimer';
+import flightPathProcessorToolsService from '@/service/tools/flightPath/index';
+import flightPathProcessorFeatherweightToolsService from '@/service/tools/flightPath/processors/featherweight';
+import foamToolsService from '@/service/tools/foam';
 import mathJsCalculationEngineToolsService from '@/service/tools/engine/mathjs/index';
 import restCommunicationService from '@thzero/library_client_service_rest_axios';
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
@@ -32,6 +33,7 @@ class Services extends BaseServices {
 		this._injectService(Constants.InjectorKeys.SERVICE_EXTERNAL_MOTOR_SEARCH, new thrustCurveMotorSearchExternalService());
 		
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE, new mathJsCalculationEngineToolsService());
+		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FOAM, new foamToolsService());
 
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR, new flightInfoProcessorToolsService());
 		this._injectService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR_EGGTIMER, new flightInfoProcessorEggtimerToolsService());

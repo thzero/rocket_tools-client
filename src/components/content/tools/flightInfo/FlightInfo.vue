@@ -373,7 +373,6 @@ import Papa from 'papaparse';
 import html2canvas from 'html2canvas';
 
 import Constants from '@/constants';
-import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
@@ -416,19 +415,24 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
-			setNotify
+			setNotify,
+			settings
 		} = useToolsBaseComponent(
 			props, 
 			context
@@ -436,7 +440,6 @@ export default {
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
 		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR);
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		const buttons = ref({
 			export: {
@@ -506,6 +509,8 @@ export default {
 			flightLocation.value = serviceStore.getters.getFlightLocation();
 			flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
 			flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightInfoMeasurementUnits.value))
+				flightInfoMeasurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
 			flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
@@ -794,15 +799,6 @@ export default {
 				callback(outputCanvas.toDataURL().replace('data:image/png;base64,', ''));
 			});
 		};
-		// const onChangeDate = (value) => {
-		// 	serviceStore.dispatcher.setFlightDate(correlationId(), value);
-		// };
-		// const onChangeLocation = (value) => {
-		// 	serviceStore.dispatcher.setFlightLocation(correlationId(), value);
-		// };
-		// const onChangeTitle = (value) => {
-		// 	serviceStore.dispatcher.setFlightTitle(correlationId(), value);
-		// };
 		const reset = (correlationId) => {
 			buttons.value.export.disabled = true;
 			setErrorMessage(null);
@@ -838,19 +834,26 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
 			setNotify,
+			settings,
+			serviceDownload,
+			serviceFlightInfo,
 			buttons,
 			downloadProgress,
 			expanded,
@@ -882,9 +885,6 @@ export default {
 			processing,
 			resolution,
 			styles,
-			serviceDownload,
-			serviceFlightInfo,
-			serviceStore,
 			checkFlightInfoDataTypeUse,
 			clickResolution,
 			flightInfoStyleLoad,

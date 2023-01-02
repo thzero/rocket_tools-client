@@ -44,8 +44,8 @@ class AppUtility {
 		return settings;
 	}
 
-	static measurementUnits() {
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+	static measurementUnits(correlationId, serviceStore) {
+		serviceStore = serviceStore ? serviceStore : GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		const settings = serviceStore.getters.user.getUserSettings();
 		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
 	}

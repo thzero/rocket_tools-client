@@ -133,19 +133,9 @@
 								</div>
 							</v-col>
 						</v-row>
-						<v-row dense style="overflow: auto; max-height: 100vh;">
-							<v-col
-								style="overflow: overflow-y; height: 150px;"
-							>
-								<v-code lang="javascript">
-									<template
-										v-for="value in doh"
-									>
-										{{ value }}<br/>
-									</template>
-								</v-code>
-							</v-col>
-						</v-row>
+						<CalculatedOuput
+							v-model="calculationOutput"
+						/>
 					</v-card-text>
 				</v-card>
 			</v-col>
@@ -160,13 +150,12 @@
 </template>
 
 <script>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
 import { between, decimal, required } from '@vuelidate/validators';
 
 import Constants from '@/constants';
-import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
@@ -174,8 +163,8 @@ import DialogSupport from '@/library_vue/components/support/dialog';
 
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
+import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
-
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
 import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
 import VTextField from '@/library_vue_vuetify/components/form//VTextField';
@@ -183,6 +172,7 @@ import VTextField from '@/library_vue_vuetify/components/form//VTextField';
 export default {
 	name: 'Thrust2Weight',
 	components: {
+		CalculatedOuput,
 		MotorLookupDialog,
 		VFormControl,
 		VNumberFieldWithValidation,
@@ -199,23 +189,27 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
-			setNotify
+			setNotify,
+			settings
 		} = useToolsBaseComponent(props, context);
 
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-		const serviceToolThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
+		const serviceToolsThrust2Weight = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_THRUST2WEIGHT);
 
 		const calculationData = ref(null);
 		const calculationResults = ref({
@@ -232,31 +226,22 @@ export default {
 		const thrustAverage = ref(null);
 		const thrustInitial = ref(null);
 		const thrustPeak = ref(null);
-		const settings = ref(null);
-		const doh = ref([]);
-
-		const measurementUnitsWeight = computed(() => {
-			return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits.value + '.weight');
-		});
 
 		const calculationOk = async () => {
-			doh.value = [];
+			calculationOutput.value = [];
 
 			calculationResults.value.calculated = false;
 			const correlationIdI = correlationId();
 			initCalculationData(correlationIdI);
-			const response = await serviceToolThrust2Weight.calculate(correlationIdI, calculationData.value);
+			const response = await serviceToolsThrust2Weight.calculate(correlationIdI, calculationData.value, measurementUnits.value);
 			if (response && response.success) {
-				// calculationResults.value = response.results;
-				// calculationResults.value.calculated = true;
-				response.results.instance.addListener(correlationIdI, (type, name, value) => {
-					// console.log('type', type);
-					// console.log(name, value);
-					if (type === response.results.instance.symTypeEvaluate)
-						doh.value.push(`${name}`);
-					else if (type === response.results.instance.symTypeSet)
-						doh.value.push(`${name} = ${value}`);
-				});
+				// response.results.instance.addListener(correlationIdI, (type, name, value) => {
+				// 	if (type === response.results.instance.symTypeEvaluate)
+				// 		calculationOutput.value.push(`${name}`);
+				// 	else if (type === response.results.instance.symTypeSet)
+				// 		calculationOutput.value.push(`${name} = ${value}`);
+				// });
+				response.results.instance.addListener(correlationIdI, handleListener);
 				const responseCalc = response.results.instance.calculate(correlationIdI, response.results.steps);
 				if (responseCalc && responseCalc.success) {
 					calculationResults.value = responseCalc.results;
@@ -298,7 +283,7 @@ export default {
 			const response = await serviceStore.dispatcher.requestMotor(correlationIdI, item.motorId);
 			if (response) {
 				initCalculationData(correlationIdI);
-				const response2 = await serviceToolThrust2Weight.update(correlationIdI, response, calculationData);
+				const response2 = await serviceToolsThrust2Weight.update(correlationIdI, response, calculationData);
 				if (response2 && response2.success) {
 					motor.value = item.designation;
 					motorId.value = item.motorId;
@@ -315,9 +300,7 @@ export default {
 		onMounted(async () => {
 			reset(false);
 
-			settings.value = serviceStore.getters.user.getUserSettings();
-
-			calculationData.value = serviceToolThrust2Weight.initialize(correlationId());
+			calculationData.value = serviceToolsThrust2Weight.initialize(correlationId());
 		});
 
 		return {
@@ -330,19 +313,24 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
 			setNotify,
+			settings,
 			calculationData,
 			calculationOk,
 			calculationResults,
@@ -354,19 +342,15 @@ export default {
 			mass,
 			maxLaunchRodTime,
 			maxLaunchRodTimeDefault,
-			measurementUnitsWeight,
 			motor,
 			motorId,
 			reset,
 			resetForm,
 			selectMotor,
-			serviceStore,
-			serviceToolThrust2Weight,
-			settings,
+			serviceToolsThrust2Weight,
 			thrustAverage,
 			thrustInitial,
 			thrustPeak,
-			doh,
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
 		};

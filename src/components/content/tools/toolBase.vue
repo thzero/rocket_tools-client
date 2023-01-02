@@ -1,8 +1,11 @@
 <script>
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { useContentBaseComponent } from '@/components/content/contentBase';
 
+import LibraryConstants from '@thzero/library_client/constants';
+
+import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 export function useToolsBaseComponent(props, context, options) {
@@ -18,13 +21,18 @@ export function useToolsBaseComponent(props, context, options) {
 		success
 	} = useContentBaseComponent(props, context, options);
 
+	const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+
+	const calculationOutput = ref([]);
 	const errors = ref(null);
 	const errorMessage = ref(null);
 	const errorTimer = ref(null);
+	const measurementUnits = ref(null);
 	const notifyColor = ref(null);
 	const notifyMessage = ref(null);
 	const notifySignal = ref(false);
 	const notifyTimeout = ref(3000);
+	const settings = ref(null);
 
 	const dateFormat = computed(() => {
 		return GlobalUtility.dateFormat();
@@ -34,6 +42,12 @@ export function useToolsBaseComponent(props, context, options) {
 	});
 	const formatNumber = (value) => {
 		return value?.toLocaleString();
+	};
+	const handleListener = (correlationId, type, name, value, setName, symbols) => {
+		if (type === symbols.symTypeEvaluate)
+			calculationOutput.value.push(`${setName}: ${name}`);
+		else if (type === symbols.symTypeSet)
+			calculationOutput.value.push(`${setName}: ${name} = ${value}`);
 	};
 	const setErrorMessage = (error) => {
 		errorMessage.value = error;
@@ -63,6 +77,11 @@ export function useToolsBaseComponent(props, context, options) {
 		notifySignal.value = true;
 	};
 
+	onMounted(async () => {
+		settings.value = serviceStore.getters.user.getUserSettings();
+		measurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
+	});
+
 	return {
 		correlationId,
 		error,
@@ -73,19 +92,24 @@ export function useToolsBaseComponent(props, context, options) {
 		noBreakingSpaces,
 		notImplementedError,
 		success,
+		calculationOutput,
 		dateFormat,
 		dateFormatMask,
 		errorMessage,
 		errors,
 		errorTimer,
 		formatNumber,
+		handleListener,
+		measurementUnits,
 		notifyColor,
 		notifyMessage,
 		notifySignal,
 		notifyTimeout,
+		serviceStore,
 		setErrorMessage,
 		setErrorTimer,
-		setNotify
+		setNotify,
+		settings
 	};
 };
 </script>

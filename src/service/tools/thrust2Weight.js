@@ -11,20 +11,24 @@ class Thrust2WeightToolsService extends BaseService {
 		this._serviceCalculationEngine = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE);
     }
 
-	async calculate(correlationId, data) {
+	async calculate(correlationId, data, measurementUnits) {
+		this._enforceNotNull('Thrust2WeightToolsService', 'calculate', data, 'data', correlationId);
+		this._enforceNotEmpty('Thrust2WeightToolsService', 'calculate', measurementUnits, 'measurementUnits', correlationId);
+
 		// eslint-disable-next-line prefer-const
-		let isMetric = false;
-		let massInKg = Number(data.mass);
-		if (massInKg <= 0)
-			return { success: false };
+		let isMetric = measurementUnits === Constants.MeasurementUnits.metrics.id;
+		data.isMetric = isMetric;
+		// let massInKg = Number(data.mass);
+		// if (massInKg <= 0)
+		// 	return { success: false };
 
-		if (!isMetric)
-			massInKg = Number(data.mass) / 2.2;
+		// if (!isMetric)
+		// 	massInKg = Number(data.mass) / 2.2;
 
-		const results = {
-			success: true,
-			calcuated: true
-		};
+		// const results = {
+		// 	success: true,
+		// 	calcuated: true
+		// };
 
 		/*
 		Thrust to Weight ratio - force in newtons divided by weight in newtons
@@ -45,47 +49,72 @@ class Thrust2WeightToolsService extends BaseService {
 				var: 'gravity',
 				value: 9.8
 			},
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeSet,
+			// 	var: 'massInKg',
+			// 	value: massInKg,
+			// 	unitConversion: true
+			// },
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
+				// data: {
+				// 	massInKg: massInKg,
+				// 	thrustInitial: data.thrustInitial,
+				// 	thrustPeak: data.thrustPeak,
+				// 	thrustAverage: data.thrustAverage
+				// },
+				data: data,
+				covert: this._serviceCalculationEngine.symConvertNumber,
+				units: {
+					user: measurementUnits,
+					calculation: Constants.MeasurementUnits.metrics.id
+				}
+			},
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeSet,
+			// 	var: 'thrustInitial',
+			// 	value: Number(data.thrustInitial)
+			// },
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeSet,
+			// 	var: 'thrustPeak',
+			// 	value: Number(data.thrustPeak)
+			// },
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeSet,
+			// 	var: 'thrustAverage',
+			// 	value: Number(data.thrustAverage)
+			// },
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'massInKg',
-				value: massInKg
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'thrustInitial',
-				value: Number(data.thrustInitial)
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'thrustPeak',
-				value: Number(data.thrustPeak)
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'thrustAverage',
-				value: Number(data.thrustAverage)
+				evaluate: 'mass / (isMetric ? 1 : 2.2)',
+				units: {
+					user: measurementUnits,
+					calculation: Constants.MeasurementUnits.metrics.id
+				}
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'massInNewtons',
-				evaluate: 'massInNewtons = massInKg * gravity'
+				evaluate: 'massInKg * gravity'
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'initial',
-				evaluate: 'initial = thrustInitial / massInNewtons',
+				evaluate: 'thrustInitial / massInNewtons',
 				result: true
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'peak',
-				evaluate: 'peak = thrustPeak != null ? thrustPeak / massInNewtons : null',
+				evaluate: 'thrustPeak != null ? thrustPeak / massInNewtons : null',
 				result: true
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'average',
-				evaluate: 'average = thrustAverage != null ? thrustAverage / massInNewtons : null',
+				evaluate: 'thrustAverage != null ? thrustAverage / massInNewtons : null',
 				result: true
 			}
 		];

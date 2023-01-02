@@ -197,7 +197,6 @@ import { required } from '@vuelidate/validators';
 
 import Papa from 'papaparse';
 
-import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
@@ -237,19 +236,24 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
-			setNotify
+			setNotify,
+			settings
 		} = useToolsBaseComponent(
 			props, 
 			context
@@ -257,7 +261,6 @@ export default {
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
 		const serviceFlightPath = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR);
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 
 		const buttons = ref({
 			export: {
@@ -473,6 +476,8 @@ export default {
 			flightDate.value = serviceStore.getters.getFlightDate();
 			flightLocation.value = serviceStore.getters.getFlightLocation();
 			flightPathMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightPathMeasurementUnits.value))
+				flightPathMeasurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
 			flightPathProcessor.value = serviceStore.getters.getFlightPathProcessor();
@@ -500,22 +505,26 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
 			setNotify,
+			settings,
 			serviceDownload,
 			serviceFlightPath,
-			serviceStore,
 			buttons,
 			downloadProgress,
 			expanded,
