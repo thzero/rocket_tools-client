@@ -19,7 +19,7 @@
 				</div>
 				<div v-if="!deviceiOsAvailable">
 <div class="pb-2">{{ $t('mobileApp.notYetAvailable') }}</div>
-<img src="/images/mobile/ios-app-store.svg" height="44">
+<img src="/images/mobile/ios-app-store.svg" height="44" alt="Apple iOS Store" />
 				</div>
 			</v-col>
 			<v-col cols="3" class="text-center">
@@ -28,7 +28,7 @@
 				</div>
 				<div v-if="!deviceAndroidAvailable">
 <div class="pb-2">{{ $t('mobileApp.notYetAvailable') }}</div>
-<img src="/images/mobile/google-play-store.png" height="44">
+<img src="/images/mobile/google-play-store.png" height="44" alt="Google Play Store" />
 				</div>
 			</v-col>
 		</v-row>
