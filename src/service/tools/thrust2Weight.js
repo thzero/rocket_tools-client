@@ -64,7 +64,7 @@ class Thrust2WeightToolsService extends BaseService {
 				// 	thrustAverage: data.thrustAverage
 				// },
 				data: data,
-				covert: this._serviceCalculationEngine.symConvertNumber,
+				convert: this._serviceCalculationEngine.symConvertNumber,
 				units: {
 					user: measurementUnits,
 					calculation: Constants.MeasurementUnits.metrics.id

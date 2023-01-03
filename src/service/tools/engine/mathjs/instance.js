@@ -1,4 +1,4 @@
-import { create, all }from 'mathjs';
+import { create, all } from 'mathjs';
 
 import InstanceCalculationEngineToolService from '../instance';
 
@@ -6,9 +6,9 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 	constructor(engine) {
 		super(engine);
 
-		const math = create(all);
-		this._parser = math.parser();
-		math.import({
+		this._math = create(all);
+		this._parser = this._math.parser();
+		this._math.import({
 				import: function () { throw new Error('Function import is disabled') },
 				createUnit: function () { throw new Error('Function createUnit is disabled') },
 				evaluate: function () { throw new Error('Function evaluate is disabled') },
@@ -106,6 +106,9 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			this._publish(correlationId, listener, this._engine.symTypeEvaluate, step, null, this._evaluationName);
 
 		this._parser.evaluate(step);
+
+		if (calculationStep.units && calculationStep.units.to)
+			this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
 		
 		if (calculationStep.result)
 			resultSteps.push(calculationStep);
@@ -125,7 +128,7 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			let step;
 			for (const [key, value] of Object.entries(calculationStep.data)) {
 				//this._parser.set(key, value);
-				step = { type: this._engine.symTypeSet, var: key, value: value, convert: calculationStep.convert, result: calculationStep.result, evaluationName: this._evaluationName };
+				step = { type: this._engine.symTypeSet, var: key, value: value, convert: calculationStep.convert, unit: calculationStep.unit, units: calculationStep.units, result: calculationStep.result, evaluationName: this._evaluationName };
 				this._evaluateSet(correlationId, step, resultSteps);
 			}
 			return true;
@@ -133,10 +136,24 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 
 		if (!String.isNullOrEmpty(calculationStep.var)) {
 			let value = calculationStep.value;
-			if (calculationStep.covert && calculationStep.covert === this._engine.symConvertNumber)
-				value = Number(calculationStep.value);
-			
-			this._parser.set(calculationStep.var, calculationStep.value);
+			// if (calculationStep.convert && calculationStep.convert === this._engine.symConvertNumber)
+			// 	value = Number(calculationStep.value);
+			if (value) {
+				if (calculationStep.convert && calculationStep.unit) {
+					// value = this._math.unit(value + ' ' + calculationStep.unit);
+					value = this._math.unit(`${value} ${calculationStep.units.from}`);
+					this._parser.set(calculationStep.var, value);
+				}
+				else if (calculationStep.units && calculationStep.units.from && calculationStep.units.to) {
+					// value = this._math.unit(value + ' ' + calculationStep.units.from) + ' to ' + calculationStep.units.to;
+					// this._parser.set(calculationStep.var, this._math.unit(value + ' ' + calculationStep.units.from));
+					this._parser.set(calculationStep.var, this._math.unit(`${value} ${calculationStep.units.from}`));
+					// this._parser.evaluate(calculationStep.var + ' = ' + calculationStep.var + ' to ' + calculationStep.units.to);
+					this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
+				}
+			}
+			else
+				this._parser.set(calculationStep.var, value);
 			
 			if (calculationStep.result)
 				resultSteps.push(calculationStep);

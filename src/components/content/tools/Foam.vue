@@ -96,7 +96,7 @@
 								<v-row class="pb-2" dense>
 									<v-col cols="4">
 										<span class="text-bold">{{ $t('forms.content.tools.foam.totalVolume') }}</span>&nbsp;&nbsp;
-										<span class="text-bold" v-if="calculationResults.totalVolume">{{ calculationResults.totalVolume.toFixed(2) }}</span>
+										<span class="text-bold" v-if="calculationResults.totalVolume">{{ calculationResults.totalVolume }}</span>
 									</v-col>
 								</v-row>
 								<v-row 
@@ -251,23 +251,23 @@ export default {
 			calculationResults.value.calculated = false;
 			calculationResults.value.foams = [];
 			
-			let responseCalcFoam;
-			let responseCalcFoamInstance;
-			for (const foam of responseFoams.results) {
-				foam.totalVolume = calculationResults.value.totalVolume;
-				responseCalcFoam = await serviceToolsFoam.calculateFoam(correlationIdI, foam, measurementUnits.value);
-				if (!responseCalcFoam || !responseCalcFoam.success) {
-					continue; // TODO
-				}
+			// let responseCalcFoam;
+			// let responseCalcFoamInstance;
+			// for (const foam of responseFoams.results) {
+			// 	foam.totalVolume = calculationResults.value.totalVolume;
+			// 	responseCalcFoam = await serviceToolsFoam.calculateFoam(correlationIdI, foam, measurementUnits.value);
+			// 	if (!responseCalcFoam || !responseCalcFoam.success) {
+			// 		continue; // TODO
+			// 	}
 
-				responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
-				responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
-				if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
-					continue; // TODO
-				}
+			// 	responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
+			// 	responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
+			// 	if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
+			// 		continue; // TODO
+			// 	}
 
-				calculationResults.value.foams.push(responseCalcFoamInstance.results);
-			}
+			// 	calculationResults.value.foams.push(responseCalcFoamInstance.results);
+			// }
 
 			calculationResults.value.calculated = true;
 		};

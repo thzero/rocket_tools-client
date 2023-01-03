@@ -18,24 +18,18 @@ class FoamToolsService extends BaseService {
 		const calculationSteps = [
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'pi',
-				value: 3.141592654
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				// data: {
-				// 	bodyTubeID: Number(data.bodyTubeID),
-				// 	finRootLength: Number(data.finRootLength),
-				// 	finTabLength: Number(data.finTabLength),
-				// 	finWidth: Number(data.finWidth),
-				// 	motorTubeOD: Number(data.motorTubeOD),
-				// 	numberFins: Number(data.numberFins)
-				// },
-				data: data,
-				covert: this._serviceCalculationEngine.symConvertNumber,
+				data: {
+					bodyTubeID: data.bodyTubeID,
+					finRootLength: data.finRootLength,
+					finTabLength: data.finTabLength,
+					finWidth: data.finWidth,
+					motorTubeOD: data.motorTubeOD
+				},
+				// data: data,
+				// convert: this._serviceCalculationEngine.symConvertNumber,
 				units: {
-					user: measurementUnits,
-					calculation: Constants.MeasurementUnits.metrics.id
+					from: 'in',
+					to: 'mm'
 				}
 			},
 			{
@@ -63,12 +57,27 @@ class FoamToolsService extends BaseService {
 				var: 'volumeDifference',
 				evaluate: 'volumeDifference - volumeFins'
 			},
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
+			// 	var: 'totalVolumePreConvert',
+			// 	evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
+			// 	// result: true
+			// },
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'totalVolume',
 				evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
-				result: true
-			}
+				result: true,
+				units: {
+					to: 'in^3'
+				}
+			},
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
+			// 	var: 'totalVolume',
+			// 	evaluate: 'temp to ml',
+			// 	result: true
+			// }
 		];
 		
 		return this._successResponse({
@@ -93,7 +102,7 @@ class FoamToolsService extends BaseService {
 				// 	numberFins: Number(data.numberFins)
 				// },
 				data: data,
-				covert: this._serviceCalculationEngine.symConvertNumber,
+				convert: this._serviceCalculationEngine.symConvertNumber,
 				units: {
 					user: measurementUnits,
 					calculation: Constants.MeasurementUnits.metrics.id
@@ -125,32 +134,32 @@ class FoamToolsService extends BaseService {
 			{
 				manufacturer: 'FOAM-IT',
 				expansion: 10,
-				massGMl: 0.080092317,
-				massOzIn3: 0.046296296
+				massGMl: '0.080092317 g/ml',
+				massOzIn3: '0.046296296 oz/in^3'
 			},
 			{
 				manufacturer: 'Mac Performance',
 				expansion: 15,
-				massGMl: 0.064073853,
-				massOzIn3: 0.037037037
+				massGMl: '0.064073853 g/ml',
+				massOzIn3: '0.037037037 oz/in^3'
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 10,
-				massGMl: 0.09611078,
-				massOzIn3: 0.055555556
+				massGMl: '0.09611078 g/ml',
+				massOzIn3: '0.055555556 oz/in^3'
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 15,
-				massGMl: 0.064073853,
-				massOzIn3: 0.037037037
+				massGMl: '0.064073853 g/ml',
+				massOzIn3: '0.037037037 oz/in^3'
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 20,
-				massGMl: 0.04805539,
-				massOzIn3: 0.027777778
+				massGMl: '0.04805539 g/ml',
+				massOzIn3: '0.027777778 oz/in^3'
 			},
 		]);
 	}
