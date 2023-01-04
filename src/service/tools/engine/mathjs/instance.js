@@ -84,10 +84,6 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			
 			for (const listener of this._listeners) {
 				if (watcher.hasChanged)
-					// listener(correlationId, this._engine.symTypeSet, watcher.var, watcher.value, {
-					// 	symTypeEvaluate: this.symTypeEvaluate,
-					// 	symTypeEvaluate: this.symTypeSet
-					// });
 					this._publish(correlationId, listener, this._engine.symTypeSet, watcher.var, watcher.value, this._evaluationName);
 			}
 		}
@@ -136,7 +132,6 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			// turn data object into individual sets...
 			let step;
 			for (const [key, value] of Object.entries(calculationStep.data)) {
-				//this._parser.set(key, value);
 				step = { type: this._engine.symTypeSet, var: key, value: value, convert: calculationStep.convert, unit: calculationStep.unit, units: calculationStep.units, result: calculationStep.result, evaluationName: this._evaluationName };
 				this._evaluateSet(correlationId, step, resultSteps);
 			}
@@ -145,19 +140,13 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 
 		if (!String.isNullOrEmpty(calculationStep.var)) {
 			let value = calculationStep.value;
-			// if (calculationStep.convert && calculationStep.convert === this._engine.symConvertNumber)
-			// 	value = Number(calculationStep.value);
 			if (value) {
 				if (calculationStep.unit) {
-					// value = this._math.unit(value + ' ' + calculationStep.unit);
 					value = this._math.unit(`${value} ${calculationStep.unit}`);
 					this._parser.set(calculationStep.var, value);
 				}
 				else if (calculationStep.units && calculationStep.units.from && calculationStep.units.to) {
-					// value = this._math.unit(value + ' ' + calculationStep.units.from) + ' to ' + calculationStep.units.to;
-					// this._parser.set(calculationStep.var, this._math.unit(value + ' ' + calculationStep.units.from));
 					this._parser.set(calculationStep.var, this._math.unit(`${value} ${calculationStep.units.from}`));
-					// this._parser.evaluate(calculationStep.var + ' = ' + calculationStep.var + ' to ' + calculationStep.units.to);
 					this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
 				}
 				else
