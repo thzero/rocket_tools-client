@@ -322,6 +322,10 @@
 		<VLoadingOverlay
 			:signal="isAuthCompleted"
 		/>
+
+		<VCookieComply
+			:preferences="preferences"
+		/>
 	</v-app>
 </template>
 
@@ -332,10 +336,9 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// import baseMainLayout from '@/library_vue/layouts/baseMainLayout';
 import { useBaseMainLayout } from '@/library_vue/layouts/baseMainLayout';
 
-// import CharacterNewDialog from '@/components/gameSystems/CharacterNewDialog';
+import VCookieComply from '@/library_vue_vuetify/components/VCookieComply';
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 // import VDisplayDialog from '@/library_vue_vuetify/components/VDisplayDialog';
 import VLayoutFooter from '@/library_vue_vuetify/components/VLayoutFooter';
@@ -346,8 +349,8 @@ import DialogSupport from '@/library_vue/components/support/dialog';
 export default {
 	name: 'MainLayout',
 	components: {
-		// CharacterNewDialog,
 		VConfirmationDialog,
+		VCookieComply,
 		// VDisplayDialog,
 		VLayoutFooter,
 		VLoadingOverlay
@@ -385,6 +388,53 @@ export default {
 		const dialogDisplayMarkupSignal = ref(new DialogSupport());
 		const displayMarkupValue = ref(null);
 		const dialogNewCharacter = ref(new DialogSupport());
+
+		const preferences = [
+			{
+				title: GlobalUtility.$trans.t('strings.cookieCompliance.performance.title'),
+				description: GlobalUtility.$trans.t('strings.cookieCompliance.performance.description'),
+				items: [
+					{ 
+						label: 'Active',
+						value: 'performance', 
+						isRequired: true 
+					}
+				],
+			},
+			// {
+			// 	title: GlobalUtility.$trans.t('strings.cookieCompliance.session.title'),
+			// 	description: GlobalUtility.$trans.t('strings.cookieCompliance.session.description'),
+			// 	items: [
+			// 		{ 
+			// 			label: 'Active',
+			// 			value: 'session', 
+			// 			isRequired: true 
+			// 		}
+			// 	],
+			// },
+			{
+				title: GlobalUtility.$trans.t('strings.cookieCompliance.analytics.title'),
+				description: GlobalUtility.$trans.t('strings.cookieCompliance.analytics.description'),
+				items: [
+					{ 
+						label: 'GoogleAnalytics', 
+						value: 'ga', 
+						isEnable: true 
+					},
+				],
+			},
+			// {
+			// 	title: GlobalUtility.$trans.t('strings.cookieCompliance.xsrf.title'),
+			// 	description: GlobalUtility.$trans.t('strings.cookieCompliance.xsrf.description'),
+			// 	items: [
+			// 		{ 
+			// 			label: 'XSRF-TOKEN', 
+			// 			value: 'performance', 
+			// 			isEnable: true 
+			// 		},
+			// 	],
+			// },
+		];
 
 		const info = computed(() => {
 			let temp = serviceStore.state.content;
@@ -459,6 +509,7 @@ export default {
 			info,
 			links,
 			markup,
+			preferences,
 			serviceMarkup,
 			tools
 		};

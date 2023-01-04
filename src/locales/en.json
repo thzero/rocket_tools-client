@@ -514,6 +514,24 @@
 	"strings": {
 		"add": "Add",
 		"clear": "Clear",
+		"cookieCompliance": {
+			"analytics": {
+				"title": "Analytics",
+				"description": "These are used for analytics purposes, i.e. determining who is using the site, how often the site is being used, etc.  These tracking is anonymized."
+			},
+			"session": {
+				"title": "Session token (necessary)",
+				"description": "This cookie contains a token. With the help of the token, your current session can be continued when using the website. This cookie is valid for 2 hours after creation and is renewed each time you change pages within this website."
+			},
+			"performance": {
+				"title": "Performance",
+				"description": "No performance oriented cookies are used by this site at this time."
+			},
+			"xsrf": {
+				"title": "XSRF Token (necessary)",
+				"description": "This cookie contains a token. The token prevents a third party from submitting forms on the website on your behalf. This cookie is valid for 2 hours and is renewed at every page change within the website."
+			}
+		},
 		"content": {
 			"info": {
 				"epoxy": {
