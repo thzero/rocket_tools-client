@@ -55,25 +55,13 @@ class FoamToolsService extends BaseService {
 				var: 'volumeDifferenceWithoutFins',
 				evaluate: 'volumeDifferenceBetweenBodyTube - volumeFins'
 			},
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
-			// 	var: 'totalVolumePreConvert',
-			// 	evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
-			// 	// result: true
-			// },
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'totalVolume',
 				evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
 				result: true,
 				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
-			},
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
-			// 	var: 'totalVolume',
-			// 	evaluate: 'temp to ml',
-			// 	result: true
-			// }
+			}
 		];
 		
 		return this._successResponse({
@@ -145,30 +133,30 @@ class FoamToolsService extends BaseService {
 				massGMl: 0.080092317,
 				massOzIn3: 0.046296296
 			},
-			// {
-			// 	manufacturer: 'Mac Performance',
-			// 	expansion: 15,
-			// 	massGMl: 0.064073853,
-			// 	massOzIn3: 0.037037037
-			// },
-			// {
-			// 	manufacturer: 'Public Missiles',
-			// 	expansion: 10,
-			// 	massGMl: 0.09611078,
-			// 	massOzIn3: 0.055555556
-			// },
-			// {
-			// 	manufacturer: 'Public Missiles',
-			// 	expansion: 15,
-			// 	massGMl: 0.064073853,
-			// 	massOzIn3: 0.037037037
-			// },
-			// {
-			// 	manufacturer: 'Public Missiles',
-			// 	expansion: 20,
-			// 	massGMl: 0.04805539,
-			// 	massOzIn3: 0.027777778
-			// },
+			{
+				manufacturer: 'Mac Performance',
+				expansion: 15,
+				massGMl: 0.064073853,
+				massOzIn3: 0.037037037
+			},
+			{
+				manufacturer: 'Public Missiles',
+				expansion: 10,
+				massGMl: 0.09611078,
+				massOzIn3: 0.055555556
+			},
+			{
+				manufacturer: 'Public Missiles',
+				expansion: 15,
+				massGMl: 0.064073853,
+				massOzIn3: 0.037037037
+			},
+			{
+				manufacturer: 'Public Missiles',
+				expansion: 20,
+				massGMl: 0.04805539,
+				massOzIn3: 0.027777778
+			}
 		]);
 	}
 
