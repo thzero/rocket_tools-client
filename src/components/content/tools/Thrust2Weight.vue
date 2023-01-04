@@ -159,7 +159,7 @@ import Constants from '@/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import DialogSupport from '@/library_vue/components/support/dialog';
+import DialogSupport from '@thzero/library_client_vue3/components/support/dialog';
 
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 

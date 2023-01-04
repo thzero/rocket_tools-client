@@ -9,7 +9,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import { useBaseAppComponent } from '@/library_vue/components/baseApp';
+import { useBaseAppComponent } from '@thzero/library_client_vue3/components/baseApp';
 
 export default {
 	name: 'App',

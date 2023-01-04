@@ -16,7 +16,7 @@ import { computed, getCurrentInstance, ref } from 'vue';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import base from '@/library_vue/components/base';
+import base from '@thzero/library_client_vue3/components/base';
 
 export default {
 	name: 'Profile',

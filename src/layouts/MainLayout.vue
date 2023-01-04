@@ -336,7 +336,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import { useBaseMainLayout } from '@/library_vue/layouts/baseMainLayout';
+import { useBaseMainLayout } from '@thzero/library_client_vue3/layouts/baseMainLayout';
 
 import VCookieComply from '@/library_vue_vuetify/components/VCookieComply';
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
@@ -344,7 +344,7 @@ import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationD
 import VLayoutFooter from '@/library_vue_vuetify/components/VLayoutFooter';
 import VLoadingOverlay from '@/library_vue_vuetify/components/VLoadingOverlay';
 
-import DialogSupport from '@/library_vue/components/support/dialog';
+import DialogSupport from '@thzero/library_client_vue3/components/support/dialog';
 
 export default {
 	name: 'MainLayout',

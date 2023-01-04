@@ -41,8 +41,8 @@ import { Chart, registerables } from 'chart.js';
 // import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// import base from '@/library_vue/components/base';
-import { useBaseComponent } from '@/library_vue/components/base';
+// import base from '@thzero/library_client_vue3/components/base';
+import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
 Chart.register(...registerables);
 

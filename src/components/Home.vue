@@ -173,7 +173,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import { useBaseComponent } from '@/library_vue/components/base';
+import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
 import News from '@/components/News';
 import VLoadingOverlay from '@/library_vue_vuetify/components/VLoadingOverlay';

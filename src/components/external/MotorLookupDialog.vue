@@ -189,14 +189,14 @@ import LibraryConstants from '@thzero/library_client/constants';
 import CommonUtility from '@thzero/library_common/utility/index';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import { useBaseComponent } from '@/library_vue/components/base';
+import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 import VFormListingDialog from '@/library_vue_vuetify/components/form/VFormListingDialog';
 import VSelectWithValidation from '@/library_vue_vuetify/components/form/VSelectWithValidation';
 import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
 
-import DialogSupport from '@/library_vue/components/support/dialog';
+import DialogSupport from '@thzero/library_client_vue3/components/support/dialog';
 
 export default {
 	name: 'MotorLookupDialog',

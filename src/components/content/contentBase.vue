@@ -1,5 +1,5 @@
 <script>
-import { useBaseComponent } from '@/library_vue/components/base';
+import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
 export function useContentBaseComponent(props, context, options) {
 	const {

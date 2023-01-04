@@ -349,7 +349,7 @@ See the
 </template>
 
 <script>
-import { useBaseComponent } from '@/library_vue/components/base.vue';
+import { useBaseComponent } from '@thzero/library_client_vue3/components/base.vue';
 
 export default {
 	name: 'Simulators',

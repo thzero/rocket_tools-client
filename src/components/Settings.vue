@@ -201,7 +201,7 @@ import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
 import VSelectWithValidation from '@/library_vue_vuetify/components/form//VSelectWithValidation';
 import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
 
-import { useBaseSettingsComponent } from '@/library_vue/components/baseSettings';
+import { useBaseSettingsComponent } from '@thzero/library_client_vue3/components/baseSettings';
 
 import { helpers, minLength, maxLength, required } from '@vuelidate/validators';
 
