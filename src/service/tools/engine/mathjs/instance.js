@@ -31,9 +31,8 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 		try {
 			const results = {};
 			const resultSteps = [];
-			for (const calculationStep of calculationSteps) {
+			for (const calculationStep of calculationSteps)
 				this._evaluate(correlationId, calculationStep, resultSteps);
-			}
 
 			for (const resultStep of resultSteps)
 			{
@@ -83,13 +82,14 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			watcher.hasChanged = false;
 			watcher.value = this._parser.get(watcher.var);
 			
-			for (const listener of this._listeners)
+			for (const listener of this._listeners) {
 				if (watcher.hasChanged)
 					// listener(correlationId, this._engine.symTypeSet, watcher.var, watcher.value, {
 					// 	symTypeEvaluate: this.symTypeEvaluate,
 					// 	symTypeEvaluate: this.symTypeSet
 					// });
 					this._publish(correlationId, listener, this._engine.symTypeSet, watcher.var, watcher.value, this._evaluationName);
+			}
 		}
 	}
 
@@ -102,18 +102,27 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 
 		const step = `${calculationStep.var} = ${calculationStep.evaluate}`;
 		for (const listener of this._listeners)
-			// listener(correlationId, this._engine.symTypeEvaluate, step);
 			this._publish(correlationId, listener, this._engine.symTypeEvaluate, step, null, this._evaluationName);
 
 		this._parser.evaluate(step);
+		const value = this._parser.get(calculationStep.var);
 
-		if (calculationStep.units && calculationStep.units.to)
-			this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
+		if (calculationStep.unit) {
+			const stepC = `${calculationStep.var} = ${calculationStep.var} to ${calculationStep.unit}`;
+			for (const listener of this._listeners) {
+				this._publish(correlationId, listener, this._engine.symTypeSet, calculationStep.var, value, this._evaluationName);
+				this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepC, null, this._evaluationName);
+			}
+
+
+			this._parser.evaluate(stepC);
+		}
 		
 		if (calculationStep.result)
 			resultSteps.push(calculationStep);
-	
+
 		this._initWatchers(correlationId, calculationStep);
+		
 		return true;
 	}
 
@@ -139,9 +148,9 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			// if (calculationStep.convert && calculationStep.convert === this._engine.symConvertNumber)
 			// 	value = Number(calculationStep.value);
 			if (value) {
-				if (calculationStep.convert && calculationStep.unit) {
+				if (calculationStep.unit) {
 					// value = this._math.unit(value + ' ' + calculationStep.unit);
-					value = this._math.unit(`${value} ${calculationStep.units.from}`);
+					value = this._math.unit(`${value} ${calculationStep.unit}`);
 					this._parser.set(calculationStep.var, value);
 				}
 				else if (calculationStep.units && calculationStep.units.from && calculationStep.units.to) {
@@ -151,6 +160,8 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 					// this._parser.evaluate(calculationStep.var + ' = ' + calculationStep.var + ' to ' + calculationStep.units.to);
 					this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
 				}
+				else
+					this._parser.set(calculationStep.var, value);
 			}
 			else
 				this._parser.set(calculationStep.var, value);

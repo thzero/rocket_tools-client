@@ -251,28 +251,29 @@ export default {
 			calculationResults.value.calculated = false;
 			calculationResults.value.foams = [];
 			
-			// let responseCalcFoam;
-			// let responseCalcFoamInstance;
-			// for (const foam of responseFoams.results) {
-			// 	foam.totalVolume = calculationResults.value.totalVolume;
-			// 	responseCalcFoam = await serviceToolsFoam.calculateFoam(correlationIdI, foam, measurementUnits.value);
-			// 	if (!responseCalcFoam || !responseCalcFoam.success) {
-			// 		continue; // TODO
-			// 	}
+			let responseCalcFoam;
+			let responseCalcFoamInstance;
+			for (const foam of responseFoams.results) {
+				foam.totalVolume = calculationResults.value.totalVolume;
+				responseCalcFoam = await serviceToolsFoam.calculateFoam(correlationIdI, foam, measurementUnits.value);
+				if (!responseCalcFoam || !responseCalcFoam.success) {
+					continue; // TODO
+				}
 
-			// 	responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
-			// 	responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
-			// 	if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
-			// 		continue; // TODO
-			// 	}
+				responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
+				responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
+				if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
+					continue; // TODO
+				}
 
-			// 	calculationResults.value.foams.push(responseCalcFoamInstance.results);
-			// }
+				calculationResults.value.foams.push(responseCalcFoamInstance.results);
+			}
 
 			calculationResults.value.calculated = true;
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.bodyTubeID = bodyTubeID.value;
+			calculationData.value.units = Constants.MeasurementUnits.english.distance.in;
 			calculationData.value.finRootLength = finRootLength.value;
 			calculationData.value.finTabLength = finTabLength.value;
 			calculationData.value.finWidth = finWidth.value;

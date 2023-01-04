@@ -25,10 +25,8 @@ class FoamToolsService extends BaseService {
 					finWidth: data.finWidth,
 					motorTubeOD: data.motorTubeOD
 				},
-				// data: data,
-				// convert: this._serviceCalculationEngine.symConvertNumber,
 				units: {
-					from: 'in',
+					from: data.units,
 					to: 'mm'
 				}
 			},
@@ -44,7 +42,7 @@ class FoamToolsService extends BaseService {
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeDifference',
+				var: 'volumeDifferenceBetweenBodyTube',
 				evaluate: 'volumeBodyTube - volumeMotorTube'
 			},
 			{
@@ -54,8 +52,8 @@ class FoamToolsService extends BaseService {
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeDifference',
-				evaluate: 'volumeDifference - volumeFins'
+				var: 'volumeDifferenceWithoutFins',
+				evaluate: 'volumeDifferenceBetweenBodyTube - volumeFins'
 			},
 			// {
 			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
@@ -68,9 +66,7 @@ class FoamToolsService extends BaseService {
 				var: 'totalVolume',
 				evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
 				result: true,
-				units: {
-					to: 'in^3'
-				}
+				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
 			},
 			// {
 			// 	type: this._serviceCalculationEngine.symTypeEvaluate,
@@ -93,33 +89,45 @@ class FoamToolsService extends BaseService {
 		const calculationSteps = [
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
-				// data: {
-				// 	bodyTubeID: Number(data.bodyTubeID),
-				// 	finRootLength: Number(data.finRootLength),
-				// 	finTabLength: Number(data.finTabLength),
-				// 	finWidth: Number(data.finWidth),
-				// 	motorTubeOD: Number(data.motorTubeOD),
-				// 	numberFins: Number(data.numberFins)
-				// },
-				data: data,
-				convert: this._serviceCalculationEngine.symConvertNumber,
-				units: {
-					user: measurementUnits,
-					calculation: Constants.MeasurementUnits.metrics.id
+				data: {
+					manufacturer: data.manufacturer,
+					expansion: data.expansion,
 				},
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'totalVolume',
+				evaluate: data.totalVolume,
+				unit: Constants.MeasurementUnits.metrics.fluid.ml
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massGMl',
+				value: data.massGMl,
+				unit: 'g/ml',
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massOzIn3',
+				value: data.massOzIn3,
+				to: 'oz/in^3',
 				result: true
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'foamWeight',
 				evaluate: 'massGMl * totalVolume',
+				unit: Constants.MeasurementUnits[measurementUnits].weight.default,
 				result: true
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'requiredAmount',
 				evaluate: 'totalVolume / expansion',
-				result: true
+				result: true,
+				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
 			}
 		];
 		
@@ -134,33 +142,33 @@ class FoamToolsService extends BaseService {
 			{
 				manufacturer: 'FOAM-IT',
 				expansion: 10,
-				massGMl: '0.080092317 g/ml',
-				massOzIn3: '0.046296296 oz/in^3'
+				massGMl: 0.080092317,
+				massOzIn3: 0.046296296
 			},
-			{
-				manufacturer: 'Mac Performance',
-				expansion: 15,
-				massGMl: '0.064073853 g/ml',
-				massOzIn3: '0.037037037 oz/in^3'
-			},
-			{
-				manufacturer: 'Public Missiles',
-				expansion: 10,
-				massGMl: '0.09611078 g/ml',
-				massOzIn3: '0.055555556 oz/in^3'
-			},
-			{
-				manufacturer: 'Public Missiles',
-				expansion: 15,
-				massGMl: '0.064073853 g/ml',
-				massOzIn3: '0.037037037 oz/in^3'
-			},
-			{
-				manufacturer: 'Public Missiles',
-				expansion: 20,
-				massGMl: '0.04805539 g/ml',
-				massOzIn3: '0.027777778 oz/in^3'
-			},
+			// {
+			// 	manufacturer: 'Mac Performance',
+			// 	expansion: 15,
+			// 	massGMl: 0.064073853,
+			// 	massOzIn3: 0.037037037
+			// },
+			// {
+			// 	manufacturer: 'Public Missiles',
+			// 	expansion: 10,
+			// 	massGMl: 0.09611078,
+			// 	massOzIn3: 0.055555556
+			// },
+			// {
+			// 	manufacturer: 'Public Missiles',
+			// 	expansion: 15,
+			// 	massGMl: 0.064073853,
+			// 	massOzIn3: 0.037037037
+			// },
+			// {
+			// 	manufacturer: 'Public Missiles',
+			// 	expansion: 20,
+			// 	massGMl: 0.04805539,
+			// 	massOzIn3: 0.027777778
+			// },
 		]);
 	}
 
