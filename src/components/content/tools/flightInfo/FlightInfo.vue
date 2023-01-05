@@ -376,20 +376,20 @@ import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
-import VuetifyUtility from '@/library_vue_vuetify/utility/index';
+import VueUtility from '@thzero/library_client_vue3/utility/index';
 
 import flightInfoData from '@/components/content/tools/flightInfo/FlightInfoData';
 import flightInfoChart from '@/components/content/tools/flightInfo/charts/FlightInfo';
 
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
-import VColorWithValidation from '@/library_vue_vuetify/components/form/VColorWithValidation';
-import VDateTimeField from '@/library_vue_vuetify/components/form/VDateTimeFieldTemp';
-import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
-import VSelectWithValidation from '@/library_vue_vuetify/components/form/VSelectWithValidation';
-import VSwitchWithValidation from '@/library_vue_vuetify/components/form/VSwitchWithValidation';
-import VTextAreaWithValidation from '@/library_vue_vuetify/components/form/VTextAreaWithValidation';
-import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
+import VColorWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VColorWithValidation';
+import VDateTimeField from '@thzero/library_client_vue3_vuetify3/components/form/VDateTimeFieldTemp';
+import VFormControl from '@thzero/library_client_vue3_vuetify3/components/form/VFormControl';
+import VSelectWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VSelectWithValidation';
+import VSwitchWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VSwitchWithValidation';
+import VTextAreaWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VTextAreaWithValidation';
+import VTextFieldWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VTextFieldWithValidation';
 
 export default {
 	name: 'FlightInfo',
@@ -514,8 +514,8 @@ export default {
 			flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
-			flightInfoProcessors.value = VuetifyUtility.selectOptions(serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'forms.content.tools.flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
-			flightInfoMeasurementUnitsOptions.value = VuetifyUtility.selectOptions(AppUtility.measurementUnitsOptions(), GlobalUtility.$trans.t, 'measurementUnits');
+			flightInfoProcessors.value = VueUtility.selectOptions(serviceFlightInfo.serviceProcessors, GlobalUtility.$trans.t, 'forms.content.tools.flightInfo.processors', (l) => { return l.id; }, null, (l) => { return l.id; });
+			flightInfoMeasurementUnitsOptions.value = VueUtility.selectOptions(AppUtility.measurementUnitsOptions(), GlobalUtility.$trans.t, 'measurementUnits');
 
 			resolution.value = serviceStore.getters.getFlightInfoResolution(correlationIdI) ?? Constants.FlightInfo.Resolution;
 		});

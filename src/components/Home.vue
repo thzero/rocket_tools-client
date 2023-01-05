@@ -176,7 +176,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
 import News from '@/components/News';
-import VLoadingOverlay from '@/library_vue_vuetify/components/VLoadingOverlay';
+import VLoadingOverlay from '@thzero/library_client_vue3_vuetify3/components/VLoadingOverlay';
 
 const DelayMs = 0; // 250
 

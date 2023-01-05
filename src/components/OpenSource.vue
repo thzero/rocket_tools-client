@@ -1,6 +1,6 @@
 <script>
-import vOpenSource from '@/library_vue_vuetify/components/VOpenSource';
-import { useFrameworkOpenSourceComponent } from '@/library_vue_vuetify/components/frameworkOpenSource';
+import vOpenSource from '@thzero/library_client_vue3_vuetify3/components/VOpenSource';
+import { useFrameworkOpenSourceComponent } from '@thzero/library_client_vue3_vuetify3/components/frameworkOpenSource';
 
 export default {
 	name: 'OpenSource',

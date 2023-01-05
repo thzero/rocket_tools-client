@@ -1,7 +1,3 @@
-<template>
-	<router-view />
-</template>
-
 <script>
 import { useTheme } from 'vuetify';
 
@@ -10,9 +6,11 @@ import LibraryConstants from '@thzero/library_client/constants';
 import GlobalUtility from '@thzero/library_client/utility/global';
 
 import { useBaseAppComponent } from '@thzero/library_client_vue3/components/baseApp';
+import baseApp from '@thzero/library_client_vue3_vuetify3/components/VApp';
 
 export default {
 	name: 'App',
+	extends: baseApp,
 	setup(props, context) {
 		const {
 			correlationId,

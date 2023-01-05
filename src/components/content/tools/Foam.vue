@@ -168,8 +168,8 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
-import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
-import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
+import VFormControl from '@thzero/library_client_vue3_vuetify3/components/form/VFormControl';
+import VNumberFieldWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VNumberFieldWithValidation';
 
 export default {
 	name: 'Foam',

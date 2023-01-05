@@ -1,6 +1,3 @@
 [submodule "src/common"]
 	path = src/common
 	url = https://github.com/thzero/rocket_sidekick-common
-[submodule "src/library_vue_vuetify"]
-	path = src/library_vue_vuetify
-	url = https://github.com/thzero/library_client_vue3_vuetify3_components

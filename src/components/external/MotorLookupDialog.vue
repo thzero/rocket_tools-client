@@ -191,10 +191,10 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
-import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
-import VFormListingDialog from '@/library_vue_vuetify/components/form/VFormListingDialog';
-import VSelectWithValidation from '@/library_vue_vuetify/components/form/VSelectWithValidation';
-import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
+import VConfirmationDialog from '@thzero/library_client_vue3_vuetify3/components/VConfirmationDialog';
+import VFormListingDialog from '@thzero/library_client_vue3_vuetify3/components/form/VFormListingDialog';
+import VSelectWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VSelectWithValidation';
+import VTextFieldWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VTextFieldWithValidation';
 
 import DialogSupport from '@thzero/library_client_vue3/components/support/dialog';
 

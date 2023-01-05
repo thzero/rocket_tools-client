@@ -1,4 +1,6 @@
-import '@mdi/font/css/materialdesignicons.css'
+import 'vuetify/styles';
+import '@mdi/font/css/materialdesignicons.css';
+
 // import { aliases, fa } from 'vuetify/iconsets/fa';
 // import { mdi } from 'vuetify/iconsets/mdi';
 // import 'animate.css';
@@ -8,10 +10,10 @@ import bootStarter from '@thzero/library_client_firebase_vue/boot/starter';
 import bootEventBus from '@thzero/library_client_vue3/boot/eventBus';
 import booti18n from '@/boot/i18n';
 import { bootServices, store } from '@/boot/services';
-import bootUi from '@/library_vue_vuetify/boot/ui';
+import bootUi from '@thzero/library_client_vue3_vuetify3/boot/ui';
 import bootValidate from '@/boot/validate';
 // import bootWebComponents from '@thzero/library_client_vue3/boot/webComponents';
-import bootCookieComply from '@/library_vue_vuetify/boot/cookie';
+import bootCookieComply from '@thzero/library_client_vue3_vuetify3/boot/cookie';
 
 import router from '@/router';
 

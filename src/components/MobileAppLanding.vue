@@ -49,7 +49,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import { useBaseComponent } from '@thzero/library_client_vue3/components/base';
 
-import VMarkdown from '@/library_vue_vuetify/components/markup/VMarkdown';
+import VMarkdown from '@thzero/library_client_vue3_vuetify3/components/markup/VMarkdown';
 
 export default {
 	name: 'MobileApp',

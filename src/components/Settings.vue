@@ -197,9 +197,9 @@ import Constants from '@/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
-import VSelectWithValidation from '@/library_vue_vuetify/components/form//VSelectWithValidation';
-import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTextFieldWithValidation';
+import VFormControl from '@thzero/library_client_vue3_vuetify3/components/form/VFormControl';
+import VSelectWithValidation from '@thzero/library_client_vue3_vuetify3/components/form//VSelectWithValidation';
+import VTextFieldWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VTextFieldWithValidation';
 
 import { useBaseSettingsComponent } from '@thzero/library_client_vue3/components/baseSettings';
 

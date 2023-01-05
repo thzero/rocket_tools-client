@@ -165,9 +165,9 @@ import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
-import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
-import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
-import VTextField from '@/library_vue_vuetify/components/form//VTextField';
+import VFormControl from '@thzero/library_client_vue3_vuetify3/components/form/VFormControl';
+import VNumberFieldWithValidation from '@thzero/library_client_vue3_vuetify3/components/form/VNumberFieldWithValidation';
+import VTextField from '@thzero/library_client_vue3_vuetify3/components/form//VTextField';
 
 export default {
 	name: 'Thrust2Weight',

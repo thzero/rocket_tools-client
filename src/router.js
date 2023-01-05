@@ -71,7 +71,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 	},
 // 	// {
 // 	// 	path: '/admin',
-// 	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-admin" */ '@/library_vue_vuetify/layouts/AdminLayout.vue'),
+// 	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-admin" */ '@thzero/library_client_vue3_vuetify3/layouts/AdminLayout.vue'),
 // 	// 	children: [
 // 	// 		{
 // 	// 			path: '',
@@ -127,7 +127,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 	},
 // 	{
 // 		path: '/auth',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
+// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@thzero/library_client_vue3_vuetify3/layouts/AuthLayout.vue'),
 // 		children: [
 // 			{
 // 				path: '',
@@ -141,7 +141,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 	},
 // 	{
 // 		path: '/notFound',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 // 		children: [
 // 			{
 // 				path: '',
@@ -155,7 +155,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 	},
 // 	{
 // 		path: '/:pathMatch(.*)',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-blank" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-blank" */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 // 		meta: {
 // 			notFound: true,
 // 			requiresAuth: false
@@ -165,7 +165,7 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 // 	// but you can also remove it
 // 	{
 // 		path: '/:catchAll(.*)*',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 // 		children: [
 // 			{
 // 				path: '',
@@ -362,7 +362,7 @@ const routes = [
 		]
 	},{
 		path: '/auth',
-		component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ '@thzero/library_client_vue3_vuetify3/layouts/AuthLayout.vue'),
 		children: [
 			{
 				path: '',
@@ -376,7 +376,7 @@ const routes = [
 	},
 	// {
 	// 	path: '/auth',
-	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
+	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@thzero/library_client_vue3_vuetify3/layouts/AuthLayout.vue'),
 	// 	children: [
 	// 		{
 	// 			path: '',
@@ -390,7 +390,7 @@ const routes = [
 	// },
 	// {
 	// 	path: '/notFound',
-	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 	// 	children: [
 	// 		{
 	// 			path: '',
@@ -406,12 +406,12 @@ const routes = [
 	// but you can also remove it
 	{
 		path: '/:catchAll(.*)*',
-		component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 		children: [
 			{
 				path: '',
 				name: 'notFound',
-				component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/components/VNotFound.vue'),
+				component: () => import(/* webpackPrefetch: true */ '@thzero/library_client_vue3_vuetify3/components/VNotFound.vue'),
 				meta: {
 					requiresAuth: false
 				}
@@ -420,12 +420,12 @@ const routes = [
 	},
 	// {
 	// 	path: '/:catchAll(.*)*',
-	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-catchAll" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-catchAll" */ '@thzero/library_client_vue3_vuetify3/layouts/BlankLayout.vue'),
 	// 	children: [
 	// 		{
 	// 			path: '',
 	// 			name: 'notFound',
-	// 			component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-catchAll" */ '@/library_vue_vuetify/components/VNotFound.vue'),
+	// 			component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-catchAll" */ '@thzero/library_client_vue3_vuetify3/components/VNotFound.vue'),
 	// 			meta: {
 	// 				requiresAuth: false
 	// 			}

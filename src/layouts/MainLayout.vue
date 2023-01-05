@@ -287,7 +287,9 @@
 			</v-list>
 		</v-navigation-drawer>
 
-		<v-main>
+		<v-main
+			style="padding-top: 48px;"
+		>
 			<span class="bg" />
 			<v-container
 				fluid
@@ -338,11 +340,11 @@ import GlobalUtility from '@thzero/library_client/utility/global';
 
 import { useBaseMainLayout } from '@thzero/library_client_vue3/layouts/baseMainLayout';
 
-import VCookieComply from '@/library_vue_vuetify/components/VCookieComply';
-import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
-// import VDisplayDialog from '@/library_vue_vuetify/components/VDisplayDialog';
-import VLayoutFooter from '@/library_vue_vuetify/components/VLayoutFooter';
-import VLoadingOverlay from '@/library_vue_vuetify/components/VLoadingOverlay';
+import VCookieComply from '@thzero/library_client_vue3_vuetify3/components/VCookieComply';
+import VConfirmationDialog from '@thzero/library_client_vue3_vuetify3/components/VConfirmationDialog';
+// import VDisplayDialog from '@thzero/library_client_vue3_vuetify3/components/VDisplayDialog';
+import VLayoutFooter from '@thzero/library_client_vue3_vuetify3/components/VLayoutFooter';
+import VLoadingOverlay from '@thzero/library_client_vue3_vuetify3/components/VLoadingOverlay';
 
 import DialogSupport from '@thzero/library_client_vue3/components/support/dialog';
 
