@@ -307,7 +307,7 @@ export function useDependenciesClientBase () { return [  () => {
         },
         {
             category: 'client',
-            name: 'lodash',
+            name: 'lodash-es',
             url: 'https://github.com/lodash/lodash',
             licenseName: 'MIT',
             licenseUrl: 'https://github.com/lodash/lodash/blob/master/LICENSE'

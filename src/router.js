@@ -2,191 +2,15 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// const routes = [
-// 	{
-// 		path: '/',
-// 		component: () => import('./layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'default',
-// 				component: () => import('./components/Home.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/home',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/Home.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/flightInfo',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/FlightInfo.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/flightPath',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/FlightPath.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/thrust2Weight',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-home" */ './components/content/Thrust2Weight.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	// {
-// 	// 	path: '/admin',
-// 	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-admin" */ '@/library_vue_vuetify/layouts/AdminLayout.vue'),
-// 	// 	children: [
-// 	// 		{
-// 	// 			path: '',
-// 	// 			name: 'admin',
-// 	// 			component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-admin" */ './components/admin/Admin.vue'),
-// 	// 			meta: {
-// 	// 				requiresAuth: true
-// 	// 			}
-// 	// 		}
-// 	// 	]
-// 	// },
-// 	{
-// 		path: '/openSource',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-openSource" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'openSource',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-openSource" */ './components/OpenSource.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/settings',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-settings" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'settings',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-settings" */ './components/Settings.vue'),
-// 				meta: {
-// 					requiresAuth: true
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/support',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './layouts/MainLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'support',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './components/Support.vue'),
-// 				meta: {
-// 					requiresAuth: true
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/auth',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'auth',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ './components/Auth.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/notFound',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'notFound',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ './components/NotFound.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	},
-// 	{
-// 		path: '/:pathMatch(.*)',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-blank" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
-// 		meta: {
-// 			notFound: true,
-// 			requiresAuth: false
-// 		}
-// 	},
-// 	// Always leave this as last one,
-// 	// but you can also remove it
-// 	{
-// 		path: '/:catchAll(.*)*',
-// 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
-// 		children: [
-// 			{
-// 				path: '',
-// 				name: 'notFound',
-// 				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ './components/NotFound.vue'),
-// 				meta: {
-// 					requiresAuth: false
-// 				}
-// 			}
-// 		]
-// 	}
-// ];
 const routes = [
 	{
 		path: '/',
-		component: () => import('./layouts/MainLayout.vue'),
+		component: () => import(/* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [
 			{
 				path: '',
 				name: 'default',
-				component: () => import('./components/Home.vue'),
+				component: () => import(/* webpackChunkName: "group-main" */ './components/Home.vue'),
 				meta: {
 					requiresAuth: false
 				}
@@ -200,7 +24,7 @@ const routes = [
 			{
 				path: '',
 				name: 'mobileapp',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
@@ -221,7 +45,7 @@ const routes = [
 			{
 				// path: '',
 				// name: 'epoxy',
-				// component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				// component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ContentLayout.vue'),
 				// children: [
 				// 	{
 						path: '',
@@ -242,7 +66,7 @@ const routes = [
 			{
 				path: '',
 				name: 'content_tools_flightInfo',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ToolsLayout.vue'),
 				children: [
 					{
 						path: '',
@@ -263,7 +87,7 @@ const routes = [
 			{
 				path: '',
 				name: 'content_tools_flightPath',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './layouts/ToolsLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ToolsLayout.vue'),
 				children: [
 					{
 						path: '',
@@ -284,12 +108,12 @@ const routes = [
 			{
 				path: '',
 				name: 'content_tools_foam',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */  /* webpackChunkName: "group-layouts" */'./layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
 						name: 'content_tools_foam',
-						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/Foam.vue'),
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/Foam.vue'),
 						meta: {
 							requiresAuth: false
 						}
@@ -305,12 +129,12 @@ const routes = [
 			{
 				path: '',
 				name: 'content_tools_thrust2Weight',
-				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './layouts/ContentLayout.vue'),
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ContentLayout.vue'),
 				children: [
 					{
 						path: '',
 						name: 'content_tools_thrust2Weight',
-						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content" */ './components/content/tools/Thrust2Weight.vue'),
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-tools" */ './components/content/tools/Thrust2Weight.vue'),
 						meta: {
 							requiresAuth: false
 						}
@@ -362,7 +186,7 @@ const routes = [
 		]
 	},{
 		path: '/auth',
-		component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
 		children: [
 			{
 				path: '',
@@ -374,44 +198,14 @@ const routes = [
 			}
 		]
 	},
-	// {
-	// 	path: '/auth',
-	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ '@/library_vue_vuetify/layouts/AuthLayout.vue'),
-	// 	children: [
-	// 		{
-	// 			path: '',
-	// 			name: 'auth',
-	// 			component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-auth" */ './components/Auth.vue'),
-	// 			meta: {
-	// 				requiresAuth: false
-	// 			}
-	// 		}
-	// 	]
-	// },
-	// {
-	// 	path: '/notFound',
-	// 	component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
-	// 	children: [
-	// 		{
-	// 			path: '',
-	// 			name: 'notFound',
-	// 			component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-notFound" */ './components/NotFound.vue'),
-	// 			meta: {
-	// 				requiresAuth: false
-	// 			}
-	// 		}
-	// 	]
-	// },
-	// Always leave this as last one,
-	// but you can also remove it
 	{
 		path: '/:catchAll(.*)*',
-		component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
+		component: () => import(/* webpackChunkName: "group-layouts" */ '@/library_vue_vuetify/layouts/BlankLayout.vue'),
 		children: [
 			{
 				path: '',
 				name: 'notFound',
-				component: () => import(/* webpackPrefetch: true */ '@/library_vue_vuetify/components/VNotFound.vue'),
+				component: () => import(/* webpackChunkName: "group-main" */ '@/library_vue_vuetify/components/VNotFound.vue'),
 				meta: {
 					requiresAuth: false
 				}
