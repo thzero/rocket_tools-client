@@ -374,6 +374,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightPath', 'flightPathExport', err, correlationId);
 			}
 		};
 		const flightPathProcess = () => {
@@ -448,6 +449,7 @@ export default {
 			}
 			catch (err) {
 				processing.value = false;
+				logger.exception('FlightPath', 'flightPathProcess', err, correlationId);
 			}
 		};
 		const reset = (correlationId) => {

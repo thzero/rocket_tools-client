@@ -644,6 +644,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightInfo', 'flightInfoExport', err, correlationId);
 			}
 		};
 		const flightInfoExportDownload = (correlationId, output, extension) => {
@@ -669,6 +670,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightInfo', 'flightInfoExportDownload', err, correlationId);
 			}
 		};
 		const flightInfoExportImage = () => {
@@ -777,6 +779,7 @@ export default {
 				}
 				catch (err) {
 					processing.value = false;
+					logger.exception('FlightInfo', 'flightInfoProcess', err, correlationId);
 				}
 			}, 50);
 		};
