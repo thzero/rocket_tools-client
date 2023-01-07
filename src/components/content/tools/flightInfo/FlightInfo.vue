@@ -236,8 +236,17 @@
 								vid="flightInfoInput"
 								v-model="flightInfoInput"
 								:validation="validation"
+								:blur="flightInfoInputChange"
 								:label="$t('forms.content.tools.flightInfo.csv')"
 							/>
+						</div>
+						<div class="pt-4" style="float: right">
+							<v-btn
+								density="compact"
+								@click="flightPathInputChange"
+							>
+								{{ $t('buttons.top') }}
+							</v-btn>
 						</div>
 					</template>
 				</VFormControl>
@@ -537,6 +546,9 @@ export default {
 
 			if (processing.value )
 				flightInfoProcess(correlationIdI);
+		};
+		const flightInfoInputChange = () => {
+			document.getElementById('top').scrollIntoView({behavior: 'smooth'});
 		};
 		const flightInfoStyleLoad = (correlationId) => {
 			if (String.isNullOrEmpty(flightInfoProcessor.value ))
@@ -890,6 +902,7 @@ export default {
 			styles,
 			checkFlightInfoDataTypeUse,
 			clickResolution,
+			flightInfoInputChange,
 			flightInfoStyleLoad,
 			flightInfoStyleReset,
 			flightInfoStyleSave,

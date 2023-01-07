@@ -160,6 +160,14 @@
 								:label="$t('forms.content.tools.flightPath.csv')"
 							/>
 						</div>
+						<div class="pt-4" style="float: right">
+							<v-btn
+								density="compact"
+								@click="flightPathInputChange"
+							>
+								{{ $t('buttons.top') }}
+							</v-btn>
+						</div>
 					</template>
 				</VFormControl>
 			</v-col>
@@ -336,10 +344,7 @@ export default {
 		const templatePinTouchdown = ref(serviceFlightPath.defaultTemplatePinTouchdown);
 		
 		const flightPathInputChange = () => {
-			// nextTick(() =>
-			// 		document.getElementById('top').scrollIntoView({behavior: 'smooth'})
-			// 	);
-				document.getElementById('top').scrollIntoView({behavior: 'smooth'});
+			document.getElementById('top').scrollIntoView({behavior: 'smooth'});
 		};
 		const flightPathStyleLoad = (coorrelationId) => {
 			if (String.isNullOrEmpty(flightPathProcessor.value))

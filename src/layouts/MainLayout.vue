@@ -287,7 +287,7 @@
 			</v-list>
 		</v-navigation-drawer>
 
-		<v-main>
+		<v-main id="top">
 			<span class="bg" />
 			<v-container
 				fluid

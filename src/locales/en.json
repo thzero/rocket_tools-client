@@ -23,7 +23,8 @@
 		"save": "Save",
 		"search": "Search",
 		"select": "Select",
-		"submit": "Submit"
+		"submit": "Submit",
+		"top": "Top"
 	},
 	"charts": {
 		"flightInfo": {

@@ -1,5 +1,5 @@
 <template>
-	<v-row id="top">
+	<v-row>
 		<v-col cols="0" md="3" />
 		<v-col cols="12" md="6">
 <router-view />
