@@ -327,26 +327,7 @@ export default {
 			measurementVelocity,
 			valueType
 		};
-	},
-	// computed: {
-	// 	measurementUnits() { return this.flightInfoInner?.measurementUnits ?? AppUtility.measurementUnitEnglish; },
-	// 	measurementAcceleration() { return this.flightInfoInner ? GlobalUtility.$trans.t('measurements.' + this.measurementUnits + '.acceleration.abbr') : ''; },
-	// 	measurementAltitude() { return this.flightInfoInner ? GlobalUtility.$trans.t('measurements.' + this.measurementUnits + '.altitude.abbr') : ''; },
-	// 	measurementTime() { return this.flightInfoInner ? GlobalUtility.$trans.t('measurements.' + this.measurementUnits + '.time.abbr') : ''; },
-	// 	measurementVelocity() { return this.flightInfoInner ? GlobalUtility.$trans.t('measurements.' + this.measurementUnits + '.velocity.abbr') : ''; }
-	// },
-	// data: () => ({
-	// }),
-	// mounted() {
-	// },
-	// methods: {
-	// 	formatNumber(value) {
-	// 		return value?.toLocaleString();
-	// 	},
-	// 	valueType(value, valueF) {
-	// 		return this.flightInfoInner?.dataTypes?.use ? valueF : value;
-	// 	}
-	// }
+	}
 };
 </script>
 
