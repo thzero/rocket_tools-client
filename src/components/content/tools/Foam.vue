@@ -123,28 +123,6 @@
 								</v-row>
 							</v-col>
 						</v-row>
-						<!-- <v-row dense class="pb-4">
-							<v-col>
-								{{ $t('strings.content.tools.thrust2Weight.guidance') }} <a class="external" href="https://www.thrustcurve.org" target="_blank">{{ $t('menu.thrustcurve') }}</a>.
-								<div v-if="motor">
-									<br>
-									{{ $t('strings.content.tools.thrust2Weight.guidance2') }}
-								</div>
-							</v-col>
-						</v-row> -->
-						<!-- <v-row dense style="overflow: auto; max-height: 100vh;">
-							<v-col
-								style="overflow: overflow-y; height: 150px;"
-							>
-								<v-code lang="javascript">
-									<template
-										v-for="value in calculationOutput"
-									>
-										{{ value }}<br/>
-									</template>
-								</v-code>
-							</v-col>
-						</v-row> -->
 						<CalculatedOuput
 							v-model="calculationOutput"
 						/>
@@ -255,51 +233,6 @@ export default {
 
 				return true;
 			});
-			// calculationOutput.value = [];
-			// calculationResults.value.calculated = false;
-			// calculationResults.value.foams = [];
-
-			// const correlationIdI = correlationId();
-			
-			// const responseFoams = await serviceToolsFoam.foams(correlationIdI);
-			// if (!responseFoams || !responseFoams.success) {
-			// 	return; // TODO
-			// }
-
-			// initCalculationData(correlationIdI);
-			// const responseCalc = await serviceToolsFoam.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
-			// if (!responseCalc || !responseCalc.success) {
-			// 	return; // TODO
-			// }
-
-			// responseCalc.results.instance.addListener(correlationIdI, handleListener);
-			// const responseCalcInstance = responseCalc.results.instance.calculate(correlationIdI, responseCalc.results.steps, 'volume');
-			// if (!responseCalcInstance || !responseCalcInstance.success) {
-			// 	return; // TODO
-			// }
-			// calculationResults.value = responseCalcInstance.results;
-			// calculationResults.value.calculated = false;
-			// calculationResults.value.foams = [];
-			
-			// let responseCalcFoam;
-			// let responseCalcFoamInstance;
-			// for (const foam of responseFoams.results) {
-			// 	foam.totalVolume = calculationResults.value.totalVolume;
-			// 	responseCalcFoam = await serviceToolsFoam.initializeCalculationFoam(correlationIdI, foam, measurementUnits.value);
-			// 	if (!responseCalcFoam || !responseCalcFoam.success) {
-			// 		continue; // TODO
-			// 	}
-
-			// 	responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
-			// 	responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
-			// 	if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
-			// 		continue; // TODO
-			// 	}
-
-			// 	calculationResults.value.foams.push(responseCalcFoamInstance.results);
-			// }
-
-			// calculationResults.value.calculated = true;
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.bodyTubeID = bodyTubeID.value;

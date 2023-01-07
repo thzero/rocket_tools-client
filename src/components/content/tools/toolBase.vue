@@ -8,7 +8,6 @@ import LibraryConstants from '@thzero/library_client/constants';
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import Utility from '@thzero/library_common/utility';
-import Constants from '@/constants';
 
 export function useToolsBaseComponent(props, context, options) {
 	const {

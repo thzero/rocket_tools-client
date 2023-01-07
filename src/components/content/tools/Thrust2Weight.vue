@@ -260,27 +260,6 @@ export default {
 
 				return false;
 			});
-			// calculationOutput.value = [];
-
-			// calculationResults.value.calculated = false;
-
-			// const correlationIdI = correlationId();
-			// initCalculationData(correlationIdI);
-			// const response = await serviceToolsThrust2Weight.initializeCalculation(correlationIdI, calculationData.value, measurementUnitsId.value, settings);
-			// if (response && response.success) {
-			// 	// response.results.instance.addListener(correlationIdI, (type, name, value) => {
-			// 	// 	if (type === response.results.instance.symTypeEvaluate)
-			// 	// 		calculationOutput.value.push(`${name}`);
-			// 	// 	else if (type === response.results.instance.symTypeSet)
-			// 	// 		calculationOutput.value.push(`${name} = ${value}`);
-			// 	// });
-			// 	response.results.instance.addListener(correlationIdI, handleListener);
-			// 	const responseCalc = response.results.instance.calculate(correlationIdI, response.results.steps);
-			// 	if (responseCalc && responseCalc.success) {
-			// 		calculationResults.value = responseCalc.results;
-			// 		calculationResults.value.calculated = true;
-			// 	}
-			// }
 		};
 		const clickMotorSearch = async () => {
 			await dialogMotorSearchRef.value.reset(correlationId());
