@@ -60,10 +60,14 @@ const Constants = {
 				floz: 'floz'
 			},
 			distance: {
-				default: 'in',
-				in: 'in',
+				default: 'ft',
 				ft: 'ft',
 				mi: 'mi'
+			},
+			length: {
+				default: 'in',
+				in: 'in',
+				ft: 'ft'
 			},
 			velocity: {
 				default: 'fts',
@@ -94,11 +98,15 @@ const Constants = {
 				mm2: 'mm^2'
 			},
 			distance: {
+				default: 'm',
+				m: 'm',
+				km: 'km'
+			},
+			length: {
 				default: 'mm',
 				mm: 'mm',
 				cm: 'cm',
-				m: 'm',
-				km: 'km'
+				m: 'm'
 			},
 			fluid: {
 				default: 'ml',

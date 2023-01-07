@@ -302,7 +302,7 @@ export default {
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.bodyTubeID = bodyTubeID.value;
-			calculationData.value.units = Constants.MeasurementUnits.english.distance.in; // TODO
+			calculationData.value.units = Constants.MeasurementUnits.english.length.in; // TODO
 			calculationData.value.finRootLength = finRootLength.value;
 			calculationData.value.finTabLength = finTabLength.value;
 			calculationData.value.finWidth = finWidth.value;

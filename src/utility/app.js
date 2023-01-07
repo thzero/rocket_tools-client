@@ -38,6 +38,7 @@ class AppUtility {
 		settings.measurementUnits.acceleration = Constants.MeasurementUnits.english.acceleration.default;
 		settings.measurementUnits.area = Constants.MeasurementUnits.english.area.default;
 		settings.measurementUnits.distance = Constants.MeasurementUnits.english.distance.default;
+		settings.measurementUnits.length = Constants.MeasurementUnits.english.length.default;
 		settings.measurementUnits.velocity = Constants.MeasurementUnits.english.velocity.default;
 		settings.measurementUnits.volume = Constants.MeasurementUnits.english.volume.default;
 		settings.measurementUnits.weight = Constants.MeasurementUnits.english.weight.default;

@@ -26,6 +26,14 @@
 									:validation="validation"
 									:label="$t('forms.content.tools.thrust2Weight.mass')"
 								/>
+								<VSelectWithValidation
+										ref="massMeasurementUnitRef"
+										vid="massMeasurementUnitId"
+										v-model="massMeasurementUnitId"
+										:items="measurementUnitsArea"
+										:validation="validation"
+										:label="$t('forms.settings.measurementUnits.area')"
+									/>
 							</v-col>
 							<v-col cols="12" sm="6" >
 								<VNumberFieldWithValidation
@@ -167,6 +175,7 @@ import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
 import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
+import VSelectWithValidation from '@/library_vue_vuetify/components/form//VSelectWithValidation';
 import VTextField from '@/library_vue_vuetify/components/form//VTextField';
 
 export default {
@@ -176,6 +185,7 @@ export default {
 		MotorLookupDialog,
 		VFormControl,
 		VNumberFieldWithValidation,
+		VSelectWithValidation,
 		VTextField
 	},
 	setup (props, context) {

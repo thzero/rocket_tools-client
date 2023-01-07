@@ -144,6 +144,20 @@
 									md="3"
 								>
 									<VSelectWithValidation
+										ref="measurementUnitLengthRef"
+										vid="measurementUnitLengthId"
+										v-model="measurementUnitLengthId"
+										:items="measurementUnitsLength"
+										:validation="validation"
+										:label="$t('forms.settings.measurementUnits.length')"
+									/>
+								</v-col>
+								<v-col
+									cols="12"
+									sm="6"
+									md="3"
+								>
+									<VSelectWithValidation
 										ref="measurementUnitVelocityRef"
 										vid="measurementUnitVelocityId"
 										v-model="measurementUnitVelocityId"
@@ -256,6 +270,7 @@ export default {
 		const measurementUnitAccelerationId = ref(null);
 		const measurementUnitAreaId = ref(null);
 		const measurementUnitDistanceId = ref(null);
+		const measurementUnitLengthId = ref(null);
 		const measurementUnitVelocityId = ref(null);
 		const measurementUnitVolumeId = ref(null);
 		const measurementUnitWeightId = ref(null);
@@ -277,6 +292,11 @@ export default {
 			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
 				return measurementUnitTrans(Constants.MeasurementUnits.english.distance, 'english', 'distance');
 			return measurementUnitTrans(Constants.MeasurementUnits.metrics.distance, 'metrics', 'distance');
+		});
+		const measurementUnitsLength = computed(() => {
+			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
+				return measurementUnitTrans(Constants.MeasurementUnits.english.length, 'english', 'length');
+			return measurementUnitTrans(Constants.MeasurementUnits.metrics.length, 'metrics', 'length');
 		});
 		const measurementUnitsVelocity = computed(() => {
 			if (measurementUnitsId.value === Constants.MeasurementUnits.english.id)
@@ -308,6 +328,7 @@ export default {
 				settings.measurementUnits.acceleration = measurementUnitAccelerationId.value;
 				settings.measurementUnits.area = measurementUnitAreaId.value;
 				settings.measurementUnits.distance = measurementUnitDistanceId.value;
+				settings.measurementUnits.length = measurementUnitLengthId.value;
 				settings.measurementUnits.velocity = measurementUnitVelocityId.value;
 				settings.measurementUnits.volume = measurementUnitVolumeId.value;
 				settings.measurementUnits.weight = measurementUnitWeightId.value;
@@ -330,6 +351,7 @@ export default {
 			measurementUnitAccelerationId.value = settings.measurementUnits.acceleration;
 			measurementUnitAreaId.value = settings.measurementUnits.area;
 			measurementUnitDistanceId.value = settings.measurementUnits.distance;
+			measurementUnitLengthId.value = settings.measurementUnits.length;
 			measurementUnitVelocityId.value = settings.measurementUnits.velocity;
 			measurementUnitVolumeId.value = settings.measurementUnits.volume;
 			measurementUnitWeightId.value = settings.measurementUnits.weight;
@@ -341,6 +363,8 @@ export default {
 			measurementUnitAreaId.value = resetFormIdCheck(measurementUnitAreaIdT, measurementUnitsArea.value);
 			const measurementUnitDistanceIdT = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
 			measurementUnitDistanceId.value = resetFormIdCheck(measurementUnitDistanceIdT, measurementUnitsDistance.value);
+			const measurementUnitLengthIdT = settings.measurementUnits.length ? settings.measurementUnits.length : Constants.MeasurementUnits[measurementUnitsId.value].length.default;
+			measurementUnitLengthId.value = resetFormIdCheck(measurementUnitLengthIdT, measurementUnitsLength.value);
 			const measurementUnitVelocityIdT = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
 			measurementUnitVelocityId.value = resetFormIdCheck(measurementUnitVelocityIdT, measurementUnitsVelocity.value);
 			const measurementUnitVolumeIdT = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
@@ -351,6 +375,7 @@ export default {
 			measurementUnitAccelerationId.value = settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : Constants.MeasurementUnits[measurementUnitsId.value].acceleration.default;
 			measurementUnitAreaId.value = settings.measurementUnits.area ? settings.measurementUnits.area : Constants.MeasurementUnits[measurementUnitsId.value].area.default;
 			measurementUnitDistanceId.value = settings.measurementUnits.distance ? settings.measurementUnits.distance : Constants.MeasurementUnits[measurementUnitsId.value].distance.default;
+			measurementUnitLengthId.value = settings.measurementUnits.length ? settings.measurementUnits.length : Constants.MeasurementUnits[measurementUnitsId.value].length.default;
 			measurementUnitVelocityId.value = settings.measurementUnits.velocity ? settings.measurementUnits.velocity : Constants.MeasurementUnits[measurementUnitsId.value].velocity.default;
 			measurementUnitVolumeId.value = settings.measurementUnits.volume ? settings.measurementUnits.volume : Constants.MeasurementUnits[measurementUnitsId.value].volume.default;
 			measurementUnitWeightId.value = settings.measurementUnits.weight ? settings.measurementUnits.weight : Constants.MeasurementUnits[measurementUnitsId.value].weight.default;
@@ -369,6 +394,7 @@ export default {
 				measurementUnitAccelerationId.value = Constants.MeasurementUnits[units].acceleration.default;
 				measurementUnitAreaId.value = Constants.MeasurementUnits[units].area.default;
 				measurementUnitDistanceId.value = Constants.MeasurementUnits[units].distance.default;
+				measurementUnitLengthId.value = Constants.MeasurementUnits[units].length.default;
 				measurementUnitVelocityId.value = Constants.MeasurementUnits[units].velocity.default;
 				measurementUnitVolumeId.value = Constants.MeasurementUnits[units].volume.default;
 				measurementUnitWeightId.value = Constants.MeasurementUnits[units].weight.default;
@@ -413,6 +439,7 @@ export default {
 			measurementUnitAccelerationId,
 			measurementUnitAreaId,
 			measurementUnitDistanceId,
+			measurementUnitLengthId,
 			measurementUnitVelocityId,
 			measurementUnitVolumeId,
 			measurementUnitWeightId,
@@ -420,6 +447,7 @@ export default {
 			measurementUnitsAcceleration,
 			measurementUnitsArea,
 			measurementUnitsDistance,
+			measurementUnitsLength,
 			measurementUnitsVelocity,
 			measurementUnitsVolume,
 			measurementUnitsWeight,
@@ -443,6 +471,7 @@ export default {
 			measurementUnitAccelerationId: { required, $autoDirty: true },
 			measurementUnitAreaId: { required, $autoDirty: true },
 			measurementUnitDistanceId: { required, $autoDirty: true },
+			measurementUnitLengthId: { required, $autoDirty: true },
 			measurementUnitVelocityId: { required, $autoDirty: true },
 			measurementUnitVolumeId: { required, $autoDirty: true },
 			measurementUnitWeightId: { required, $autoDirty: true },

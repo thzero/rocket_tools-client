@@ -254,6 +254,7 @@
 				"acceleration": "Acceleration",
 				"area": "Area",
 				"distance": "Distance",
+				"length": "Length",
 				"velocity": "Velocity",
 				"volume": "Volume",
 				"weight": "Weight"
@@ -319,12 +320,16 @@
 				"ft2Abbr": "ft^2"
 			},
 			"distance": {
-				"in": "Inches",
-				"inAbbr": "in",
 				"ft": "Feet",
 				"ftAbbr": "ft",
 				"mi": "Miles",
 				"miAbbr": "mi"
+			},
+			"length": {
+				"in": "Inches",
+				"inAbbr": "in",
+				"ft": "Feet",
+				"ftAbbr": "ft"
 			},
 			"velocity": {
 				"fts": "Feet Per Second",
@@ -360,12 +365,16 @@
 				"mm2Abbr": "mm^2"
 			},
 			"distance": {
+				"m": "Meters",
+				"mAbbr": "m",
+				"km": "Kilometers",
+				"kmAbbr": "km"
+			},
+			"length": {
 				"cm": "Centimeters",
 				"cmAbbr": "cm",
 				"m": "Meters",
 				"mAbbr": "m",
-				"km": "Kilometers",
-				"kmAbbr": "km",
 				"mm": "Millimeters",
 				"mmAbbr": "mm"
 			},

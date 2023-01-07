@@ -421,10 +421,14 @@ export default {
 					title: flightTitle.value
 				};
 
-				const flightPathResults = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, flightPathMeasurementUnits.value, flightPath);
-				flightPathData.value = flightPathResults.info.flightPath;
-				// this.output = JSON.stringify(flightPathResults, null, 2);
-				output.value = flightPathResults.info.flightPath;
+				const flightPathResponse = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, flightPath,
+				'', '', '', '', flightPathMeasurementUnits.value);
+				if (hasFailed(flightPathResponse))
+					return; // TODO: error...
+
+				flightPathData.value = flightPathResponse.results.info.flightPath;
+				// this.output = JSON.stringify(flightPathResponse.results, null, 2);
+				output.value = flightPathResponse.results.info.flightPath;
 
 				serviceStore.dispatcher.setFlightDate(correlationIdI, flightDate.value);
 				serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
