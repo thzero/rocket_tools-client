@@ -21,6 +21,7 @@ class FeatherweightFlightPathProcessorService extends FlightPathProcessorService
 			if (verticalV > -10 && verticalV <= 0)
 				continue;
 			this._publish(
+				correlationId,
 				// data[2], // time
 				// data[5] - 595.67, // altitude
 				// data[3], // latitude
@@ -35,6 +36,19 @@ class FeatherweightFlightPathProcessorService extends FlightPathProcessorService
 				verticalV // verticalV
 			);
 		}
+
+		return this._success(correlationId);
+	}
+
+	_processInputSort(correlationId) {
+		return this._successResponse((a, b) => {
+			if (a.time > b.time)
+				return 1
+			if (a.time < b.time)
+				return -1
+
+			return 0;
+		});
 	}
 }
 

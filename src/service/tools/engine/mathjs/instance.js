@@ -1,4 +1,4 @@
-import { create, all } from 'mathjs';
+import { create, all, format } from 'mathjs';
 
 import InstanceCalculationEngineToolService from '../instance';
 
@@ -21,13 +21,16 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			}
 		);
 
+		this._formatters = [];
+		this._initFormatters();
+
 		this._watchers = [];
 	}
 
 	calculate(correlationId, calculationSteps, evaluationName) {
 		this._enforceNotNull('MathJsInstanceCalculationEngineToolService', 'calculate', calculationSteps, 'calculationSteps', correlationId);
 
-		this._evaluationName = evaluationName;
+		this._evaluationName = !String.isNullOrEmpty(evaluationName) ? evaluationName : '';
 		try {
 			const results = {};
 			const resultSteps = [];
@@ -101,7 +104,7 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			this._publish(correlationId, listener, this._engine.symTypeEvaluate, step, null, this._evaluationName);
 
 		this._parser.evaluate(step);
-		const value = this._parser.get(calculationStep.var);
+		let value = this._parser.get(calculationStep.var);
 
 		if (calculationStep.unit) {
 			const stepC = `${calculationStep.var} = ${calculationStep.var} to ${calculationStep.unit}`;
@@ -110,12 +113,14 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 				this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepC, null, this._evaluationName);
 			}
 
-
 			this._parser.evaluate(stepC);
+			value = this._parser.get(calculationStep.var);
 		}
 		
-		if (calculationStep.result)
+		if (calculationStep.result) {
+			this._handleFormatting(correlationId, calculationStep, value);
 			resultSteps.push(calculationStep);
+		}
 
 		this._initWatchers(correlationId, calculationStep);
 		
@@ -138,31 +143,74 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			return true;
 		}
 
-		if (!String.isNullOrEmpty(calculationStep.var)) {
-			let value = calculationStep.value;
-			if (value) {
-				if (calculationStep.unit) {
-					value = this._math.unit(`${value} ${calculationStep.unit}`);
-					this._parser.set(calculationStep.var, value);
-				}
-				else if (calculationStep.units && calculationStep.units.from && calculationStep.units.to) {
-					this._parser.set(calculationStep.var, this._math.unit(`${value} ${calculationStep.units.from}`));
-					this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
-				}
-				else
-					this._parser.set(calculationStep.var, value);
+		if (String.isNullOrEmpty(calculationStep.var))
+			return false;
+
+		let value = calculationStep.value;
+		if (value) {
+			if (calculationStep.unit) {
+				value = this._math.unit(`${value} ${calculationStep.unit}`);
+				this._parser.set(calculationStep.var, value);
+			}
+			else if (calculationStep.units && calculationStep.units.from && calculationStep.units.to) {
+				this._parser.set(calculationStep.var, this._math.unit(`${value} ${calculationStep.units.from}`));
+				this._parser.evaluate(`${calculationStep.var} = ${calculationStep.var} to ${calculationStep.units.to}`);
 			}
 			else
 				this._parser.set(calculationStep.var, value);
-			
-			if (calculationStep.result)
-				resultSteps.push(calculationStep);
-			this._initWatchers(correlationId, calculationStep);
-			
-			return true;
+		}
+		else
+			this._parser.set(calculationStep.var, value);
+		
+		if (calculationStep.result) {
+			this._handleFormatting(correlationId, calculationStep, value);
+			resultSteps.push(calculationStep);
+		}
+		
+		this._initWatchers(correlationId, calculationStep);
+		
+		return true;
+	}
+
+	_handleFormatting(correlationId, calculationStep, value) {
+		if (!calculationStep.format)
+			return;
+
+		let formatter;
+		for (const temp of this._formatters) {
+			formatter = temp(correlationId, calculationStep, value);
+			if (!formatter)
+				continue;
+		}
+		if (!formatter)
+			return;
+
+		const stepF = `${calculationStep.var} = ${calculationStep.var} ${formatter.publish}`;
+		for (const listener of this._listeners) {
+			this._publish(correlationId, listener, this._engine.symTypeSet, calculationStep.var, value, this._evaluationName);
+			this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepF, null, this._evaluationName);
 		}
 
-		return false;
+		if (formatter.func)
+			formatter.func(correlationId, calculationStep, value);
+	}
+
+	_handleFormattingFixed(correlationId, calculationStep, value) {
+		if (!calculationStep.format)
+			return;
+
+		if (calculationStep.format !== this._engine.symFormatFixed)
+			return {
+				publish: `format fixed(2)`,
+				func: ((correlationId, calculationStep, value) => {
+					value = this._math.format(value, {notation: 'fixed', precision: 2});
+					this._parser.set(calculationStep.var, value);
+				}).bind(this)
+			}
+	}
+
+	_initFormatters() {
+		this._formatters.push(this._handleFormattingFixed.bind(this));
 	}
 
 	_initWatchers(correlationId, calculationStep) {

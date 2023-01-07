@@ -105,19 +105,19 @@
 									v-for="item in calculationResults.foams"
 									:key="item.manufacturer"
 								>
-									<v-col cols="3" style="background-color: red">
+									<v-col cols="3" style="">
 											{{ item.manufacturer }}
 									</v-col>
-									<v-col cols="2" style="background-color: red">
+									<v-col cols="2" style="">
 											{{ item.expansion }}
 									</v-col>
-									<v-col cols="2" style="background-color: red">
+									<v-col cols="2" style="">
 											{{ item.massGMl }}
 									</v-col>
-									<v-col cols="2" style="background-color: red">
+									<v-col cols="2" style="">
 											{{ item.foamWeight }}
 									</v-col>
-									<v-col cols="2" style="background-color: red">
+									<v-col cols="2" style="">
 											{{ item.requiredAmount }}
 									</v-col>
 								</v-row>
@@ -186,36 +186,22 @@ export default {
 			hasSucceeded,
 			initialize,
 			logger,
-			noBreakingSpaces,
-			notImplementedError,
 			success,
 			calculationOutput,
-			dateFormat,
-			dateFormatMask,
-			errorMessage,
-			errors,
-			errorTimer,
-			formatNumber,
+			calculateI,
 			handleListener,
+			initCalculationResults,
 			measurementUnits,
-			notifyColor,
-			notifyMessage,
-			notifySignal,
-			notifyTimeout,
+			resetFormI,
 			serviceStore,
-			setErrorMessage,
-			setErrorTimer,
-			setNotify,
+			toFixed,
 			settings
 		} = useToolsBaseComponent(props, context);
 
 		const serviceToolsFoam = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FOAM);
 
 		const calculationData = ref(null);
-		const calculationResults = ref({
-			calculated: false,
-			foams: []
-		});
+		const calculationResults = initCalculationResults(correlationId(), ref({}));
 		const formFoamRef = ref(null);
 		const bodyTubeID = ref(null);
 		const finRootLength = ref(null);
@@ -225,55 +211,98 @@ export default {
 		const numberFins = ref(null);
 
 		const calculationOk = async () => {
-			calculationOutput.value = [];
-			calculationResults.value.calculated = false;
-			calculationResults.value.foams = [];
+			calculateI(correlationId(), calculationResults, async (correlationIdI, calculationResultsI) => {
+				calculationResultsI.value.foams = [];
 
-			const correlationIdI = correlationId();
-			
-			const responseFoams = await serviceToolsFoam.foams(correlationIdI);
-			if (!responseFoams || !responseFoams.success) {
-				return; // TODO
-			}
-
-			initCalculationData(correlationIdI);
-			const responseCalc = await serviceToolsFoam.calculate(correlationIdI, calculationData.value, measurementUnits.value);
-			if (!responseCalc || !responseCalc.success) {
-				return; // TODO
-			}
-
-			responseCalc.results.instance.addListener(correlationIdI, handleListener);
-			const responseCalcInstance = responseCalc.results.instance.calculate(correlationIdI, responseCalc.results.steps, 'volume');
-			if (!responseCalcInstance || !responseCalcInstance.success) {
-				return; // TODO
-			}
-			calculationResults.value = responseCalcInstance.results;
-			calculationResults.value.calculated = false;
-			calculationResults.value.foams = [];
-			
-			let responseCalcFoam;
-			let responseCalcFoamInstance;
-			for (const foam of responseFoams.results) {
-				foam.totalVolume = calculationResults.value.totalVolume;
-				responseCalcFoam = await serviceToolsFoam.calculateFoam(correlationIdI, foam, measurementUnits.value);
-				if (!responseCalcFoam || !responseCalcFoam.success) {
-					continue; // TODO
+				const responseFoams = await serviceToolsFoam.foams(correlationIdI);
+				if (!responseFoams || !responseFoams.success) {
+					return false; // TODO
 				}
 
-				responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
-				responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
-				if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
-					continue; // TODO
+				initCalculationData(correlationIdI);
+				const responseCalc = await serviceToolsFoam.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
+				if (!responseCalc || !responseCalc.success) {
+					return false; // TODO
 				}
 
-				calculationResults.value.foams.push(responseCalcFoamInstance.results);
-			}
+				responseCalc.results.instance.addListener(correlationIdI, handleListener);
+				const responseCalcInstance = responseCalc.results.instance.calculate(correlationIdI, responseCalc.results.steps, 'volume');
+				if (!responseCalcInstance || !responseCalcInstance.success) {
+					return false; // TODO
+				}
+				calculationResultsI.value = responseCalcInstance.results;
+				calculationResultsI.value.calculated = false;
+				calculationResultsI.value.foams = [];
+				
+				let responseCalcFoam;
+				let responseCalcFoamInstance;
+				for (const foam of responseFoams.results) {
+					foam.totalVolume = calculationResultsI.value.totalVolume;
+					responseCalcFoam = await serviceToolsFoam.initializeCalculationFoam(correlationIdI, foam, measurementUnits.value);
+					if (!responseCalcFoam || !responseCalcFoam.success) {
+						continue; // TODO
+					}
 
-			calculationResults.value.calculated = true;
+					responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
+					responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
+					if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
+						continue; // TODO
+					}
+
+					calculationResultsI.value.foams.push(responseCalcFoamInstance.results);
+				}
+
+				return true;
+			});
+			// calculationOutput.value = [];
+			// calculationResults.value.calculated = false;
+			// calculationResults.value.foams = [];
+
+			// const correlationIdI = correlationId();
+			
+			// const responseFoams = await serviceToolsFoam.foams(correlationIdI);
+			// if (!responseFoams || !responseFoams.success) {
+			// 	return; // TODO
+			// }
+
+			// initCalculationData(correlationIdI);
+			// const responseCalc = await serviceToolsFoam.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
+			// if (!responseCalc || !responseCalc.success) {
+			// 	return; // TODO
+			// }
+
+			// responseCalc.results.instance.addListener(correlationIdI, handleListener);
+			// const responseCalcInstance = responseCalc.results.instance.calculate(correlationIdI, responseCalc.results.steps, 'volume');
+			// if (!responseCalcInstance || !responseCalcInstance.success) {
+			// 	return; // TODO
+			// }
+			// calculationResults.value = responseCalcInstance.results;
+			// calculationResults.value.calculated = false;
+			// calculationResults.value.foams = [];
+			
+			// let responseCalcFoam;
+			// let responseCalcFoamInstance;
+			// for (const foam of responseFoams.results) {
+			// 	foam.totalVolume = calculationResults.value.totalVolume;
+			// 	responseCalcFoam = await serviceToolsFoam.initializeCalculationFoam(correlationIdI, foam, measurementUnits.value);
+			// 	if (!responseCalcFoam || !responseCalcFoam.success) {
+			// 		continue; // TODO
+			// 	}
+
+			// 	responseCalcFoam.results.instance.addListener(correlationIdI, handleListener);
+			// 	responseCalcFoamInstance = responseCalcFoam.results.instance.calculate(correlationIdI, responseCalcFoam.results.steps, foam.manufacturer);
+			// 	if (!responseCalcFoamInstance || !responseCalcFoamInstance.success) {
+			// 		continue; // TODO
+			// 	}
+
+			// 	calculationResults.value.foams.push(responseCalcFoamInstance.results);
+			// }
+
+			// calculationResults.value.calculated = true;
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.bodyTubeID = bodyTubeID.value;
-			calculationData.value.units = Constants.MeasurementUnits.english.distance.in;
+			calculationData.value.units = Constants.MeasurementUnits.english.distance.in; // TODO
 			calculationData.value.finRootLength = finRootLength.value;
 			calculationData.value.finTabLength = finTabLength.value;
 			calculationData.value.finWidth = finWidth.value;
@@ -283,17 +312,17 @@ export default {
 		const reset = async (correlationId) => {
 			await formFoamRef.value.reset(correlationId, false);
 		};
-
 		const resetForm = (correlationId) => {
-			calculationResults.value.calculated = false;
-			calculationResults.value.foams = [];
+			resetFormI(correlationId, calculationResults, (correlationId) => {
+				calculationResults.value.foams = [];
 
-			bodyTubeID.value = null;
-			finRootLength.value = null;
-			finTabLength.value = null;
-			finWidth.value = null;
-			motorTubeOD.value = null;
-			numberFins .value = null;
+				bodyTubeID.value = null;
+				finRootLength.value = null;
+				finTabLength.value = null;
+				finWidth.value = null;
+				motorTubeOD.value = null;
+				numberFins .value = null;
+			});
 		};
 
 		onMounted(async () => {
@@ -309,30 +338,19 @@ export default {
 			hasSucceeded,
 			initialize,
 			logger,
-			noBreakingSpaces,
-			notImplementedError,
 			success,
 			calculationOutput,
-			dateFormat,
-			dateFormatMask,
-			errorMessage,
-			errors,
-			errorTimer,
-			formatNumber,
+			calculateI,
 			handleListener,
+			initCalculationResults,
 			measurementUnits,
-			notifyColor,
-			notifyMessage,
-			notifySignal,
-			notifyTimeout,
+			resetFormI,
 			serviceStore,
-			setErrorMessage,
-			setErrorTimer,
-			setNotify,
+			toFixed,
 			settings,
 			calculationData,
-			calculationOk,
 			calculationResults,
+			calculationOk,
 			formFoamRef,
 			initCalculationData,
 			bodyTubeID,

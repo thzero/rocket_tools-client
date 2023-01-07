@@ -578,6 +578,7 @@
 					"newtons_abbr": "N",
 					"results": "Results",
 					"thrust": "Thrust (Newtons)",
+					"to": " : 1",
 					"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
 					"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
 				}

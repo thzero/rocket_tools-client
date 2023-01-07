@@ -11,120 +11,6 @@ class FoamToolsService extends BaseService {
 		this._serviceCalculationEngine = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE);
     }
 
-	async calculate(correlationId, data, measurementUnits) {
-		this._enforceNotNull('FoamToolsService', 'calculate', data, 'data', correlationId);
-		this._enforceNotEmpty('FoamToolsService', 'calculate', measurementUnits, 'measurementUnits', correlationId);
-
-		const calculationSteps = [
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				data: {
-					bodyTubeID: data.bodyTubeID,
-					finRootLength: data.finRootLength,
-					finTabLength: data.finTabLength,
-					finWidth: data.finWidth,
-					motorTubeOD: data.motorTubeOD
-				},
-				units: {
-					from: data.units,
-					to: 'mm'
-				}
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeBodyTube',
-				evaluate: 'pi * ((bodyTubeID / 2) ^ 2) * finRootLength'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeMotorTube',
-				evaluate: 'pi * ((motorTubeOD / 2) ^ 2) * finRootLength'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeDifferenceBetweenBodyTube',
-				evaluate: 'volumeBodyTube - volumeMotorTube'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeFins',
-				evaluate: '(finTabLength ? finTabLength : finRootLength) * finWidth * (bodyTubeID - motorTubeOD)'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'volumeDifferenceWithoutFins',
-				evaluate: 'volumeDifferenceBetweenBodyTube - volumeFins'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'totalVolume',
-				evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
-				result: true,
-				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
-			}
-		];
-		
-		return this._successResponse({
-			steps: calculationSteps,
-			instance: this._serviceCalculationEngine.initialize(correlationId)
-		}, correlationId);
-	}
-
-	async calculateFoam(correlationId, data, measurementUnits) {
-		this._enforceNotNull('FoamToolsService', 'calculate', data, 'data', correlationId);
-		this._enforceNotEmpty('FoamToolsService', 'calculate', measurementUnits, 'measurementUnits', correlationId);
-
-		const calculationSteps = [
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				data: {
-					manufacturer: data.manufacturer,
-					expansion: data.expansion,
-				},
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'totalVolume',
-				evaluate: data.totalVolume,
-				unit: Constants.MeasurementUnits.metrics.fluid.ml
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'massGMl',
-				value: data.massGMl,
-				unit: 'g/ml',
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'massOzIn3',
-				value: data.massOzIn3,
-				to: 'oz/in^3',
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'foamWeight',
-				evaluate: 'massGMl * totalVolume',
-				unit: Constants.MeasurementUnits[measurementUnits].weight.default,
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'requiredAmount',
-				evaluate: 'totalVolume / expansion',
-				result: true,
-				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
-			}
-		];
-		
-		return this._successResponse({
-			steps: calculationSteps,
-			instance: this._serviceCalculationEngine.initialize(correlationId)
-		}, correlationId);
-	}
-
 	foams(correlationId) {
 		return this._successResponse([
 			{
@@ -169,6 +55,125 @@ class FoamToolsService extends BaseService {
 			motorTubeOD: null,
 			numberFins: null
 		};
+	}
+
+	async initializeCalculation(correlationId, data, measurementUnits) {
+		this._enforceNotNull('FoamToolsService', 'initializeCalculation', data, 'data', correlationId);
+		this._enforceNotEmpty('FoamToolsService', 'initializeCalculation', measurementUnits, 'measurementUnits', correlationId);
+
+		const calculationSteps = [
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				data: {
+					bodyTubeID: data.bodyTubeID,
+					finRootLength: data.finRootLength,
+					finTabLength: data.finTabLength,
+					finWidth: data.finWidth,
+					motorTubeOD: data.motorTubeOD
+				},
+				units: {
+					from: data.units,
+					to: Constants.MeasurementUnits.metrics.distance.mm
+				}
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'volumeBodyTube',
+				evaluate: 'pi * ((bodyTubeID / 2) ^ 2) * finRootLength'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'volumeMotorTube',
+				evaluate: 'pi * ((motorTubeOD / 2) ^ 2) * finRootLength'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'volumeDifferenceBetweenBodyTube',
+				evaluate: 'volumeBodyTube - volumeMotorTube'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'volumeFins',
+				evaluate: '(finTabLength ? finTabLength : finRootLength) * finWidth * (bodyTubeID - motorTubeOD)'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'volumeDifferenceWithoutFins',
+				evaluate: 'volumeDifferenceBetweenBodyTube - volumeFins'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'totalVolume',
+				evaluate: 'volumeBodyTube - volumeMotorTube - volumeFins',
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed(),
+				unit: Constants.MeasurementUnits[measurementUnits].fluid.default
+			}
+		];
+		
+		return this._successResponse({
+			steps: calculationSteps,
+			instance: this._serviceCalculationEngine.initialize(correlationId)
+		}, correlationId);
+	}
+
+	async initializeCalculationFoam(correlationId, data, measurementUnits) {
+		this._enforceNotNull('FoamToolsService', 'initializeCalculationFoam', data, 'data', correlationId);
+		this._enforceNotEmpty('FoamToolsService', 'initializeCalculationFoam', measurementUnits, 'measurementUnits', correlationId);
+
+		const calculationSteps = [
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				data: {
+					manufacturer: data.manufacturer,
+					expansion: data.expansion,
+				},
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'totalVolume',
+				evaluate: data.totalVolume,
+				unit: Constants.MeasurementUnits.metrics.fluid.ml
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massGMl',
+				value: data.massGMl,
+				unit: 'g/ml',
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massOzIn3',
+				value: data.massOzIn3,
+				to: 'oz/in^3',
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'foamWeight',
+				evaluate: 'massGMl * totalVolume',
+				result: true,
+				unit: Constants.MeasurementUnits[measurementUnits].weight.default,
+				format: this._serviceCalculationEngine.formatFixed()
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'requiredAmount',
+				evaluate: 'totalVolume / expansion',
+				result: true,
+				unit: Constants.MeasurementUnits[measurementUnits].fluid.default,
+				format: this._serviceCalculationEngine.formatFixed()
+			}
+		];
+		
+		return this._successResponse({
+			steps: calculationSteps,
+			instance: this._serviceCalculationEngine.initialize(correlationId)
+		}, correlationId);
 	}
 
 	update(correlationId, motor, data) {

@@ -7,6 +7,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
+import Utility from '@thzero/library_common/utility';
 
 export function useToolsBaseComponent(props, context, options) {
 	const {
@@ -40,14 +41,50 @@ export function useToolsBaseComponent(props, context, options) {
 	const dateFormatMask = computed(() => {
 		return GlobalUtility.dateFormat().replace(/[a-zA-Z0-9]/g, '#');
 	});
+
+	const calculateI = async (correlationId, calculationResults, func) => {
+		try {
+			initCalculationOutput(correlationId);
+			calculationResults.value = initCalculationResults(correlationId, calculationResults);
+
+			if (func) {
+				if (!(await func(correlationId, calculationResults)))
+					return;
+			}
+
+			calculationResults.value.calculated = true;
+		}
+		catch(err) {
+			logger.exception('useToolsBaseComponent', 'calculateI', err, correlationId);
+		}
+	};
 	const formatNumber = (value) => {
 		return value?.toLocaleString();
 	};
 	const handleListener = (correlationId, type, name, value, setName, symbols) => {
+		const prefix = !String.isNullOrEmpty(setName) ? `${setName}: ` : '';
 		if (type === symbols.symTypeEvaluate)
-			calculationOutput.value.push(`${setName}: ${name}`);
+			calculationOutput.value.push(`${prefix}${name}`);
 		else if (type === symbols.symTypeSet)
-			calculationOutput.value.push(`${setName}: ${name} = ${value}`);
+			calculationOutput.value.push(`${prefix}${name} = ${value}`);
+	};
+	const initCalculationOutput = (correlationId) => {
+		calculationOutput.value = [];
+	};
+	const initCalculationResults = (correlationId, results) => {
+		if (!results)
+			return;
+
+		results.value = {};
+		results.value.calculated = false;
+		return results;
+	};
+	const resetFormI = (correlationId, calculationResults, func) => {
+		initCalculationOutput(correlationId);
+		initCalculationResults(correlationId, calculationResults);
+
+		if (func)
+			func(correlationId);
 	};
 	const setErrorMessage = (error) => {
 		errorMessage.value = error;
@@ -76,6 +113,15 @@ export function useToolsBaseComponent(props, context, options) {
 		notifyMessage.value = (!transformed ? GlobalUtility.$trans.t(message) : message);
 		notifySignal.value = true;
 	};
+	const toFixed = (value) => {
+		if (!value)
+			return '';
+
+		if (Utility.isString(value))
+			return value.toFixed(2);
+		
+		return value;
+	};
 
 	onMounted(async () => {
 		settings.value = serviceStore.getters.user.getUserSettings();
@@ -98,17 +144,22 @@ export function useToolsBaseComponent(props, context, options) {
 		errorMessage,
 		errors,
 		errorTimer,
+		calculateI,
 		formatNumber,
 		handleListener,
+		initCalculationOutput,
+		initCalculationResults,
 		measurementUnits,
 		notifyColor,
 		notifyMessage,
 		notifySignal,
 		notifyTimeout,
+		resetFormI,
 		serviceStore,
 		setErrorMessage,
 		setErrorTimer,
 		setNotify,
+		toFixed,
 		settings
 	};
 };

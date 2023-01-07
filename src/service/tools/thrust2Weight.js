@@ -11,131 +11,6 @@ class Thrust2WeightToolsService extends BaseService {
 		this._serviceCalculationEngine = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_CALCULATION_ENGINE);
     }
 
-	async calculate(correlationId, data, measurementUnits) {
-		this._enforceNotNull('Thrust2WeightToolsService', 'calculate', data, 'data', correlationId);
-		this._enforceNotEmpty('Thrust2WeightToolsService', 'calculate', measurementUnits, 'measurementUnits', correlationId);
-
-		// eslint-disable-next-line prefer-const
-		let isMetric = measurementUnits === Constants.MeasurementUnits.metrics.id;
-		data.isMetric = isMetric;
-		// let massInKg = Number(data.mass);
-		// if (massInKg <= 0)
-		// 	return { success: false };
-
-		// if (!isMetric)
-		// 	massInKg = Number(data.mass) / 2.2;
-
-		// const results = {
-		// 	success: true,
-		// 	calcuated: true
-		// };
-
-		/*
-		Thrust to Weight ratio - force in newtons divided by weight in newtons
-		F = ma
-		N = 1 kg⋅m/s2 = ma
-		W (in Newtons) = m * 9.8ms−2
-		*/
-
-		// const massInNewtons = (massInKg * 9.8);
-		// // N = 1 kg⋅m/s2
-		// results.initial = data.thrustInitial != null ? Number(data.thrustInitial) / massInNewtons : null;
-		// results.peak = data.thrustPeak != null ? Number(data.thrustPeak) / massInNewtons : null;
-		// results.average = data.thrustAverage != null ? Number(data.thrustAverage) / massInNewtons : null;
-
-		const calculationSteps = [
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'gravity',
-				value: 9.8
-			},
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeSet,
-			// 	var: 'massInKg',
-			// 	value: massInKg,
-			// 	unitConversion: true
-			// },
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				// data: {
-				// 	massInKg: massInKg,
-				// 	thrustInitial: data.thrustInitial,
-				// 	thrustPeak: data.thrustPeak,
-				// 	thrustAverage: data.thrustAverage
-				// },
-				data: data,
-				convert: this._serviceCalculationEngine.symConvertNumber,
-				units: {
-					user: measurementUnits,
-					calculation: Constants.MeasurementUnits.metrics.id
-				}
-			},
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeSet,
-			// 	var: 'thrustInitial',
-			// 	value: Number(data.thrustInitial)
-			// },
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeSet,
-			// 	var: 'thrustPeak',
-			// 	value: Number(data.thrustPeak)
-			// },
-			// {
-			// 	type: this._serviceCalculationEngine.symTypeSet,
-			// 	var: 'thrustAverage',
-			// 	value: Number(data.thrustAverage)
-			// },
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'massInKg',
-				evaluate: 'mass / (isMetric ? 1 : 2.2)',
-				units: {
-					user: measurementUnits,
-					calculation: Constants.MeasurementUnits.metrics.id
-				}
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'massInNewtons',
-				evaluate: 'massInKg * gravity'
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'initial',
-				evaluate: 'thrustInitial / massInNewtons',
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'peak',
-				evaluate: 'thrustPeak != null ? thrustPeak / massInNewtons : null',
-				result: true
-			},
-			{
-				type: this._serviceCalculationEngine.symTypeEvaluate,
-				var: 'average',
-				evaluate: 'thrustAverage != null ? thrustAverage / massInNewtons : null',
-				result: true
-			}
-		];
-
-		// const instance = this._serviceCalculationEngine.initialize(correlationId);
-		// instance.addListener(correlationId, (type, name, value) => {
-		// 	console.log('type', type);
-		// 	console.log(name, value);
-		// });
-		// const responseCalculate = instance.calculate(correlationId, calculationSteps);
-		// if (this._hasFailed(responseCalculate))
-		// 	return responseCalculate;
-
-		// return this._successResponse(responseCalculate.results, correlationId);
-		
-		return this._successResponse({
-			steps: calculationSteps,
-			instance: this._serviceCalculationEngine.initialize(correlationId)
-		}, correlationId);
-	}
-
 	initialize() {
 		return {
 			mass: null,
@@ -145,6 +20,76 @@ class Thrust2WeightToolsService extends BaseService {
 			thrustInitial: null,
 			thrustPeak: null
 		};
+	}
+
+	async initializeCalculation(correlationId, data, measurementUnits) {
+		this._enforceNotNull('Thrust2WeightToolsService', 'initializeCalculation', data, 'data', correlationId);
+		this._enforceNotEmpty('Thrust2WeightToolsService', 'initializeCalculation', measurementUnits, 'measurementUnits', correlationId);
+
+		const calculationSteps = [
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'gravity',
+				value: 9.8,
+				unit: Constants.MeasurementUnits.metrics.acceleration.ms2
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'massInKg',
+				value: data.mass,
+				units: {
+					from: data.units,
+					to: Constants.MeasurementUnits.metrics.weight.kg
+				}
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				data: {
+					thrustInitial: data.thrustInitial,
+					thrustPeak: data.thrustPeak,
+					thrustAverage: data.thrustAverage
+				},
+				unit: 'N'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'massInNewtons',
+				evaluate: 'massInKg * gravity',
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'initial',
+				evaluate: 'thrustInitial / massInNewtons',
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'peak',
+				value: '0'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'peak',
+				evaluate: 'thrustPeak != null ? thrustPeak / massInNewtons : null',
+				result: true
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'average',
+				value: '0'
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeEvaluate,
+				var: 'average',
+				evaluate: 'thrustAverage != null ? thrustAverage / massInNewtons : null',
+				result: true
+			}
+		];
+		
+		return this._successResponse({
+			steps: calculationSteps,
+			instance: this._serviceCalculationEngine.initialize(correlationId)
+		}, correlationId);
 	}
 
 	update(correlationId, motor, data) {
