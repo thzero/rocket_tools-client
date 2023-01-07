@@ -1,7 +1,4 @@
-import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
-
-import GlobalUtility from '@thzero/library_client/utility/global';
 
 import SettingsUser from '@/common/data/settingsUser';
 
@@ -45,19 +42,56 @@ class AppUtility {
 		return settings;
 	}
 
-	static measurementUnits(correlationId, serviceStore) {
-		serviceStore = serviceStore ? serviceStore : GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-		const settings = serviceStore.getters.user.getUserSettings();
-		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
+	static measurementUnitsId(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english.id;
+	}
+
+	static measurementUnits(correlationId, settings) {
+		return Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)];
+	}
+
+	static measurementUnitsAcceleration(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.acceleration ? settings.measurementUnits.acceleration : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].acceleration.default;
+	}
+
+	static measurementUnitArea(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.area ? settings.measurementUnits.area : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].area.default;
+	}
+
+	static measurementUnitDistance(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.distance ? settings.measurementUnits.distance : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].distance.default;
+	}
+
+	static measurementUnitFluid(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.fluid ? settings.measurementUnits.fluid : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].distance.default;
+	}
+
+	static measurementUnitLength(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.length ? settings.measurementUnits.length : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].length.default;
+	}
+
+	static measurementUnitVelocity(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.velocity ? settings.measurementUnits.velocity : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].velocity.default;
+	}
+
+	static measurementUnitVolume(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.volume ? settings.measurementUnits.volume : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].volume.default;
+	}
+
+	static measurementUnitWeight(correlationId, settings) {
+		return settings && settings.measurementUnits && settings.measurementUnits.weight ? settings.measurementUnits.weight : 
+		Constants.MeasurementUnits[AppUtility.measurementUnitsId(correlationId, settings)].weight.default;
 	}
 
 	static measurementUnitsOptions() {
 		return [ Constants.MeasurementUnits.english.id, Constants.MeasurementUnits.metrics.id ];
-	}
-
-	static measurementUnitsWeightPoundsDisplay(settings) {
-		const measurementUnits = settings && settings.measurementUnits && settings.measurementUnits.id ? settings.measurementUnits.id : Constants.MeasurementUnits.english;
-		return GlobalUtility.$trans.t('measurementUnits.' + measurementUnits + '.weight.pounds');
 	}
 
 	static userDisplayName(correlationId, user) {

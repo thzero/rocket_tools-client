@@ -65,9 +65,9 @@
 										</v-col>
 										<v-col cols="12">
 											<VSelectWithValidation
-												ref="flightPathMeasurementUnitsRef"
-												v-model="flightPathMeasurementUnits"
-												vid="flightPathMeasurementUnits"
+												ref="flightPathMeasurementUnitsIdRef"
+												v-model="flightPathMeasurementUnitsId"
+												vid="flightPathMeasurementUnitsId"
 												:items="flightPathMeasurementUnitsOptions"
 												:validation="validation"
 												:label="$t('forms.content.tools.flightPath.measurementUnits')"
@@ -277,7 +277,7 @@ export default {
 		const flightPathData = ref(null);
 		const flightPathInput = ref(null);
 		const flightLocation = ref(null);
-		const flightPathMeasurementUnits = ref(null);
+		const flightPathMeasurementUnitsId = ref(null);
 		const flightPathMeasurementUnitsOptions = ref([]);
 		const flightPathProcessor = ref(null);
 		const flightPathProcessors = ref([]);
@@ -422,7 +422,7 @@ export default {
 				};
 
 				const flightPathResponse = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, flightPath,
-				'', '', '', '', flightPathMeasurementUnits.value);
+				'', '', '', '', flightPathMeasurementUnitsId.value);
 				if (hasFailed(flightPathResponse))
 					return; // TODO: error...
 
@@ -432,7 +432,7 @@ export default {
 
 				serviceStore.dispatcher.setFlightDate(correlationIdI, flightDate.value);
 				serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
-				serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightPathMeasurementUnits.value);
+				serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightPathMeasurementUnitsId.value);
 				serviceStore.dispatcher.setFlightTitle(correlationIdI, flightTitle.value);
 
 				serviceStore.dispatcher.setFlightPathProcessor(correlationIdI, flightPathProcessor.value);
@@ -479,9 +479,9 @@ export default {
 
 			flightDate.value = serviceStore.getters.getFlightDate();
 			flightLocation.value = serviceStore.getters.getFlightLocation();
-			flightPathMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
-			if (String.isNullOrEmpty(flightPathMeasurementUnits.value))
-				flightPathMeasurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
+			flightPathMeasurementUnitsId.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightPathMeasurementUnitsId.value))
+				flightPathMeasurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
 			flightPathProcessor.value = serviceStore.getters.getFlightPathProcessor();
@@ -537,7 +537,7 @@ export default {
 			flightPathData,
 			flightPathInput,
 			flightLocation,
-			flightPathMeasurementUnits,
+			flightPathMeasurementUnitsId,
 			flightPathMeasurementUnitsOptions,
 			flightPathProcessor,
 			flightPathProcessors,

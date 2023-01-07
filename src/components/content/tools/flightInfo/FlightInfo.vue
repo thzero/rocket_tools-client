@@ -65,9 +65,9 @@
 										</v-col>
 										<v-col cols="12">
 											<VSelectWithValidation
-												ref="flightInfoMeasurementUnitsRef"
-												v-model="flightInfoMeasurementUnits"
-												vid="flightInfoMeasurementUnits"
+												ref="flightInfoMeasurementUnitsIdRef"
+												v-model="flightInfoMeasurementUnitsId"
+												vid="flightInfoMeasurementUnitsId"
 												:items="flightInfoMeasurementUnitsOptions"
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.measurementUnits')"
@@ -460,7 +460,7 @@ export default {
 		const flightInfoDataTypeUseDisabled = ref(false);
 		const flightDate = ref(null);
 		const flightInfoInput = ref(null);
-		const flightInfoMeasurementUnits = ref(null);
+		const flightInfoMeasurementUnitsId = ref(null);
 		const flightInfoMeasurementUnitsOptions = ref([]);
 		const flightInfoProcessor = ref(null);
 		const flightInfoProcessors = ref([]);
@@ -508,9 +508,9 @@ export default {
 			flightDate.value = serviceStore.getters.getFlightDate();
 			flightLocation.value = serviceStore.getters.getFlightLocation();
 			flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
-			flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
-			if (String.isNullOrEmpty(flightInfoMeasurementUnits.value))
-				flightInfoMeasurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
+			flightInfoMeasurementUnitsId.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightInfoMeasurementUnitsId.value))
+				flightInfoMeasurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
 			flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
@@ -724,7 +724,7 @@ export default {
 						use: flightInfoDataTypeUse.value
 					};
 
-					const flightInfoResults = serviceFlightInfo.process(correlationIdI, data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
+					const flightInfoResults = serviceFlightInfo.process(correlationIdI, data, flightInfoProcessor.value, flightInfoMeasurementUnitsId.value, flightInfoDataTypes);
 					AppUtility.debug2('flightInfoResults', flightInfoResults);
 					if (flightInfoResults.errors && data.errors.length > 0) {
 						const errors = flightInfoResults.errors.map(e => GlobalUtility.$trans.t(e) + '<br/>');
@@ -736,8 +736,8 @@ export default {
 					flightInfoResults.info.title = GlobalUtility.$trans.t('charts.flightInfo.title');
 					if (!String.isNullOrEmpty(flightDate.value))
 						flightInfoResults.info.date = flightDate.value;
-					if (!String.isNullOrEmpty(flightInfoMeasurementUnits.value))
-						flightInfoResults.info.measurementUnits = flightInfoMeasurementUnits.value;
+					if (!String.isNullOrEmpty(flightInfoMeasurementUnitsId.value))
+						flightInfoResults.info.measurementUnits = flightInfoMeasurementUnitsId.value;
 					if (!String.isNullOrEmpty(flightLocation.value))
 						flightInfoResults.info.location = flightLocation.value;
 					if (!String.isNullOrEmpty(flightTitle.value && flightTitle.value))
@@ -763,7 +763,7 @@ export default {
 					serviceStore.dispatcher.setFlightInfoDataTypeUse(correlationIdI, flightInfoDataTypeUse.value);
 					serviceStore.dispatcher.setFlightInfoProcessor(correlationIdI, flightInfoProcessor.value);
 					serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
-					serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightInfoMeasurementUnits.value);
+					serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightInfoMeasurementUnitsId.value);
 					serviceStore.dispatcher.setFlightTitle(correlationIdI, flightTitle.value);
 
 					setNotify(correlationIdI, 'messages.processed');
@@ -866,7 +866,7 @@ export default {
 			flightInfoDataTypeUseDisabled,
 			flightDate,
 			flightInfoInput,
-			flightInfoMeasurementUnits,
+			flightInfoMeasurementUnitsId,
 			flightInfoMeasurementUnitsOptions,
 			flightInfoProcessor,
 			flightInfoProcessors,

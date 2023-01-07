@@ -8,6 +8,7 @@ import LibraryConstants from '@thzero/library_client/constants';
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import Utility from '@thzero/library_common/utility';
+import Constants from '@/constants';
 
 export function useToolsBaseComponent(props, context, options) {
 	const {
@@ -28,7 +29,15 @@ export function useToolsBaseComponent(props, context, options) {
 	const errors = ref(null);
 	const errorMessage = ref(null);
 	const errorTimer = ref(null);
-	const measurementUnits = ref(null);
+	const measurementUnitsId = ref(null);
+	const measurementUnitsAcceleration = ref(null);
+	const measurementUnitsArea = ref(null);
+	const measurementUnitsFluid = ref(null);
+	const measurementUnitsDistance = ref(null);
+	const measurementUnitsLength = ref(null);
+	const measurementUnitsVelocity = ref(null);
+	const measurementUnitsVolume = ref(null);
+	const measurementUnitsWeight = ref(null);
 	const notifyColor = ref(null);
 	const notifyMessage = ref(null);
 	const notifySignal = ref(false);
@@ -125,7 +134,15 @@ export function useToolsBaseComponent(props, context, options) {
 
 	onMounted(async () => {
 		settings.value = serviceStore.getters.user.getUserSettings();
-		measurementUnits.value = AppUtility.measurementUnits(correlationId, serviceStore);
+		measurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
+		measurementUnitsAcceleration.value = AppUtility.measurementUnitsAcceleration(correlationId, settings.value);
+		measurementUnitsArea.value = AppUtility.measurementUnitArea(correlationId, settings.value);
+		measurementUnitsDistance.value = AppUtility.measurementUnitDistance(correlationId, settings.value);
+		measurementUnitsFluid.value = AppUtility.measurementUnitFluid(correlationId, settings.value);
+		measurementUnitsLength.value = AppUtility.measurementUnitLength(correlationId, settings.value);
+		measurementUnitsVelocity.value = AppUtility.measurementUnitVelocity(correlationId, settings.value);
+		measurementUnitsVolume.value = AppUtility.measurementUnitVolume(correlationId, settings.value);
+		measurementUnitsWeight.value = AppUtility.measurementUnitWeight(correlationId, settings.value);
 	});
 
 	return {
@@ -149,7 +166,15 @@ export function useToolsBaseComponent(props, context, options) {
 		handleListener,
 		initCalculationOutput,
 		initCalculationResults,
-		measurementUnits,
+		measurementUnitsId,
+		measurementUnitsAcceleration,
+		measurementUnitsArea,
+		measurementUnitsFluid,
+		measurementUnitsDistance,
+		measurementUnitsLength,
+		measurementUnitsVelocity,
+		measurementUnitsVolume,
+		measurementUnitsWeight,
 		notifyColor,
 		notifyMessage,
 		notifySignal,

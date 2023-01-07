@@ -128,6 +128,16 @@ const Constants = {
 				g: 'g',
 				kg: 'kg'
 			}
+		},
+		types: {
+			acceleration: 'acceleration',
+			area: 'area',
+			fluid: 'fluid',
+			distance: 'distance',
+			length: 'length',
+			velocity: 'velocity',
+			volume: 'volume',
+			weight: 'weight'
 		}
 	}
 };

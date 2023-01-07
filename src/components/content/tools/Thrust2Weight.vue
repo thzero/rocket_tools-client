@@ -19,21 +19,28 @@
 					<template v-slot:default>
 						<v-row dense>
 							<v-col cols="12" sm="6" >
-								<VNumberFieldWithValidation
-									ref="massRef"
-									vid="mass"
-									v-model="mass"
-									:validation="validation"
-									:label="$t('forms.content.tools.thrust2Weight.mass')"
-								/>
-								<VSelectWithValidation
-										ref="massMeasurementUnitRef"
-										vid="massMeasurementUnitId"
-										v-model="massMeasurementUnitId"
-										:items="measurementUnitsArea"
-										:validation="validation"
-										:label="$t('forms.settings.measurementUnits.area')"
-									/>
+								<table style="width: 100%">
+									<tr><td>
+										<VNumberFieldWithValidation
+											ref="massRef"
+											vid="mass"
+											v-model="mass"
+											:validation="validation"
+											:label="$t('forms.content.tools.thrust2Weight.mass')"
+										/>
+									</td>
+									<td>
+										<MeasurementSelect
+											ref="massMeasurementUnitRef"
+											vid="massMeasurementUnitId"
+											v-model="massMeasurementUnitId"
+											:measurementUnitsId="measurementUnitsId"
+											:measurementUnitsType="measurementUnitsWeightType"
+											:validation="validation"
+											:label="$t('forms.settings.measurementUnits.weight')"
+										/>
+									</td></tr>
+								</table>
 							</v-col>
 							<v-col cols="12" sm="6" >
 								<VNumberFieldWithValidation
@@ -171,7 +178,8 @@ import DialogSupport from '@/library_vue/components/support/dialog';
 
 import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
-import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
+import CalculatedOuput from '@/components/content/tools/CalculatedOuput';
+import MeasurementSelect from '@/components/content/tools/MeasurementSelect';
 import MotorLookupDialog from '@/components/external/MotorLookupDialog';
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
 import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
@@ -182,6 +190,7 @@ export default {
 	name: 'Thrust2Weight',
 	components: {
 		CalculatedOuput,
+		MeasurementSelect,
 		MotorLookupDialog,
 		VFormControl,
 		VNumberFieldWithValidation,
@@ -201,9 +210,18 @@ export default {
 			calculateI,
 			handleListener,
 			initCalculationResults,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAcceleration,
+			measurementUnitsArea,
+			measurementUnitsFluid,
+			measurementUnitsDistance,
+			measurementUnitsLength,
+			measurementUnitsVelocity,
+			measurementUnitsVolume,
+			measurementUnitsWeight,
 			resetFormI,
 			serviceStore,
+			setNotify,
 			toFixed,
 			settings
 		} = useToolsBaseComponent(props, context);
@@ -216,8 +234,10 @@ export default {
 		const dialogMotorSearchManager = ref(new DialogSupport());
 		const formThrust2WeightRef = ref(null);
 		const mass = ref(null);
+		const massMeasurementUnitId = ref(null);
 		const maxLaunchRodTime = ref(null);
 		const maxLaunchRodTimeDefault = ref(0.3);
+		const measurementUnitsWeightType = ref(Constants.MeasurementUnits.types.weight);
 		const motor = ref(null);
 		const motorId = ref(null);
 		const thrustAverage = ref(null);
@@ -228,7 +248,7 @@ export default {
 			calculateI(correlationId(), calculationResults, async (correlationIdI, calculationResultsI) => {
 				initCalculationData(correlationIdI);
 
-				const response = await serviceToolsThrust2Weight.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
+				const response = await serviceToolsThrust2Weight.initializeCalculation(correlationIdI, calculationData.value, measurementUnitsId.value, settings);
 				if (response && response.success) {
 					response.results.instance.addListener(correlationIdI, handleListener);
 					const responseCalc = response.results.instance.calculate(correlationIdI, response.results.steps);
@@ -246,7 +266,7 @@ export default {
 
 			// const correlationIdI = correlationId();
 			// initCalculationData(correlationIdI);
-			// const response = await serviceToolsThrust2Weight.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
+			// const response = await serviceToolsThrust2Weight.initializeCalculation(correlationIdI, calculationData.value, measurementUnitsId.value, settings);
 			// if (response && response.success) {
 			// 	// response.results.instance.addListener(correlationIdI, (type, name, value) => {
 			// 	// 	if (type === response.results.instance.symTypeEvaluate)
@@ -268,7 +288,7 @@ export default {
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.mass = mass.value;
-			calculationData.value.units = Constants.MeasurementUnits.english.weight.lb; // TODO
+			calculationData.value.units = massMeasurementUnitId.value;
 			calculationData.value.maxLaunchRodTime = maxLaunchRodTime.value;
 			calculationData.value.thrustAverage = thrustAverage.value;
 			calculationData.value.thrustInitial = thrustInitial.value;
@@ -315,6 +335,7 @@ export default {
 			reset(false);
 
 			calculationData.value = serviceToolsThrust2Weight.initialize(correlationId());
+			massMeasurementUnitId.value = measurementUnitsWeight.value;
 		});
 
 		return {
@@ -329,31 +350,41 @@ export default {
 			calculateI,
 			handleListener,
 			initCalculationResults,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAcceleration,
+			measurementUnitsArea,
+			measurementUnitsFluid,
+			measurementUnitsDistance,
+			measurementUnitsLength,
+			measurementUnitsVelocity,
+			measurementUnitsVolume,
+			measurementUnitsWeight,
 			resetFormI,
 			serviceStore,
 			toFixed,
 			settings,
+			serviceToolsThrust2Weight,
 			calculationData,
-			calculationOk,
 			calculationResults,
-			clickMotorSearch,
 			dialogMotorSearchRef,
 			dialogMotorSearchManager,
 			formThrust2WeightRef,
-			initCalculationData,
 			mass,
+			massMeasurementUnitId,
 			maxLaunchRodTime,
 			maxLaunchRodTimeDefault,
+			measurementUnitsWeightType,
 			motor,
 			motorId,
-			reset,
-			resetForm,
-			selectMotor,
-			serviceToolsThrust2Weight,
 			thrustAverage,
 			thrustInitial,
 			thrustPeak,
+			calculationOk,
+			clickMotorSearch,
+			initCalculationData,
+			reset,
+			resetForm,
+			selectMotor,
 			scope: 'Thrust2Weight',
 			validation: useVuelidate({ $scope: 'Thrust2Weight' })
 		};
@@ -361,6 +392,7 @@ export default {
 	validations () {
 		return {
 			mass: { required, decimal, between: between(0, 9999), $autoDirty: true },
+			massMeasurementUnitId: { $autoDirty: true },
 			maxLaunchRodTime: { required, decimal, between: between(0, 5), $autoDirty: true },
 			thrustAverage: { decimal, between: between(0, 999999), $autoDirty: true },
 			thrustInitial: { required, decimal, between: between(0, 999999), $autoDirty: true },

@@ -73,7 +73,7 @@ class FoamToolsService extends BaseService {
 				},
 				units: {
 					from: data.units,
-					to: Constants.MeasurementUnits.metrics.distance.mm
+					to: Constants.MeasurementUnits.metrics.length.mm
 				}
 			},
 			{
