@@ -907,7 +907,7 @@ export default {
 	validations () {
 		return {
 			flightDate: { $autoDirty: true },
-			flightInfoMeasurementUnits: { required, $autoDirty: true },
+			flightInfoMeasurementUnitsId: { required, $autoDirty: true },
 			flightInfoProcessor: { required, $autoDirty: true },
 			flightInfoInput: { required, $autoDirty: true },
 			flightInfoDataTypeActual: { requiredIfFiltered: requiredUnless(this.flightInfoDataTypeFiltered), $autoDirty: true },

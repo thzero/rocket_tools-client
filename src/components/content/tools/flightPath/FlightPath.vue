@@ -564,7 +564,7 @@ export default {
 		return {
 			flightDate: { $autoDirty: true },
 			flightLocation: { $autoDirty: true },
-			flightPathMeasurementUnits: { required, $autoDirty: true },
+			flightPathMeasurementUnitsId: { required, $autoDirty: true },
 			flightPathProcessor: { required, $autoDirty: true },
 			flightPathInput: { required, $autoDirty: true },
 			flightTitle: { $autoDirty: true }
