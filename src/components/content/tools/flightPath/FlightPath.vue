@@ -156,6 +156,7 @@
 								vid="flightPathInput"
 								v-model="flightPathInput"
 								:validation="validation"
+								:blur="flightPathInputChange"
 								:label="$t('forms.content.tools.flightPath.csv')"
 							/>
 						</div>
@@ -175,6 +176,46 @@
 						<pre>
 {{ output }}
 						</pre>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templateMainRef"
+								vid="templateMain"
+								v-model="templateMain"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templateMain')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinLaunchRef"
+								vid="templatePinLaunch"
+								v-model="templatePinLaunch"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinLaunch')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinTouchdownRef"
+								vid="templatePinTouchdown"
+								v-model="templatePinTouchdown"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinTouchdown')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinsAdditionalRef"
+								vid="templatePinsAdditional"
+								v-model="templatePinsAdditional"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinsAdditional')"
+							/>
+						</div>
 					</v-col>
 				</v-row>
 			</v-col>
@@ -289,7 +330,17 @@ export default {
 		const output = ref(null);
 		const processing = ref(false);
 		const styles = ref(false);
+		const templateMain = ref(serviceFlightPath.defaultTemplateMain);
+		const templatePinLaunch = ref(serviceFlightPath.defaultTemplatePinLaunch);
+		const templatePinsAdditional = ref('');
+		const templatePinTouchdown = ref(serviceFlightPath.defaultTemplatePinTouchdown);
 		
+		const flightPathInputChange = () => {
+			// nextTick(() =>
+			// 		document.getElementById('top').scrollIntoView({behavior: 'smooth'})
+			// 	);
+				document.getElementById('top').scrollIntoView({behavior: 'smooth'});
+		};
 		const flightPathStyleLoad = (coorrelationId) => {
 			if (String.isNullOrEmpty(flightPathProcessor.value))
 				return;
@@ -422,14 +473,15 @@ export default {
 					title: flightTitle.value
 				};
 
-				const flightPathResponse = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, flightPath,
-				'', '', '', '', flightPathMeasurementUnitsId.value);
+				const flightPathResponse = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, 
+					flightPath, flightPathMeasurementUnitsId.value,
+					templateMain.value, templatePinLaunch.value, templatePinTouchdown.value, templatePinsAdditional.value);
 				if (hasFailed(flightPathResponse))
 					return; // TODO: error...
 
-				flightPathData.value = flightPathResponse.results.info.flightPath;
+				flightPathData.value = flightPathResponse.results.flightPath;
 				// this.output = JSON.stringify(flightPathResponse.results, null, 2);
-				output.value = flightPathResponse.results.info.flightPath;
+				output.value = flightPathResponse.results.flightPath;
 
 				serviceStore.dispatcher.setFlightDate(correlationIdI, flightDate.value);
 				serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
@@ -551,7 +603,12 @@ export default {
 			output,
 			processing,
 			styles,
+			flightPathInputChange,
 			flightPathStyleLoad,
+			templateMain,
+			templatePinLaunch,
+			templatePinsAdditional,
+			templatePinTouchdown,
 			flightPathStyleReset,
 			flightPathStyleSave,
 			flightPathExport,
