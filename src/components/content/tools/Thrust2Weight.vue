@@ -373,9 +373,9 @@ export default {
 			mass: { required, decimal, between: between(0, 9999), $autoDirty: true },
 			massMeasurementUnitId: { $autoDirty: true },
 			maxLaunchRodTime: { required, decimal, between: between(0, 5), $autoDirty: true },
-			thrustAverage: { decimal, between: between(0, 999999), $autoDirty: true },
-			thrustInitial: { required, decimal, between: between(0, 999999), $autoDirty: true },
-			thrustPeak: { decimal, between: between(0, 999999), $autoDirty: true }
+			thrustAverage: { decimal, between: between(0, 40960 ), $autoDirty: true },
+			thrustInitial: { required, decimal, between: between(0, 40960), $autoDirty: true },
+			thrustPeak: { decimal, between: between(0, 40960), $autoDirty: true }
 		};
 	}
 };
