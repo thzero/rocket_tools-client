@@ -546,7 +546,7 @@
 			"info": {
 				"epoxy": {
 					"additionalLinks": "Additional Links",
-					"desc": "Additional links on epoxy.  Other resources, please let us know.",
+					"desc": "Chart comparing specifications of some common epoxies, plus some additional links about epoxies and model rocketry.",
 					"chart": "Chart"
 				}
 			},
@@ -560,10 +560,10 @@
 					"desc": ""
 				},
 				"flightInfo": {
-					"desc": ""
+					"desc": "Utility to create a graphical flight chart with flight information from altimeters for use in posting to websites, in videos, etc. Currently only Eggtimer output is supported."
 				},
 				"flightPath": {
-					"desc": ""
+					"desc": "Utility to create a KML file based on GPS tracker output that can be imported into Google Earth.  Currently only the Featherweight GPS tracker is supported."
 				},
 				"foam": {
 					"title": "Foam Volume for Fin Cans",
