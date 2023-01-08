@@ -567,8 +567,14 @@
 				},
 				"foam": {
 					"title": "Foam Volume for Fin Cans",
+					"brand": "Brand",
+					"calculated": "Calculated Foam Volumes",
 					"desc": "Calculations of required volume of expanding foam for a given fin can dimensions.",
-					"calculated": "Calculated Foam Volumes"
+					"density": "Density",
+					"expansion": "Expsansion",
+					"foamWeight": "Foam Weight",
+					"requiredAmount": "Required Amount"
+
 				},
 				"staticPortHoles": {
 					"desc": ""

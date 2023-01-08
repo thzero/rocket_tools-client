@@ -107,10 +107,12 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 		let value = this._parser.get(calculationStep.var);
 
 		if (calculationStep.unit) {
+			const valueC = this._parser.get(calculationStep.var);
 			const stepC = `${calculationStep.var} = ${calculationStep.var} to ${calculationStep.unit}`;
+			const stepCP = `${calculationStep.var} = ${calculationStep.var} (${valueC}) to ${calculationStep.unit}`;
 			for (const listener of this._listeners) {
 				this._publish(correlationId, listener, this._engine.symTypeSet, calculationStep.var, value, this._evaluationName);
-				this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepC, null, this._evaluationName);
+				this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepCP, null, this._evaluationName);
 			}
 
 			this._parser.evaluate(stepC);
@@ -174,7 +176,7 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 
 	_handleFormatting(correlationId, calculationStep, value) {
 		if (!calculationStep.format)
-			return;
+			return false;
 
 		let formatter;
 		for (const temp of this._formatters) {
@@ -183,9 +185,10 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 				continue;
 		}
 		if (!formatter)
-			return;
+			return false;
 
-		const stepF = `${calculationStep.var} = ${calculationStep.var} ${formatter.publish}`;
+		const valueF = this._parser.get(calculationStep.var);
+		const stepF = `${calculationStep.var} = ${calculationStep.var} (${valueF}) ${formatter.publish}`;
 		for (const listener of this._listeners) {
 			this._publish(correlationId, listener, this._engine.symTypeSet, calculationStep.var, value, this._evaluationName);
 			this._publish(correlationId, listener, this._engine.symTypeEvaluate, stepF, null, this._evaluationName);
@@ -193,6 +196,8 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 
 		if (formatter.func)
 			formatter.func(correlationId, calculationStep, value);
+
+		return true;
 	}
 
 	_handleFormattingFixed(correlationId, calculationStep, value) {

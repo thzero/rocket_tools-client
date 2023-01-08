@@ -19,13 +19,28 @@
 					<template v-slot:default>
 						<v-row dense>
 							<v-col cols="12" sm="6" >
-								<VNumberFieldWithValidation
-									ref="bodyTubeIDRef"
-									vid="bodyTubeID"
-									v-model="bodyTubeID"
-									:validation="validation"
-									:label="$t('forms.content.tools.foam.bodyTubeID')"
-								/>
+								<table style="width: 100%">
+									<tr><td>
+										<VNumberFieldWithValidation
+											ref="bodyTubeIDRef"
+											vid="bodyTubeID"
+											v-model="bodyTubeID"
+											:validation="validation"
+											:label="$t('forms.content.tools.foam.bodyTubeID')"
+										/>
+									</td>
+									<td>
+										<MeasurementSelect
+											ref="lengthMeasurementUnitRef"
+											vid="lengthMeasurementUnitId"
+											v-model="lengthMeasurementUnitId"
+											:measurementUnitsId="measurementUnitsId"
+											:measurementUnitsType="measurementUnitslengthType"
+											:validation="validation"
+											:label="$t('forms.settings.measurementUnits.length')"
+										/>
+									</td></tr>
+								</table>
 							</v-col>
 							<v-col cols="12" sm="6" >
 								<VNumberFieldWithValidation
@@ -102,6 +117,28 @@
 								<v-row 
 									class="pb-2" 
 									dense
+									no-gutters
+								>
+									<v-col cols="3" style="">
+											{{ $t('strings.content.tools.foam.brand') }}
+									</v-col>
+									<v-col cols="2" style="">
+											{{ $t('strings.content.tools.foam.expansion') }}
+									</v-col>
+									<v-col cols="2" style="">
+											{{ $t('strings.content.tools.foam.density') }}
+									</v-col>
+									<v-col cols="2" style="">
+											{{ $t('strings.content.tools.foam.foamWeight') }}
+									</v-col>
+									<v-col cols="2" style="">
+											{{ $t('strings.content.tools.foam.requiredAmount') }}
+									</v-col>
+								</v-row>
+								<v-row 
+									class="pb-2" 
+									dense
+									no-gutters
 									v-for="item in calculationResults.foams"
 									:key="item.manufacturer"
 								>
@@ -112,7 +149,7 @@
 											{{ item.expansion }}
 									</v-col>
 									<v-col cols="2" style="">
-											{{ item.massGMl }}
+											{{ item.densityMD }}
 									</v-col>
 									<v-col cols="2" style="">
 											{{ item.foamWeight }}
@@ -147,6 +184,7 @@ import { useToolsBaseComponent } from '@/components/content/tools/toolBase';
 
 import CalculatedOuput from '@/components/content/tools//CalculatedOuput';
 import VFormControl from '@/library_vue_vuetify/components/form/VFormControl';
+import MeasurementSelect from '@/components/content/tools/MeasurementSelect';
 import VNumberFieldWithValidation from '@/library_vue_vuetify/components/form/VNumberFieldWithValidation';
 
 export default {
@@ -154,6 +192,7 @@ export default {
 	components: {
 		CalculatedOuput,
 		VFormControl,
+		MeasurementSelect,
 		VNumberFieldWithValidation
 	},
 	setup (props, context) {
@@ -166,15 +205,22 @@ export default {
 			logger,
 			success,
 			calculationOutput,
-			measurementUnitsId,
 			calculateI,
 			handleListener,
 			initCalculationResults,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAcceleration,
+			measurementUnitsArea,
+			measurementUnitsFluid,
+			measurementUnitsDistance,
+			measurementUnitsLength,
+			measurementUnitsVelocity,
+			measurementUnitsVolume,
+			measurementUnitsWeight,
 			resetFormI,
 			serviceStore,
 			toFixed,
-			settings
+			settings,
 		} = useToolsBaseComponent(props, context);
 
 		const serviceToolsFoam = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FOAM);
@@ -186,6 +232,8 @@ export default {
 		const finRootLength = ref(null);
 		const finTabLength = ref(0.3);
 		const finWidth = ref(null);
+		const lengthMeasurementUnitId = ref(null);
+		const measurementUnitslengthType = ref(Constants.MeasurementUnits.types.length);
 		const motorTubeOD = ref(null);
 		const numberFins = ref(null);
 
@@ -199,7 +247,7 @@ export default {
 				}
 
 				initCalculationData(correlationIdI);
-				const responseCalc = await serviceToolsFoam.initializeCalculation(correlationIdI, calculationData.value, measurementUnits.value, settings);
+				const responseCalc = await serviceToolsFoam.initializeCalculation(correlationIdI, calculationData.value, measurementUnitsId.value, settings);
 				if (!responseCalc || !responseCalc.success) {
 					return false; // TODO
 				}
@@ -217,7 +265,7 @@ export default {
 				let responseCalcFoamInstance;
 				for (const foam of responseFoams.results) {
 					foam.totalVolume = calculationResultsI.value.totalVolume;
-					responseCalcFoam = await serviceToolsFoam.initializeCalculationFoam(correlationIdI, foam, measurementUnits.value);
+					responseCalcFoam = await serviceToolsFoam.initializeCalculationFoam(correlationIdI, foam, measurementUnitsId.value);
 					if (!responseCalcFoam || !responseCalcFoam.success) {
 						continue; // TODO
 					}
@@ -236,7 +284,7 @@ export default {
 		};
 		const initCalculationData = (correlationId) => {
 			calculationData.value.bodyTubeID = bodyTubeID.value;
-			calculationData.value.units = Constants.MeasurementUnits.english.length.in; // TODO
+			calculationData.value.units = lengthMeasurementUnitId.value;
 			calculationData.value.finRootLength = finRootLength.value;
 			calculationData.value.finTabLength = finTabLength.value;
 			calculationData.value.finWidth = finWidth.value;
@@ -263,6 +311,7 @@ export default {
 			reset(false);
 
 			calculationData.value = serviceToolsFoam.initialize(correlationId());
+			lengthMeasurementUnitId.value = measurementUnitsLength.value;
 		});
 
 		return {
@@ -274,11 +323,18 @@ export default {
 			logger,
 			success,
 			calculationOutput,
-			measurementUnitsId,
 			calculateI,
 			handleListener,
 			initCalculationResults,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAcceleration,
+			measurementUnitsArea,
+			measurementUnitsFluid,
+			measurementUnitsDistance,
+			measurementUnitsLength,
+			measurementUnitsVelocity,
+			measurementUnitsVolume,
+			measurementUnitsWeight,
 			resetFormI,
 			serviceStore,
 			toFixed,
@@ -291,6 +347,8 @@ export default {
 			finRootLength,
 			finTabLength,
 			finWidth,
+			lengthMeasurementUnitId,
+			measurementUnitslengthType,
 			motorTubeOD,
 			numberFins,
 			calculationOk,

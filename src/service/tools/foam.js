@@ -16,32 +16,32 @@ class FoamToolsService extends BaseService {
 			{
 				manufacturer: 'FOAM-IT',
 				expansion: 10,
-				massGMl: 0.080092317,
-				massOzIn3: 0.046296296
+				densityM: 0.080092317,
+				densityE: 0.046296296
 			},
 			{
 				manufacturer: 'Mac Performance',
 				expansion: 15,
-				massGMl: 0.064073853,
-				massOzIn3: 0.037037037
+				densityM: 0.064073853,
+				densityE: 0.037037037
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 10,
-				massGMl: 0.09611078,
-				massOzIn3: 0.055555556
+				densityM: 0.09611078,
+				densityE: 0.055555556
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 15,
-				massGMl: 0.064073853,
-				massOzIn3: 0.037037037
+				densityM: 0.064073853,
+				densityE: 0.037037037
 			},
 			{
 				manufacturer: 'Public Missiles',
 				expansion: 20,
-				massGMl: 0.04805539,
-				massOzIn3: 0.027777778
+				densityM: 0.04805539,
+				densityE: 0.027777778
 			}
 		]);
 	}
@@ -138,26 +138,26 @@ class FoamToolsService extends BaseService {
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'massGMl',
-				value: data.massGMl,
+				var: 'density',
+				value: data.densityM,
 				unit: 'g/ml',
-				result: true,
-				format: this._serviceCalculationEngine.formatFixed()
+				// result: true,
+				// format: this._serviceCalculationEngine.formatFixed()
 			},
-			{
-				type: this._serviceCalculationEngine.symTypeSet,
-				var: 'massOzIn3',
-				value: data.massOzIn3,
-				to: 'oz/in^3',
-				result: true,
-				format: this._serviceCalculationEngine.formatFixed()
-			},
+			// {
+			// 	type: this._serviceCalculationEngine.symTypeSet,
+			// 	var: 'densityE',
+			// 	value: data.densityE,
+			// 	unit: 'oz/in^3',
+			// 	result: true,
+			// 	format: this._serviceCalculationEngine.formatFixed()
+			// },
 			{
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'foamWeight',
-				evaluate: 'massGMl * totalVolume',
-				result: true,
+				evaluate: 'density * totalVolume',
 				unit: Constants.MeasurementUnits[measurementUnits].weight.default,
+				result: true,
 				format: this._serviceCalculationEngine.formatFixed()
 			},
 			{
@@ -167,7 +167,23 @@ class FoamToolsService extends BaseService {
 				result: true,
 				unit: Constants.MeasurementUnits[measurementUnits].fluid.default,
 				format: this._serviceCalculationEngine.formatFixed()
-			}
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'densityMD',
+				value: data.densityM,
+				unit: 'g/ml',
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
+			},
+			{
+				type: this._serviceCalculationEngine.symTypeSet,
+				var: 'densityED',
+				value: data.densityE,
+				unit: 'oz/in^3',
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
+			},
 		];
 		
 		return this._successResponse({
