@@ -137,6 +137,7 @@
 			<v-col cols="12" class="pb-2">
 				<a href="http://www.jcrocket.com/adhesives.shtml" target="_blank">http://www.jcrocket.com/adhesives.shtml</a><br/>
 				<a href="https://www.rocketryforum.com/threads/epoxy-comparisons-and-technical-data-sheets.138953/page-2" target="_blank">https://www.rocketryforum.com/threads/epoxy-comparisons-and-technical-data-sheets.138953/page-2</a>
+				<a href="https://www.rocketryforum.com/threads/properly-bonding-composites-and-what-your-government-doesnt-want-you-to-know.58389/" target="_blank">https://www.rocketryforum.com/threads/properly-bonding-composites-and-what-your-government-doesnt-want-you-to-know.58389/</a>
 			</v-col>
 		</v-row>
 	</div>
