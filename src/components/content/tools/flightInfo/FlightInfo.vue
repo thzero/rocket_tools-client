@@ -243,7 +243,7 @@
 						<div class="pt-4" style="float: right">
 							<v-btn
 								density="compact"
-								@click="flightPathInputChange"
+								@click="flightInfoInputChange"
 							>
 								{{ $t('buttons.top') }}
 							</v-btn>
