@@ -83,9 +83,7 @@
 											{{ $t(item.title) }}
 										</v-btn>
 									</v-card-item>
-									<v-card-text
-										class="text-left"
-									>
+									<v-card-text class="text-left">
 										{{ $t(item.description) }}
 									</v-card-text>
 								</v-card>
@@ -112,7 +110,7 @@
 											{{ $t(item.title) }}
 										</v-btn>
 									</v-card-item>
-									<v-card-text>
+									<v-card-text class="text-left">
 										{{ $t(item.description) }}
 									</v-card-text>
 								</v-card>
