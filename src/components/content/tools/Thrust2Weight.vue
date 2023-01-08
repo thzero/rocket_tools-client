@@ -128,13 +128,13 @@
 										<span class="text-bold" v-if="calculationResults.average">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
 									</v-col>
 									<v-col cols="4">
-										<span>{{ toFixed(calculationResults.initial) + ' '  + $t('strings.content.tools.thrust2Weight.to') }}</span>
+										<span>{{ (calculationResults.initial) + ' '  + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
 									<v-col cols="4">
-										<span v-if="calculationResults.peak">{{ toFixed(calculationResults.peak) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
+										<span v-if="calculationResults.peak">{{ (calculationResults.peak) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
 									<v-col cols="4">
-										<span v-if="calculationResults.average">{{ toFixed(calculationResults.average) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
+										<span v-if="calculationResults.average">{{ (calculationResults.average) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
 								</v-row>
 							</v-col>

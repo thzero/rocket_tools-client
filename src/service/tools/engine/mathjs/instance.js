@@ -208,8 +208,10 @@ class MathJsInstanceCalculationEngineToolService extends InstanceCalculationEngi
 			return {
 				publish: `format fixed(2)`,
 				func: ((correlationId, calculationStep, value) => {
-					value = this._math.format(value, {notation: 'fixed', precision: 2});
-					this._parser.set(calculationStep.var, value);
+					if (value) {
+						value = this._math.format(value, {notation: 'fixed', precision: 2});
+						this._parser.set(calculationStep.var, value);
+					}
 				}).bind(this)
 			}
 	}

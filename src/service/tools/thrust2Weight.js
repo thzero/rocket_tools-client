@@ -60,7 +60,8 @@ class Thrust2WeightToolsService extends BaseService {
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'initial',
 				evaluate: 'thrustInitial / massInNewtons',
-				result: true
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
@@ -71,7 +72,8 @@ class Thrust2WeightToolsService extends BaseService {
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'peak',
 				evaluate: 'thrustPeak != null ? thrustPeak / massInNewtons : null',
-				result: true
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
 			},
 			{
 				type: this._serviceCalculationEngine.symTypeSet,
@@ -82,7 +84,8 @@ class Thrust2WeightToolsService extends BaseService {
 				type: this._serviceCalculationEngine.symTypeEvaluate,
 				var: 'average',
 				evaluate: 'thrustAverage != null ? thrustAverage / massInNewtons : null',
-				result: true
+				result: true,
+				format: this._serviceCalculationEngine.formatFixed()
 			}
 		];
 		
