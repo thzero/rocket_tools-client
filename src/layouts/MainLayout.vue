@@ -26,7 +26,7 @@
 			<v-spacer></v-spacer>
 
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Checklists"
 				to="/checklists"
 			>
 				{{ $t('menu.checklists.title') }}
@@ -50,13 +50,13 @@
 				</v-list>
 			</v-menu>
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Launches"
 				to="/launches"
 			>
 				{{ $t('menu.launches.title') }}
 			</v-btn>
 			<v-menu
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Rockets"
 			>
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
@@ -128,20 +128,9 @@
 						<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
 					</v-list-item>
 				</v-list>
-				<!-- 
-				<v-list class="pl-2 pr-2">
-					<hr/>
-				</v-list>
-				<v-list>
-					<v-list-item
-						to="/landing"
-					>
-						<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
-					</v-list-item>
-				</v-list> -->
 			</v-menu>
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.MobileApp"
 				to="/landing"
 			>
 				{{ $t('menu.content.app') }}
@@ -212,6 +201,7 @@
 		>
 			<v-list>
 				<v-list-item
+					v-if="features.Checklists"
 					to="/checklists"
 				>
 					<v-list-item-title>{{ $t('menu.checklists.title') }}</v-list-item-title>
@@ -229,11 +219,13 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item
+					v-if="features.Launches"
 					to="/launches"
 				>
 					<v-list-item-title>{{ $t('menu.launches.title') }}</v-list-item-title>
 				</v-list-item>
 				<v-list-item
+					v-if="features.Rockets"
 				>
 					{{ $t('menu.rockets.title') }}
 					<v-list>
@@ -280,6 +272,7 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item
+					v-if="features.MobileApp"
 					to="/landing"
 				>
 					<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
@@ -332,6 +325,7 @@
 <script>
 import { computed, ref } from 'vue';
 
+import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
@@ -355,7 +349,7 @@ export default {
 		VLayoutFooter,
 		VLoadingOverlay
 	},
-	setup(props) {
+	setup(props, context) {
 		const {
 			correlationId,
 			error,
@@ -381,7 +375,9 @@ export default {
 			serviceAuth,
 			serviceStore,
 			toggleDrawer
-		} = useBaseMainLayout(props);
+		} = useBaseMainLayout(props, context, {
+			features: Constants.features
+		});
 
 		const serviceMarkup = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_MARKUP_PARSER);
 
