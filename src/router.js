@@ -172,6 +172,20 @@ const routes = [
 		]
 	},
 	{
+		path: '/about',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				path: '',
+				name: 'about',
+				component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-support" */ './components/About.vue'),
+				meta: {
+					requiresAuth: true
+				}
+			}
+		]
+	},
+	{
 		path: '/support',
 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [

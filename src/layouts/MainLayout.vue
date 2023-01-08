@@ -154,13 +154,19 @@
 							</template>
 							<v-list-item-title>{{ $t('titles.settings') }}</v-list-item-title>
 						</v-list-item>
-						<v-list-item @click="clickSupport">
-							<!-- to="/support" -->
+						<v-list-item @click="clickAbout">
+							<!-- to="/about" -->
+							<template v-slot:prepend>
+								<v-icon>mdi-information</v-icon>
+							</template>
+							<v-list-item-title>{{ $t('titles.about') }}</v-list-item-title>
+						</v-list-item>
+						<!-- <v-list-item @click="clickSupport">
 							<template v-slot:prepend>
 								<v-icon>mdi-help</v-icon>
 							</template>
 							<v-list-item-title>{{ $t('titles.support') }}</v-list-item-title>
-						</v-list-item>
+						</v-list-item> -->
 						<v-list-item @click="clickOpenSource">
 							<!-- to="/openSource" -->
 							<template v-slot:prepend>

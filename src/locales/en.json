@@ -545,6 +545,28 @@
 		"formDirty": "You made changes, are you sure you wish to leave?"
 	},
 	"strings": {
+		"about": {
+			"text1": "This site is supported and maintained by thZero Labs as a resource for the model rocketry community.",
+			"text2": "Any comments, questions or issues then please feel free to reach out to",
+			"contributing": {
+				"title": "Contributing",
+				"text1": "is open to contributions from the community.  If you wish to contribute, feel free to contact",
+				"text2": "We are accepting contributions for the following",
+				"contributions": {
+					"link": "New link suggestions",
+					"info": "Suggestions for new information topics",
+					"tool": "Suggestions to improvements for existing tools",
+					"tool2": "New tool suggestions"
+				},
+				"licensing": {
+					"title": "Licensing",
+					"text1": "Any contributions will need to be under a specific license; content copyright will remain with the author of the material.",
+					"text2": "The following license types:",
+					"public": "Material is declared as Public Domain",
+					"free": "Material has an open license such as Creative Commons or if source code then licences like MIT, Apache, BSD.  GPL and variants are not accepted."
+				}
+			}
+		},
 		"add": "Add",
 		"clear": "Clear",
 		"cookieCompliance": {
@@ -628,6 +650,8 @@
 			"welcome2": "The following is the selection of tools currently available."
 		},
 		"copyright": "Copyright",
+		"copyright2": "Copyright © ",
+		"copyright3": "2022-2023. All rights under copyright reserved.",
 		"copyToClipboard": "Copied to the clipboard!",
 		"delete": "Delete",
 		"edit": "Edit",

@@ -1,18 +1,12 @@
 <template>
-	<v-row
-		wrap
-	>
-		<v-col
-			cols="12"
-			pb-2
-		>
+	<v-row>
+		<v-col cols="12">
 			<v-card>
+				<v-card-title>
+<p class="text-h6 text-center pb-4">{{ $t('titles.support') }}</p>
+				</v-card-title>
 				<v-card-text>
-					<div class="support">
-						<h1>Support</h1>
-						<br>
-						<h2>Lost? Need some help?</h2>
-					</div>
+Forthcoming
 				</v-card-text>
 			</v-card>
 		</v-col>
@@ -34,7 +28,7 @@ export default {
 			logger,
 			noBreakingSpaces,
 			notImplementedError,
-			success,
+			success
 		} = useBaseSupportComponent(props, context);
 
 		return {
@@ -46,7 +40,7 @@ export default {
 			logger,
 			noBreakingSpaces,
 			notImplementedError,
-			success,
+			success
 		};
 	}
 };
