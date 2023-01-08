@@ -23,7 +23,8 @@
 		"save": "Save",
 		"search": "Search",
 		"select": "Select",
-		"submit": "Submit"
+		"submit": "Submit",
+		"top": "Top"
 	},
 	"charts": {
 		"flightInfo": {
@@ -69,6 +70,21 @@
 			"article": {
 				"string": {
 					"empty": "Article content is required."
+				}
+			}
+		},
+		"content": {
+			"tools": {
+				"foam": {
+					"finTabFinRoot": "Greater than or equal Fin Root Length",
+					"finWidth": "Greater than 50% Motor Tube Outside Diameter",
+					"motorTubeBodyTube": "Greater than Body Tube ID"
+				},
+				"thrust2Weight": {
+					"thrustAverageInitial": "Less than or equal Thrust Average",
+					"thrustAveragePeak": "Greater than or equal Thrust Peak",
+					"thrustPeakAverage": "Less than or equal Thrust Average",
+					"thrustPeakInitial": "Less than or equal Thrust Initial"
 				}
 			}
 		},
@@ -184,6 +200,22 @@
 					},
 					"touchdown": "Touchdown"
 				},
+				"foam": {
+					"bodyTubeID": "Body Tube ID",
+					"bodyTubeID_hint": "Inside diameter of the body tube.",
+					"motorTubeOD": "Motor Tube OD",
+					"motorTubeOD_hint": "Outside diameter of the motor tube.",
+					"finRootLength": "Fin Root Length",
+					"finRootLength_hint": "Length of the fin root.",
+					"finTabLength": "Fin Tab Length",
+					"finTabLength_hint": "Length of the fin tab if diffent than the fin root length.",
+					"finWidth": "Fin Width",
+					"finWidth_hint": "Width of the fin.",
+					"numberFins": "Number of Fins",
+					"numberFins_hint": "",
+					"totalVolume": "Total Volume",
+					"totalVolume_hint": "Total volume of left over space in the fin can."
+				},
 				"thrust2Weight": {
 					"mass": "Rocket Weight",
 					"mass_hint": "Weight of the rocket fully loaded including engines.",
@@ -238,6 +270,7 @@
 				"acceleration": "Acceleration",
 				"area": "Area",
 				"distance": "Distance",
+				"length": "Length",
 				"velocity": "Velocity",
 				"volume": "Volume",
 				"weight": "Weight"
@@ -303,12 +336,16 @@
 				"ft2Abbr": "ft^2"
 			},
 			"distance": {
-				"in": "Inches",
-				"inAbbr": "in",
 				"ft": "Feet",
 				"ftAbbr": "ft",
 				"mi": "Miles",
 				"miAbbr": "mi"
+			},
+			"length": {
+				"in": "Inches",
+				"inAbbr": "in",
+				"ft": "Feet",
+				"ftAbbr": "ft"
 			},
 			"velocity": {
 				"fts": "Feet Per Second",
@@ -344,12 +381,16 @@
 				"mm2Abbr": "mm^2"
 			},
 			"distance": {
+				"m": "Meters",
+				"mAbbr": "m",
+				"km": "Kilometers",
+				"kmAbbr": "km"
+			},
+			"length": {
 				"cm": "Centimeters",
 				"cmAbbr": "cm",
 				"m": "Meters",
 				"mAbbr": "m",
-				"km": "Kilometers",
-				"kmAbbr": "km",
 				"mm": "Millimeters",
 				"mmAbbr": "mm"
 			},
@@ -386,7 +427,7 @@
 				"ejectionCharges": "Ejection Charges",
 				"flightInfo": "Flight Info",
 				"flightPath": "Flight Path",
-				"foam": "Foam",
+				"foam": "Fin Can Foam Calculator",
 				"staticPortHoles": "Static Port Holes",
 				"title": "Tools", 
 				"thrust2Weight": "Thrust 2 Weight"
@@ -429,7 +470,6 @@
 		"reset": "Reset",
 		"saved": "Saved",
 		"thrust2Weight": {
-			"calculated": "Calculated",
 			"motor": {
 				"selected": "Selected Motor"
 			}
@@ -499,17 +539,35 @@
 	"strings": {
 		"add": "Add",
 		"clear": "Clear",
+		"cookieCompliance": {
+			"analytics": {
+				"title": "Analytics",
+				"description": "These are used for analytics purposes, i.e. determining who is using the site, how often the site is being used, etc.  These tracking is anonymized."
+			},
+			"session": {
+				"title": "Session token (necessary)",
+				"description": "This cookie contains a token. With the help of the token, your current session can be continued when using the website. This cookie is valid for 2 hours after creation and is renewed each time you change pages within this website."
+			},
+			"performance": {
+				"title": "Performance",
+				"description": "No performance oriented cookies are used by this site at this time."
+			},
+			"xsrf": {
+				"title": "XSRF Token (necessary)",
+				"description": "This cookie contains a token. The token prevents a third party from submitting forms on the website on your behalf. This cookie is valid for 2 hours and is renewed at every page change within the website."
+			}
+		},
 		"content": {
 			"info": {
 				"epoxy": {
 					"additionalLinks": "Additional Links",
-					"desc": "",
+					"desc": "Chart comparing specifications of some common epoxies, plus some additional links about epoxies and model rocketry.",
 					"chart": "Chart"
 				}
 			},
 			"links": {
 				"simulators": {
-					"desc": ""
+					"desc": "A nice article about simulators for model rocketry by ThrustCurve.org."
 				}
 			},
 			"tools": {
@@ -517,13 +575,21 @@
 					"desc": ""
 				},
 				"flightInfo": {
-					"desc": ""
+					"desc": "Utility to create a graphical flight chart with flight information from altimeters for use in posting to websites, in videos, etc. Currently only Eggtimer output is supported."
 				},
 				"flightPath": {
-					"desc": ""
+					"desc": "Utility to create a KML file based on GPS tracker output that can be imported into Google Earth.  Currently only the Featherweight GPS tracker is supported."
 				},
 				"foam": {
-					"desc": ""
+					"title": "Foam Volume for Fin Cans",
+					"brand": "Brand",
+					"calculated": "Calculated Foam Volumes",
+					"desc": "Calculations of required volume of expanding foam for a given fin can dimensions.",
+					"density": "Density",
+					"expansion": "Expsansion",
+					"foamWeight": "Foam Weight",
+					"requiredAmount": "Required Amount"
+
 				},
 				"staticPortHoles": {
 					"desc": ""
@@ -543,6 +609,7 @@
 					"newtons_abbr": "N",
 					"results": "Results",
 					"thrust": "Thrust (Newtons)",
+					"to": " : 1",
 					"guidance": "Initial thrust is more important during the initial boost phase off the launch pad.  Average thrust is the average of the thrust across the burn timespan.  The peak thrust does not always occur during launch or initial boost phase; consult the thrust curves at ",
 					"guidance2": "When using a ThrustCuve motor profile, the initial thrust is a approximate value and is determined from the sample data included with the motor profile.  The largest thrust (N) sample that falls below the Max. Launch Rod Time specified is used."
 				}
@@ -559,6 +626,7 @@
 		"load": "Load",
 		"new": "New",
 		"no": "No",
+		"poweredBy": "Powered by",
 		"save": "Save",
 		"share": "Share",
 		"yes": "Yes",
@@ -578,6 +646,7 @@
 			"tools": {
 				"flightInfo": "Flight Info",
 				"flightPath": "Flight Path",
+				"foam": "Fin Can Foam Calculator",
 				"thrust2Weight": "Thrust 2 Weight"
 			}
 		},

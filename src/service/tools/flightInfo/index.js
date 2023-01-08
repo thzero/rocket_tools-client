@@ -16,7 +16,7 @@ class FlightInfoProcessorService extends BaseService {
 
 	init(injector) {
 		// TODO: Convert to library
-		const serviceFlightInfoProcessorEggtimer = injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR_EGGTIMER);
+		const serviceFlightInfoProcessorEggtimer = injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR_EGGTIMER);
 		this.registerProcessor(serviceFlightInfoProcessorEggtimer);
 	}
 

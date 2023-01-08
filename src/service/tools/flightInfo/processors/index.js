@@ -7,14 +7,27 @@ class FlightInfoProcessorService extends BaseService {
 		throw Error('Not Implemented');
 	}
 
-	process(correlationId, results, input, measurementUnits) {
+	process(correlationId, results, data, measurementUnits) {
 		this._enforceNotNull('FlightInfoProcessorService', 'process', results, 'results', correlationId);
-		this._enforceNotNull('FlightInfoProcessorService', 'process', input, 'input', correlationId);
+		this._enforceNotNull('FlightInfoProcessorService', 'process', data, 'data', correlationId);
 		this._enforceNotEmpty('FlightInfoProcessorService', 'process', measurementUnits, 'measurementUnits', correlationId);
 
 		this._data = new FlightData();
 
-		this._processInput(correlationId, input);
+		const responseProcessInput = this._processInput(correlationId, data);
+		if (this._hasFailed(responseProcessInput))
+			return responseProcessInput;
+
+		const responseProcessInputSort = this._processInputSort(correlationId);
+		if (this._hasFailed(responseProcessInputSort))
+			return responseProcessInputSort;
+
+		if (responseProcessInputSort.results && LibraryUtility.isFunction(responseProcessInputSort.results))
+			this._data.sort(responseProcessInputSorted.results);
+
+		const responseProcessInputPost = this._processInputPost(correlationId);
+		if (this._hasFailed(responseProcessInputPost))
+			return responseProcessInputPost;
 
 		let altitude;
 		let altitudeF;
@@ -455,6 +468,15 @@ class FlightInfoProcessorService extends BaseService {
 		throw Error('Not Implemented');
 	}
 
+	_processInputPost(correlationId) {
+		this._data.process(correlationId);
+		return this._success(correlationId);
+	}
+
+	_processInputSort(correlationId) {
+		return this._success(correlationId);
+	}
+
 	_publish(correlationId, time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground) {
 		this._data.publish(correlationId, time, altitude, altitudeF, velocity, velocityF, apogee, noseOver, drogue, main, ground);
 	}
@@ -486,6 +508,9 @@ class FlightData {
 			velocity: Number(velocity),
 			velocityF: velocityF ? Number(velocityF) : null
 		});
+	}
+	
+	process(correlationId) {
 	}
 }
 

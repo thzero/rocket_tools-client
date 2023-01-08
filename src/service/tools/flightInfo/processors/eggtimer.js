@@ -27,6 +27,8 @@ class EggtimerFlightInfoProcessorService extends FlightInfoProcessorService {
 				data.length < 1 // ground
 			);
 		}
+
+		return this._success(correlationId);
 	}
 }
 

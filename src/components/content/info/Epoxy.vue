@@ -135,15 +135,24 @@
 				{{ $t('strings.content.info.epoxy.additionalLinks') }}
 			</v-col>
 			<v-col cols="12" class="pb-2">
-				<a href="http://www.jcrocket.com/adhesives.shtml" target="_blank">http://www.jcrocket.com/adhesives.shtml</a><br/>
-				<a href="https://www.rocketryforum.com/threads/epoxy-comparisons-and-technical-data-sheets.138953/page-2" target="_blank">https://www.rocketryforum.com/threads/epoxy-comparisons-and-technical-data-sheets.138953/page-2</a>
+				<div
+					v-for="item in links"
+					:key="item.url"
+				>
+					<a 
+						:href="item.url"
+						target="_blank"
+					>
+					{{ !String.isNullOrEmpty(item.title) ? item.title : item.url}}
+					</a><br/>
+				</div>
 			</v-col>
 		</v-row>
 	</div>
 </template>
 		
 <script>
-import { computed } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import LibraryConstants from '@thzero/library_client/constants';
 
@@ -168,14 +177,18 @@ export default {
 
 		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
 		
-		const data = computed(() => {
+		const data = ref(null);
+		const links = ref(null);
+
+		onMounted(async () => {
 			let temp = serviceStore.state.content;
 			if (!temp)
 				return [];
 			if (!temp.info)
 				return [];
 			const content = temp.info.find(l => l.id === 'epoxy');
-			return content ? content.data : [];
+			data.value = content ? content.data : [];
+			links.value = content ? content.links : [];
 		});
 
 		return {
@@ -188,8 +201,9 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			serviceStore,
 			data,
-			serviceStore
+			links
 		};
 	}
 };

@@ -65,9 +65,9 @@
 										</v-col>
 										<v-col cols="12">
 											<VSelectWithValidation
-												ref="flightPathMeasurementUnitsRef"
-												v-model="flightPathMeasurementUnits"
-												vid="flightPathMeasurementUnits"
+												ref="flightPathMeasurementUnitsIdRef"
+												v-model="flightPathMeasurementUnitsId"
+												vid="flightPathMeasurementUnitsId"
 												:items="flightPathMeasurementUnitsOptions"
 												:validation="validation"
 												:label="$t('forms.content.tools.flightPath.measurementUnits')"
@@ -156,8 +156,17 @@
 								vid="flightPathInput"
 								v-model="flightPathInput"
 								:validation="validation"
+								:blur="flightPathInputChange"
 								:label="$t('forms.content.tools.flightPath.csv')"
 							/>
+						</div>
+						<div class="pt-4" style="float: right">
+							<v-btn
+								density="compact"
+								@click="flightPathInputChange"
+							>
+								{{ $t('buttons.top') }}
+							</v-btn>
 						</div>
 					</template>
 				</VFormControl>
@@ -175,6 +184,46 @@
 						<pre>
 {{ output }}
 						</pre>
+					</v-col>
+				</v-row>
+				<v-row dense>
+					<v-col cols="12">
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templateMainRef"
+								vid="templateMain"
+								v-model="templateMain"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templateMain')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinLaunchRef"
+								vid="templatePinLaunch"
+								v-model="templatePinLaunch"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinLaunch')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinTouchdownRef"
+								vid="templatePinTouchdown"
+								v-model="templatePinTouchdown"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinTouchdown')"
+							/>
+						</div>
+						<div class="pt-4">
+							<VTextAreaWithValidation
+								ref="templatePinsAdditionalRef"
+								vid="templatePinsAdditional"
+								v-model="templatePinsAdditional"
+								:validation="validation"
+								:label="$t('forms.content.tools.flightPath.templatePinsAdditional')"
+							/>
+						</div>
 					</v-col>
 				</v-row>
 			</v-col>
@@ -197,7 +246,6 @@ import { required } from '@vuelidate/validators';
 
 import Papa from 'papaparse';
 
-import LibraryConstants from '@thzero/library_client/constants';
 import Constants from '@/constants';
 
 import AppUtility from '@/utility/app';
@@ -237,27 +285,31 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
-			setNotify
+			setNotify,
+			settings
 		} = useToolsBaseComponent(
 			props, 
 			context
 		);
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
-		const serviceFlightPath = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_PATH_PROCESSOR);
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		const serviceFlightPath = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_PATH_PROCESSOR);
 
 		const buttons = ref({
 			export: {
@@ -274,7 +326,7 @@ export default {
 		const flightPathData = ref(null);
 		const flightPathInput = ref(null);
 		const flightLocation = ref(null);
-		const flightPathMeasurementUnits = ref(null);
+		const flightPathMeasurementUnitsId = ref(null);
 		const flightPathMeasurementUnitsOptions = ref([]);
 		const flightPathProcessor = ref(null);
 		const flightPathProcessors = ref([]);
@@ -286,7 +338,14 @@ export default {
 		const output = ref(null);
 		const processing = ref(false);
 		const styles = ref(false);
+		const templateMain = ref(serviceFlightPath.defaultTemplateMain);
+		const templatePinLaunch = ref(serviceFlightPath.defaultTemplatePinLaunch);
+		const templatePinsAdditional = ref('');
+		const templatePinTouchdown = ref(serviceFlightPath.defaultTemplatePinTouchdown);
 		
+		const flightPathInputChange = () => {
+			document.getElementById('top').scrollIntoView({behavior: 'smooth'});
+		};
 		const flightPathStyleLoad = (coorrelationId) => {
 			if (String.isNullOrEmpty(flightPathProcessor.value))
 				return;
@@ -371,6 +430,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightPath', 'flightPathExport', err, correlationId);
 			}
 		};
 		const flightPathProcess = () => {
@@ -418,14 +478,19 @@ export default {
 					title: flightTitle.value
 				};
 
-				const flightPathResults = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, flightPathMeasurementUnits.value, flightPath);
-				flightPathData.value = flightPathResults.info.flightPath;
-				// this.output = JSON.stringify(flightPathResults, null, 2);
-				output.value = flightPathResults.info.flightPath;
+				const flightPathResponse = serviceFlightPath.process(correlationIdI, data, flightPathProcessor.value, 
+					flightPath, flightPathMeasurementUnitsId.value,
+					templateMain.value, templatePinLaunch.value, templatePinTouchdown.value, templatePinsAdditional.value);
+				if (hasFailed(flightPathResponse))
+					return; // TODO: error...
+
+				flightPathData.value = flightPathResponse.results.flightPath;
+				// this.output = JSON.stringify(flightPathResponse.results, null, 2);
+				output.value = flightPathResponse.results.flightPath;
 
 				serviceStore.dispatcher.setFlightDate(correlationIdI, flightDate.value);
 				serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
-				serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightPathMeasurementUnits.value);
+				serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightPathMeasurementUnitsId.value);
 				serviceStore.dispatcher.setFlightTitle(correlationIdI, flightTitle.value);
 
 				serviceStore.dispatcher.setFlightPathProcessor(correlationIdI, flightPathProcessor.value);
@@ -441,6 +506,7 @@ export default {
 			}
 			catch (err) {
 				processing.value = false;
+				logger.exception('FlightPath', 'flightPathProcess', err, correlationId);
 			}
 		};
 		const reset = (correlationId) => {
@@ -472,7 +538,9 @@ export default {
 
 			flightDate.value = serviceStore.getters.getFlightDate();
 			flightLocation.value = serviceStore.getters.getFlightLocation();
-			flightPathMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+			flightPathMeasurementUnitsId.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightPathMeasurementUnitsId.value))
+				flightPathMeasurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
 			flightPathProcessor.value = serviceStore.getters.getFlightPathProcessor();
@@ -500,22 +568,26 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
 			setNotify,
+			settings,
 			serviceDownload,
 			serviceFlightPath,
-			serviceStore,
 			buttons,
 			downloadProgress,
 			expanded,
@@ -524,7 +596,7 @@ export default {
 			flightPathData,
 			flightPathInput,
 			flightLocation,
-			flightPathMeasurementUnits,
+			flightPathMeasurementUnitsId,
 			flightPathMeasurementUnitsOptions,
 			flightPathProcessor,
 			flightPathProcessors,
@@ -536,7 +608,12 @@ export default {
 			output,
 			processing,
 			styles,
+			flightPathInputChange,
 			flightPathStyleLoad,
+			templateMain,
+			templatePinLaunch,
+			templatePinsAdditional,
+			templatePinTouchdown,
 			flightPathStyleReset,
 			flightPathStyleSave,
 			flightPathExport,
@@ -551,7 +628,7 @@ export default {
 		return {
 			flightDate: { $autoDirty: true },
 			flightLocation: { $autoDirty: true },
-			flightPathMeasurementUnits: { required, $autoDirty: true },
+			flightPathMeasurementUnitsId: { required, $autoDirty: true },
 			flightPathProcessor: { required, $autoDirty: true },
 			flightPathInput: { required, $autoDirty: true },
 			flightTitle: { $autoDirty: true }

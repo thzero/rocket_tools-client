@@ -11,6 +11,7 @@ import { bootServices, store } from '@/boot/services';
 import bootUi from '@/library_vue_vuetify/boot/ui';
 import bootValidate from '@/boot/validate';
 // import bootWebComponents from '@thzero/library_client_vue3/boot/webComponents';
+import bootCookieComply from '@/library_vue_vuetify/boot/cookie';
 
 import router from '@/router';
 
@@ -84,7 +85,7 @@ const redTheme = {
 };
 
 // start(app, router, store, [ bootAsyncComputed, booti18n, bootEventBus, bootServices, bootValidate, bootUi, bootWebComponents ], bootStarter);
-start(App, router, store, [ booti18n, bootEventBus, bootServices, bootValidate, bootUi ], bootStarter, {
+start(App, router, store, [ booti18n, bootEventBus, bootServices, bootValidate, bootUi, bootCookieComply ], bootStarter, {
 	vuetify: {
 		// icons: {
 		// 	defaultSet: 'mdi',

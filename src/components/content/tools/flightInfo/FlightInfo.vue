@@ -65,9 +65,9 @@
 										</v-col>
 										<v-col cols="12">
 											<VSelectWithValidation
-												ref="flightInfoMeasurementUnitsRef"
-												v-model="flightInfoMeasurementUnits"
-												vid="flightInfoMeasurementUnits"
+												ref="flightInfoMeasurementUnitsIdRef"
+												v-model="flightInfoMeasurementUnitsId"
+												vid="flightInfoMeasurementUnitsId"
 												:items="flightInfoMeasurementUnitsOptions"
 												:validation="validation"
 												:label="$t('forms.content.tools.flightInfo.measurementUnits')"
@@ -236,8 +236,17 @@
 								vid="flightInfoInput"
 								v-model="flightInfoInput"
 								:validation="validation"
+								:blur="flightInfoInputChange"
 								:label="$t('forms.content.tools.flightInfo.csv')"
 							/>
+						</div>
+						<div class="pt-4" style="float: right">
+							<v-btn
+								density="compact"
+								@click="flightPathInputChange"
+							>
+								{{ $t('buttons.top') }}
+							</v-btn>
 						</div>
 					</template>
 				</VFormControl>
@@ -373,7 +382,6 @@ import Papa from 'papaparse';
 import html2canvas from 'html2canvas';
 
 import Constants from '@/constants';
-import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
@@ -416,27 +424,31 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
-			setNotify
+			setNotify,
+			settings
 		} = useToolsBaseComponent(
 			props, 
 			context
 		);
 
 		const serviceDownload = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_DOWNLOAD);
-		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_FLIGHT_INFO_PROCESSOR);
-		const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+		const serviceFlightInfo = GlobalUtility.$injector.getService(Constants.InjectorKeys.SERVICE_TOOLS_FLIGHT_INFO_PROCESSOR);
 
 		const buttons = ref({
 			export: {
@@ -457,7 +469,7 @@ export default {
 		const flightInfoDataTypeUseDisabled = ref(false);
 		const flightDate = ref(null);
 		const flightInfoInput = ref(null);
-		const flightInfoMeasurementUnits = ref(null);
+		const flightInfoMeasurementUnitsId = ref(null);
 		const flightInfoMeasurementUnitsOptions = ref([]);
 		const flightInfoProcessor = ref(null);
 		const flightInfoProcessors = ref([]);
@@ -505,7 +517,9 @@ export default {
 			flightDate.value = serviceStore.getters.getFlightDate();
 			flightLocation.value = serviceStore.getters.getFlightLocation();
 			flightInfoDataTypeUse.value = serviceStore.getters.getFlightInfoDataTypeUse();
-			flightInfoMeasurementUnits.value = serviceStore.getters.getFlightMeasurementUnits();
+			flightInfoMeasurementUnitsId.value = serviceStore.getters.getFlightMeasurementUnits();
+			if (String.isNullOrEmpty(flightInfoMeasurementUnitsId.value))
+				flightInfoMeasurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
 			flightInfoProcessor.value = serviceStore.getters.getFlightInfoProcessor();
 			flightTitle.value = serviceStore.getters.getFlightTitle();
 
@@ -532,6 +546,9 @@ export default {
 
 			if (processing.value )
 				flightInfoProcess(correlationIdI);
+		};
+		const flightInfoInputChange = () => {
+			document.getElementById('top').scrollIntoView({behavior: 'smooth'});
 		};
 		const flightInfoStyleLoad = (correlationId) => {
 			if (String.isNullOrEmpty(flightInfoProcessor.value ))
@@ -639,6 +656,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightInfo', 'flightInfoExport', err, correlationId);
 			}
 		};
 		const flightInfoExportDownload = (correlationId, output, extension) => {
@@ -664,6 +682,7 @@ export default {
 			}
 			catch (err) {
 				downloadProgress.value = false;
+				logger.exception('FlightInfo', 'flightInfoExportDownload', err, correlationId);
 			}
 		};
 		const flightInfoExportImage = () => {
@@ -719,7 +738,7 @@ export default {
 						use: flightInfoDataTypeUse.value
 					};
 
-					const flightInfoResults = serviceFlightInfo.process(correlationIdI, data, flightInfoProcessor.value, flightInfoMeasurementUnits.value, flightInfoDataTypes);
+					const flightInfoResults = serviceFlightInfo.process(correlationIdI, data, flightInfoProcessor.value, flightInfoMeasurementUnitsId.value, flightInfoDataTypes);
 					AppUtility.debug2('flightInfoResults', flightInfoResults);
 					if (flightInfoResults.errors && data.errors.length > 0) {
 						const errors = flightInfoResults.errors.map(e => GlobalUtility.$trans.t(e) + '<br/>');
@@ -731,8 +750,8 @@ export default {
 					flightInfoResults.info.title = GlobalUtility.$trans.t('charts.flightInfo.title');
 					if (!String.isNullOrEmpty(flightDate.value))
 						flightInfoResults.info.date = flightDate.value;
-					if (!String.isNullOrEmpty(flightInfoMeasurementUnits.value))
-						flightInfoResults.info.measurementUnits = flightInfoMeasurementUnits.value;
+					if (!String.isNullOrEmpty(flightInfoMeasurementUnitsId.value))
+						flightInfoResults.info.measurementUnits = flightInfoMeasurementUnitsId.value;
 					if (!String.isNullOrEmpty(flightLocation.value))
 						flightInfoResults.info.location = flightLocation.value;
 					if (!String.isNullOrEmpty(flightTitle.value && flightTitle.value))
@@ -758,7 +777,7 @@ export default {
 					serviceStore.dispatcher.setFlightInfoDataTypeUse(correlationIdI, flightInfoDataTypeUse.value);
 					serviceStore.dispatcher.setFlightInfoProcessor(correlationIdI, flightInfoProcessor.value);
 					serviceStore.dispatcher.setFlightLocation(correlationIdI, flightLocation.value);
-					serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightInfoMeasurementUnits.value);
+					serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightInfoMeasurementUnitsId.value);
 					serviceStore.dispatcher.setFlightTitle(correlationIdI, flightTitle.value);
 
 					setNotify(correlationIdI, 'messages.processed');
@@ -772,6 +791,7 @@ export default {
 				}
 				catch (err) {
 					processing.value = false;
+					logger.exception('FlightInfo', 'flightInfoProcess', err, correlationId);
 				}
 			}, 50);
 		};
@@ -794,15 +814,6 @@ export default {
 				callback(outputCanvas.toDataURL().replace('data:image/png;base64,', ''));
 			});
 		};
-		// const onChangeDate = (value) => {
-		// 	serviceStore.dispatcher.setFlightDate(correlationId(), value);
-		// };
-		// const onChangeLocation = (value) => {
-		// 	serviceStore.dispatcher.setFlightLocation(correlationId(), value);
-		// };
-		// const onChangeTitle = (value) => {
-		// 	serviceStore.dispatcher.setFlightTitle(correlationId(), value);
-		// };
 		const reset = (correlationId) => {
 			buttons.value.export.disabled = true;
 			setErrorMessage(null);
@@ -838,19 +849,26 @@ export default {
 			noBreakingSpaces,
 			notImplementedError,
 			success,
+			calculationOutput,
 			dateFormat,
 			dateFormatMask,
 			errorMessage,
 			errors,
 			errorTimer,
 			formatNumber,
+			handleListener,
+			measurementUnits,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
 			notifyTimeout,
+			serviceStore,
 			setErrorMessage,
 			setErrorTimer,
 			setNotify,
+			settings,
+			serviceDownload,
+			serviceFlightInfo,
 			buttons,
 			downloadProgress,
 			expanded,
@@ -863,7 +881,7 @@ export default {
 			flightInfoDataTypeUseDisabled,
 			flightDate,
 			flightInfoInput,
-			flightInfoMeasurementUnits,
+			flightInfoMeasurementUnitsId,
 			flightInfoMeasurementUnitsOptions,
 			flightInfoProcessor,
 			flightInfoProcessors,
@@ -882,11 +900,9 @@ export default {
 			processing,
 			resolution,
 			styles,
-			serviceDownload,
-			serviceFlightInfo,
-			serviceStore,
 			checkFlightInfoDataTypeUse,
 			clickResolution,
+			flightInfoInputChange,
 			flightInfoStyleLoad,
 			flightInfoStyleReset,
 			flightInfoStyleSave,
@@ -907,7 +923,7 @@ export default {
 	validations () {
 		return {
 			flightDate: { $autoDirty: true },
-			flightInfoMeasurementUnits: { required, $autoDirty: true },
+			flightInfoMeasurementUnitsId: { required, $autoDirty: true },
 			flightInfoProcessor: { required, $autoDirty: true },
 			flightInfoInput: { required, $autoDirty: true },
 			flightInfoDataTypeActual: { requiredIfFiltered: requiredUnless(this.flightInfoDataTypeFiltered), $autoDirty: true },

@@ -26,7 +26,7 @@
 			<v-spacer></v-spacer>
 
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Checklists"
 				to="/checklists"
 			>
 				{{ $t('menu.checklists.title') }}
@@ -50,13 +50,13 @@
 				</v-list>
 			</v-menu>
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Launches"
 				to="/launches"
 			>
 				{{ $t('menu.launches.title') }}
 			</v-btn>
 			<v-menu
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.Rockets"
 			>
 				<template v-slot:activator="{ props }">
 					<v-btn append-icon="mdi-menu-down"
@@ -128,20 +128,9 @@
 						<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
 					</v-list-item>
 				</v-list>
-				<!-- 
-				<v-list class="pl-2 pr-2">
-					<hr/>
-				</v-list>
-				<v-list>
-					<v-list-item
-						to="/landing"
-					>
-						<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
-					</v-list-item>
-				</v-list> -->
 			</v-menu>
 			<v-btn 
-				v-if="$vuetify.display.mdAndUp"
+				v-if="$vuetify.display.mdAndUp && features.MobileApp"
 				to="/landing"
 			>
 				{{ $t('menu.content.app') }}
@@ -212,6 +201,7 @@
 		>
 			<v-list>
 				<v-list-item
+					v-if="features.Checklists"
 					to="/checklists"
 				>
 					<v-list-item-title>{{ $t('menu.checklists.title') }}</v-list-item-title>
@@ -229,11 +219,13 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item
+					v-if="features.Launches"
 					to="/launches"
 				>
 					<v-list-item-title>{{ $t('menu.launches.title') }}</v-list-item-title>
 				</v-list-item>
 				<v-list-item
+					v-if="features.Rockets"
 				>
 					{{ $t('menu.rockets.title') }}
 					<v-list>
@@ -280,6 +272,7 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item
+					v-if="features.MobileApp"
 					to="/landing"
 				>
 					<v-list-item-title>{{ $t('menu.content.app') }}</v-list-item-title>
@@ -287,7 +280,7 @@
 			</v-list>
 		</v-navigation-drawer>
 
-		<v-main>
+		<v-main id="top">
 			<span class="bg" />
 			<v-container
 				fluid
@@ -322,20 +315,24 @@
 		<VLoadingOverlay
 			:signal="isAuthCompleted"
 		/>
+
+		<VCookieComply
+			:preferences="preferences"
+		/>
 	</v-app>
 </template>
 
 <script>
 import { computed, ref } from 'vue';
 
+import Constants from '@/constants';
 import LibraryConstants from '@thzero/library_client/constants';
 
 import GlobalUtility from '@thzero/library_client/utility/global';
 
-// import baseMainLayout from '@/library_vue/layouts/baseMainLayout';
 import { useBaseMainLayout } from '@/library_vue/layouts/baseMainLayout';
 
-// import CharacterNewDialog from '@/components/gameSystems/CharacterNewDialog';
+import VCookieComply from '@/library_vue_vuetify/components/VCookieComply';
 import VConfirmationDialog from '@/library_vue_vuetify/components/VConfirmationDialog';
 // import VDisplayDialog from '@/library_vue_vuetify/components/VDisplayDialog';
 import VLayoutFooter from '@/library_vue_vuetify/components/VLayoutFooter';
@@ -346,13 +343,13 @@ import DialogSupport from '@/library_vue/components/support/dialog';
 export default {
 	name: 'MainLayout',
 	components: {
-		// CharacterNewDialog,
 		VConfirmationDialog,
+		VCookieComply,
 		// VDisplayDialog,
 		VLayoutFooter,
 		VLoadingOverlay
 	},
-	setup(props) {
+	setup(props, context) {
 		const {
 			correlationId,
 			error,
@@ -378,13 +375,62 @@ export default {
 			serviceAuth,
 			serviceStore,
 			toggleDrawer
-		} = useBaseMainLayout(props);
+		} = useBaseMainLayout(props, context, {
+			features: Constants.features
+		});
 
 		const serviceMarkup = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_MARKUP_PARSER);
 
 		const dialogDisplayMarkupSignal = ref(new DialogSupport());
 		const displayMarkupValue = ref(null);
 		const dialogNewCharacter = ref(new DialogSupport());
+
+		const preferences = [
+			{
+				title: GlobalUtility.$trans.t('strings.cookieCompliance.performance.title'),
+				description: GlobalUtility.$trans.t('strings.cookieCompliance.performance.description'),
+				items: [
+					{ 
+						label: 'Active',
+						value: 'performance', 
+						isRequired: true 
+					}
+				],
+			},
+			// {
+			// 	title: GlobalUtility.$trans.t('strings.cookieCompliance.session.title'),
+			// 	description: GlobalUtility.$trans.t('strings.cookieCompliance.session.description'),
+			// 	items: [
+			// 		{ 
+			// 			label: 'Active',
+			// 			value: 'session', 
+			// 			isRequired: true 
+			// 		}
+			// 	],
+			// },
+			{
+				title: GlobalUtility.$trans.t('strings.cookieCompliance.analytics.title'),
+				description: GlobalUtility.$trans.t('strings.cookieCompliance.analytics.description'),
+				items: [
+					{ 
+						label: 'GoogleAnalytics', 
+						value: 'ga', 
+						isEnable: true 
+					},
+				],
+			},
+			// {
+			// 	title: GlobalUtility.$trans.t('strings.cookieCompliance.xsrf.title'),
+			// 	description: GlobalUtility.$trans.t('strings.cookieCompliance.xsrf.description'),
+			// 	items: [
+			// 		{ 
+			// 			label: 'XSRF-TOKEN', 
+			// 			value: 'performance', 
+			// 			isEnable: true 
+			// 		},
+			// 	],
+			// },
+		];
 
 		const info = computed(() => {
 			let temp = serviceStore.state.content;
@@ -459,6 +505,7 @@ export default {
 			info,
 			links,
 			markup,
+			preferences,
 			serviceMarkup,
 			tools
 		};

@@ -146,10 +146,10 @@ export function useDependenciesClientBase () { return [  () => {
         },
         {
             category: 'client',
-            name: '@thzero/library_client_service_rest_axios',
-            url: 'https://github.com/thzero/library_client_service_rest_axios',
+            name: '@thzero/library_client_service_rest_fetch',
+            url: 'https://github.com/thzero/library_client_service_rest_fetch',
             licenseName: 'MIT',
-            licenseUrl: 'https://github.com/thzero/library_client_service_rest_axios/blob/master/license.md'
+            licenseUrl: 'https://github.com/thzero/library_client_service_rest_fetch/blob/master/license.md'
         },
         {
             category: 'client',
@@ -157,13 +157,6 @@ export function useDependenciesClientBase () { return [  () => {
             url: 'https://github.com/thzero/library_common',
             licenseName: 'MIT',
             licenseUrl: 'https://github.com/thzero/library_common/blob/master/license.md'
-        },
-        {
-            category: 'client',
-            name: 'axios',
-            url: 'https://github.com/axios/axios',
-            licenseName: 'MIT',
-            licenseUrl: 'https://github.com/axios/axios/blob/master/LICENSE'
         }
     ];
 },  () => {
@@ -202,6 +195,13 @@ export function useDependenciesClientBase () { return [  () => {
             url: 'https://github.com/vuejs/vue',
             licenseName: 'MIT',
             licenseUrl: 'https://github.com/vuejs/vue/blob/dev/LICENSE'
+        },
+        {
+            category: 'client',
+            name: 'vue-cookie-comply',
+            url: 'https://github.com/yaiks/vue-cookie-comply',
+            licenseName: 'MIT',
+            licenseUrl: 'https://github.com/yaiks/vue-cookie-comply/blob/main/LICENSE'
         },
         {
             category: 'client',
@@ -300,7 +300,7 @@ export function useDependenciesClientBase () { return [  () => {
         },
         {
             category: 'client',
-            name: 'lodash',
+            name: 'lodash-es',
             url: 'https://github.com/lodash/lodash',
             licenseName: 'MIT',
             licenseUrl: 'https://github.com/lodash/lodash/blob/master/LICENSE'
