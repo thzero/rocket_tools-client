@@ -546,13 +546,13 @@
 			"info": {
 				"epoxy": {
 					"additionalLinks": "Additional Links",
-					"desc": "",
+					"desc": "Additional links on epoxy.  Other resources, please let us know.",
 					"chart": "Chart"
 				}
 			},
 			"links": {
 				"simulators": {
-					"desc": ""
+					"desc": "A nice article about simulators for model rocketry by ThrustCurve.org."
 				}
 			},
 			"tools": {
