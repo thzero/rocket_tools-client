@@ -168,7 +168,7 @@
 import { onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
-import { between, decimal, required } from '@vuelidate/validators';
+import { between, decimal, helpers, required } from '@vuelidate/validators';
 
 import Constants from '@/constants';
 
@@ -373,10 +373,48 @@ export default {
 			mass: { required, decimal, between: between(0, 9999), $autoDirty: true },
 			massMeasurementUnitId: { $autoDirty: true },
 			maxLaunchRodTime: { required, decimal, between: between(0, 5), $autoDirty: true },
-			thrustAverage: { decimal, between: between(0, 40960 ), $autoDirty: true },
+			thrustAverage: {
+				decimal, between: between(0, 40960), 
+				thrustAverageInitial: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.thrust2Weight.thrustAverageInitial'), thrustAverageInitial), 
+				thrustAveragePeak: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.thrust2Weight.thrustAveragePeak'), thrustAveragePeak), 
+				$autoDirty: true, $lazy: true 
+			},
 			thrustInitial: { required, decimal, between: between(0, 40960), $autoDirty: true },
-			thrustPeak: { decimal, between: between(0, 40960), $autoDirty: true }
+			thrustPeak: { 
+				decimal, between: between(0, 40960), 
+				thrustPeakAverage: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.thrust2Weight.thrustPeakAverage'), thrustPeakAverage), 
+				thrustPeakInitial: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.thrust2Weight.thrustPeakInitial'), thrustPeakInitial), 
+				$autoDirty: true, $lazy: true 
+			},
 		};
 	}
 };
+
+const thrustAverageInitial = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.thrustInitial && (value <= Number(siblings.thrustInitial)))
+		return false;
+	return true;
+}
+
+const thrustAveragePeak = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.thrustPeak && (value >= Number(siblings.thrustPeak)))
+		return false;
+	return true;
+}
+
+const thrustPeakAverage = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.thrustAverage && (value <= Number(siblings.thrustAverage)))
+		return false;
+	return true;
+}
+
+const thrustPeakInitial = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.thrustInitial && (value <= Number(siblings.thrustInitial)))
+		return false;
+	return true;
+}
 </script>

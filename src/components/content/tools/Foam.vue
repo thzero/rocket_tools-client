@@ -174,7 +174,7 @@
 import { onMounted, ref } from 'vue';
 
 import useVuelidate from '@vuelidate/core';
-import { between, decimal, integer, required } from '@vuelidate/validators';
+import { between, decimal, integer, helpers, required } from '@vuelidate/validators';
 
 import Constants from '@/constants';
 
@@ -363,11 +363,48 @@ export default {
 		return {
 			bodyTubeID: { required, decimal, between: between(0, 9999), $autoDirty: true },
 			finRootLength: { required, decimal, between: between(0, 9999), $autoDirty: true },
-			finTabLength: { decimal, between: between(0, 999999), $autoDirty: true },
-			finWidth: { required, decimal, between: between(0, 999999), $autoDirty: true },
-			motorTubeOD: { required, decimal, between: between(0, 999999), $autoDirty: true },
+			finTabLength: { 
+				decimal, between: between(0, 999999), 
+				finTabFinRoot: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.foam.finTabFinRoot'), finTabFinRoot), 
+				$autoDirty: true 
+			},
+			finWidth: {
+				required, decimal, between: between(0, 999999), 
+				motorTfinWidthubeBodyTube: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.foam.finWidth'), finWidth), 
+				$autoDirty: true 
+			},
+			motorTubeOD: { 
+				required, decimal, between: between(0, 9999), 
+				motorTubeBodyTube: helpers.withMessage(GlobalUtility.$trans.t('errors.content.tools.foam.motorTubeBodyTube'), motorTubeBodyTube), 
+				$autoDirty: true 
+			},
 			numberFins: { required, integer, between: between(0, 999999), $autoDirty: true }
 		};
 	}
 };
+
+const finTabFinRoot = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.finRootLength && (value >= Number(siblings.finRootLength)))
+		return false;
+	return true;
+}
+
+const finWidth = (value, siblings, vm) => {
+	value = Number(value);
+	if (!siblings.motorTubeOD)
+		return true;
+	const motorTubeOD = Number(siblings.motorTubeOD);
+	const delta = value / motorTubeOD;
+	if (delta > 0.5)
+		return false;
+	return true;
+}
+
+const motorTubeBodyTube = (value, siblings, vm) => {
+	value = Number(value);
+	if (siblings.bodyTubeID && (value >= Number(siblings.bodyTubeID)))
+		return false;
+	return true;
+}
 </script>

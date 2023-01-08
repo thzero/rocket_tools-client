@@ -217,7 +217,7 @@ import VTextFieldWithValidation from '@/library_vue_vuetify/components/form/VTex
 
 import { useBaseSettingsComponent } from '@/library_vue/components/baseSettings';
 
-import { helpers, minLength, maxLength, required } from '@vuelidate/validators';
+import { minLength, maxLength, required } from '@vuelidate/validators';
 
 export default {
 	name: 'AppSettings',

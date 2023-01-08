@@ -73,6 +73,21 @@
 				}
 			}
 		},
+		"content": {
+			"tools": {
+				"foam": {
+					"finTabFinRoot": "Greater than or equal Fin Root Length",
+					"finWidth": "Greater than 50% Motor Tube Outside Diameter",
+					"motorTubeBodyTube": "Greater than Body Tube ID"
+				},
+				"thrust2Weight": {
+					"thrustAverageInitial": "Less than or equal Thrust Average",
+					"thrustAveragePeak": "Greater than or equal Thrust Peak",
+					"thrustPeakAverage": "Less than or equal Thrust Average",
+					"thrustPeakInitial": "Less than or equal Thrust Initial"
+				}
+			}
+		},
 		"copyToClipboard": "Failed to copy to the clipboard.",
 		"description": "Invalid value, must be of the following ! @ # $ % ^ & * ( ) _ - + = [ ] { } | : ; \" \\' < > , . ? a-z A-Z 0-9",
 		"duplicateName": "There is already a {objectType} with the name of \\'{name}\\'.",
