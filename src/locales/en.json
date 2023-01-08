@@ -198,6 +198,14 @@
 						"eggtimer": "Eggtimer",
 						"featherweight": "Featherweight"
 					},
+					"templates": {
+						"main": "Main Template",
+						"pins": {
+							"additional": "Additional Pins Template",
+							"launch": "Launch Pin Template",
+							"touchdown": "Touchdown Pin Template"
+						}
+					},
 					"touchdown": "Touchdown"
 				},
 				"foam": {

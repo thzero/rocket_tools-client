@@ -186,7 +186,10 @@
 						</pre>
 					</v-col>
 				</v-row>
-				<v-row dense>
+				<v-row 
+					v-if="false"
+					dense
+				>
 					<v-col cols="12">
 						<div class="pt-4">
 							<VTextAreaWithValidation
@@ -194,7 +197,7 @@
 								vid="templateMain"
 								v-model="templateMain"
 								:validation="validation"
-								:label="$t('forms.content.tools.flightPath.templateMain')"
+								:label="$t('forms.content.tools.flightPath.templates.main')"
 							/>
 						</div>
 						<div class="pt-4">
@@ -203,7 +206,7 @@
 								vid="templatePinLaunch"
 								v-model="templatePinLaunch"
 								:validation="validation"
-								:label="$t('forms.content.tools.flightPath.templatePinLaunch')"
+								:label="$t('forms.content.tools.flightPath.templates.pins.launch')"
 							/>
 						</div>
 						<div class="pt-4">
@@ -212,7 +215,7 @@
 								vid="templatePinTouchdown"
 								v-model="templatePinTouchdown"
 								:validation="validation"
-								:label="$t('forms.content.tools.flightPath.templatePinTouchdown')"
+								:label="$t('forms.content.tools.flightPath.templates.pins.touchdown')"
 							/>
 						</div>
 						<div class="pt-4">
@@ -221,7 +224,7 @@
 								vid="templatePinsAdditional"
 								v-model="templatePinsAdditional"
 								:validation="validation"
-								:label="$t('forms.content.tools.flightPath.templatePinsAdditional')"
+								:label="$t('forms.content.tools.flightPath.templates.pins.additional')"
 							/>
 						</div>
 					</v-col>
