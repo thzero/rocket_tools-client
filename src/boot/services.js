@@ -9,7 +9,7 @@ import flightPathProcessorToolsService from '@/service/tools/flightPath/index';
 import flightPathProcessorFeatherweightToolsService from '@/service/tools/flightPath/processors/featherweight';
 import foamToolsService from '@/service/tools/foam';
 import mathJsCalculationEngineToolsService from '@/service/tools/engine/mathjs/index';
-import restCommunicationService from '@thzero/library_client_service_rest_axios';
+import restCommunicationService from '@thzero/library_client_service_rest_fetch';
 import thrust2WeightToolsService from '@/service/tools/thrust2Weight';
 import thrustCurveMotorSearchExternalService from '@/service/external/motorSearchThrustCurve';
 import settingsService from '@/service/settings';
