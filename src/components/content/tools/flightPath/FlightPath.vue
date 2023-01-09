@@ -1,5 +1,5 @@
 <template>
-	<div style="min-width: 1024px">
+	<div>
 		<div class="pb-4"
 			v-if="errors"
 		>
@@ -17,7 +17,7 @@
 			</v-col>
 		</v-row>
 		<v-row dense>
-			<v-col cols="3">
+			<v-col cols="12" lg="3">
 				<VFormControl
 					ref="formFlightPathRef"
 					:validation="validation"
@@ -171,7 +171,7 @@
 					</template>
 				</VFormControl>
 			</v-col>
-			<v-col cols="9" class="pl-4">
+			<v-col cols="12" lg="9" class="pl-4">
 				<v-row
 					id="flight-path"
 					dense
