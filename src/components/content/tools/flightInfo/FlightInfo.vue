@@ -1,5 +1,5 @@
 <template>
-	<div style="min-width: 1024px">
+	<div>
 		<div class="pb-4"
 			v-if="errors"
 		>
@@ -17,7 +17,7 @@
 			</v-col>
 		</v-row>
 		<v-row dense>
-			<v-col cols="3">
+			<v-col cols="12" lg="3">
 				<VFormControl
 					ref="formFlightInfoRef"
 					:validation="validation"
@@ -251,7 +251,7 @@
 					</template>
 				</VFormControl>
 			</v-col>
-			<v-col cols="9" class="pl-4">
+			<v-col cols="12" lg="9" class="pl-4">
 				<div>
 					<table style="width: 100%;">
 						<tr>
@@ -302,7 +302,43 @@
 									2048
 								</v-btn>
 							</td>
-							<td style="width: 100%;">
+							<td 
+								v-if="$vuetify.display.lgAndUp"
+								style="width: 100%;"
+							>
+								<table style="width: 100%;">
+									<tr>
+										<td style="width: 100%;">
+											<v-slider
+												v-model="resolution" 
+												:min="720" 
+												:max="2048"  
+												step="1"
+												class="ml-4"
+												style="width: 100%;"
+												dense 
+											/>
+										</td>
+										<td style="white-space: nowrap;">
+											<v-btn
+												class="ml-8 ml-4"
+        										size="small"
+												color="primary" 
+												@click="clickResolution(this.resolution)"
+											>
+												{{ $t('forms.content.tools.flightInfo.set') }}
+											</v-btn>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<tr
+							v-if="$vuetify.display.mdAndDown"
+						>
+							<td 
+								style="width: 100%;"
+							>
 								<table style="width: 100%;">
 									<tr>
 										<td style="width: 100%;">
