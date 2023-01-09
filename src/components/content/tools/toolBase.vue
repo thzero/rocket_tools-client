@@ -23,8 +23,6 @@ export function useToolsBaseComponent(props, context, options) {
 		serviceStore
 	} = useContentBaseComponent(props, context, options);
 
-	const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
-
 	const calculationOutput = ref([]);
 	const errors = ref(null);
 	const errorMessage = ref(null);
@@ -181,7 +179,6 @@ export function useToolsBaseComponent(props, context, options) {
 		notifySignal,
 		notifyTimeout,
 		resetFormI,
-		serviceStore,
 		setErrorMessage,
 		setErrorTimer,
 		setNotify,
