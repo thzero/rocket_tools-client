@@ -259,7 +259,7 @@
 					</v-list>
 				</v-list-item>
 				<v-list-item>
-					{{ $t('menu.tools.title') }}
+					{{ $t('menu.content.tools.title') }}
 					<v-list density="compact">
 						<v-list-item
 							v-for="item in tools"
