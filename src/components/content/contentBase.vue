@@ -1,4 +1,8 @@
 <script>
+import LibraryConstants from '@thzero/library_client/constants';
+
+import GlobalUtility from '@thzero/library_client/utility/global';
+
 import { useBaseComponent } from '@/library_vue/components/base';
 
 export function useContentBaseComponent(props, context, options) {
@@ -14,6 +18,8 @@ export function useContentBaseComponent(props, context, options) {
 		success
 	} = useBaseComponent(props, context, options);
 
+	const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
+
 	return {
 		correlationId,
 		error,
@@ -23,7 +29,8 @@ export function useContentBaseComponent(props, context, options) {
 		logger,
 		noBreakingSpaces,
 		notImplementedError,
-		success
+		success,
+		serviceStore
 	};
 };
 </script>

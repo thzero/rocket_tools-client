@@ -60,6 +60,27 @@ const routes = [
 		]
 	},
 	{
+		path: '/content/links',
+		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
+		children: [
+			{
+				// path: '',
+				// name: 'epoxy',
+				// component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/ContentLayout.vue'),
+				// children: [
+				// 	{
+						path: '',
+						name: 'content_epoxy',
+						component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-content-info" */ './components/content/Links.vue'),
+						meta: {
+							requiresAuth: false
+						}
+				// 	}
+				// ]
+			}
+		]
+	},
+	{
 		path: '/content/tools/flightInfo',
 		component: () => import(/* webpackPrefetch: true */ /* webpackChunkName: "group-layouts" */ './layouts/MainLayout.vue'),
 		children: [

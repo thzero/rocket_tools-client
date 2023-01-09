@@ -39,7 +39,7 @@
 						v-bind="props"
 					>{{ $t('menu.content.info.title') }}</v-btn>
 				</template>
-				<v-list>
+				<v-list density="compact">
 					<v-list-item
 						v-for="item in info"
 						:key="item.name"
@@ -63,7 +63,7 @@
 						v-bind="props"
 					>{{ $t('menu.rockets.title') }}</v-btn>
 				</template>
-				<v-list>
+				<v-list density="compact">
 					<v-list-item
 						to="/rockets/rockets"
 					>
@@ -89,7 +89,7 @@
 						v-bind="props"
 					>{{ $t('menu.content.tools.title') }}</v-btn>
 				</template>
-				<v-list>
+				<v-list density="compact">
 					<v-list-item
 						v-for="item in tools"
 						:key="item.name"
@@ -99,10 +99,10 @@
 					</v-list-item>
 				</v-list>
 				<!-- 
-				<v-list class="pl-2 pr-2">
+				<v-list density="compact" class="pl-2 pr-2">
 					<hr/>
 				</v-list>
-				<v-list>
+				<v-list density="compact">
 					<v-list-item
 						to="/landing"
 					>
@@ -110,7 +110,13 @@
 					</v-list-item>
 				</v-list> -->
 			</v-menu>
-			<v-menu
+			<v-btn 
+				v-if="$vuetify.display.mdAndUp"
+				to="/content/links"
+			>
+				{{ $t('menu.content.links.title') }}
+			</v-btn>
+			<!-- <v-menu
 				v-if="$vuetify.display.mdAndUp"
 			>
 				<template v-slot:activator="{ props }">
@@ -118,7 +124,7 @@
 						v-bind="props"
 					>{{ $t('menu.content.links.title') }}</v-btn>
 				</template>
-				<v-list>
+				<v-list density="compact">
 					<v-list-item
 						v-for="item in links"
 						:key="item.name"
@@ -127,8 +133,8 @@
 					>
 						<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
 					</v-list-item>
-				</v-list>
-			</v-menu>
+				</v-list density="compact">
+			</v-menu> -->
 			<v-btn 
 				v-if="$vuetify.display.mdAndUp && features.MobileApp"
 				to="/landing"
@@ -144,7 +150,7 @@
 							icon="mdi-dots-vertical"
 						></v-btn>
 					</template>
-					<v-list>
+					<v-list density="compact">
 						<v-list-item
 							v-if="isLoggedIn"
 							to="/settings"
@@ -205,7 +211,7 @@
 			v-model="drawer"
 			temporary
 		>
-			<v-list>
+			<v-list density="compact">
 				<v-list-item
 					v-if="features.Checklists"
 					to="/checklists"
@@ -214,7 +220,7 @@
 				</v-list-item>
 				<v-list-item>
 					{{ $t('menu.info.title') }}
-					<v-list>
+					<v-list density="compact">
 						<v-list-item
 							v-for="item in info"
 							:key="item.name"
@@ -234,7 +240,7 @@
 					v-if="features.Rockets"
 				>
 					{{ $t('menu.rockets.title') }}
-					<v-list>
+					<v-list density="compact">
 						<v-list-item
 							to="/rockets/rockets"
 						>
@@ -254,7 +260,7 @@
 				</v-list-item>
 				<v-list-item>
 					{{ $t('menu.tools.title') }}
-					<v-list>
+					<v-list density="compact">
 						<v-list-item
 							v-for="item in tools"
 							:key="item.name"
@@ -264,9 +270,14 @@
 						</v-list-item>
 					</v-list>
 				</v-list-item>
-				<v-list-item>
+				<v-list-item
+					to="/content/links"
+				>
+					<v-list-item-title>{{ $t('menu.content.links.title') }}</v-list-item-title>
+				</v-list-item>
+				<!-- <v-list-item>
 					{{ $t('menu.links.title') }}
-					<v-list>
+					<v-list density="compact">
 						<v-list-item
 							v-for="item in links"
 							:key="item.name"
@@ -276,7 +287,7 @@
 							<v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
 						</v-list-item>
 					</v-list>
-				</v-list-item>
+				</v-list-item> -->
 				<v-list-item
 					v-if="features.MobileApp"
 					to="/landing"
@@ -446,14 +457,22 @@ export default {
 				return [];
 			return temp.info.sort((a, b) => a.order >= b.order);
 		});
-		const links = computed(() => {
-			let temp = serviceStore.state.content;
-			if (!temp)
-				return [];
-			if (!temp.links)
-				return [];
-			return temp.links.sort((a, b) => a.order >= b.order);
-		});
+		// const links = computed(() => {
+		// 	let temp = serviceStore.state.content;
+		// 	if (!temp)
+		// 		return [];
+		// 	if (!temp.links)
+		// 		return [];
+		// 	const links = temp.links.filter(l => String.isNullOrEmpty(l.category) || l.category === 'guidance');
+		// 	if (!links)
+		// 		return [];
+		// 	links.push({
+		// 		title : "menu.content.links.title",
+		// 		link : "/links",
+		// 		order : "99"
+		// 	});
+		// 	return links.sort((a, b) => a.order >= b.order);
+		// });
 		const tools = computed(() => {
 			let temp = serviceStore.state.content;
 			if (!temp)
@@ -509,7 +528,7 @@ export default {
 			displayMarkupValue,
 			dialogNewCharacter,
 			info,
-			links,
+			// links,
 			markup,
 			preferences,
 			serviceMarkup,

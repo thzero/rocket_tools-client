@@ -1,13 +1,13 @@
 <script>
 import { computed, onMounted, ref } from 'vue';
 
-import { useContentBaseComponent } from '@/components/content/contentBase';
-
 import LibraryConstants from '@thzero/library_client/constants';
 
 import AppUtility from '@/utility/app';
 import GlobalUtility from '@thzero/library_client/utility/global';
 import Utility from '@thzero/library_common/utility';
+
+import { useContentBaseComponent } from '@/components/content/contentBase';
 
 export function useToolsBaseComponent(props, context, options) {
 	const {
@@ -19,7 +19,8 @@ export function useToolsBaseComponent(props, context, options) {
 		logger,
 		noBreakingSpaces,
 		notImplementedError,
-		success
+		success,
+		serviceStore
 	} = useContentBaseComponent(props, context, options);
 
 	const serviceStore = GlobalUtility.$injector.getService(LibraryConstants.InjectorKeys.SERVICE_STORE);
@@ -154,6 +155,7 @@ export function useToolsBaseComponent(props, context, options) {
 		noBreakingSpaces,
 		notImplementedError,
 		success,
+		serviceStore,
 		calculationOutput,
 		dateFormat,
 		dateFormatMask,

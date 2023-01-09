@@ -675,6 +675,17 @@
 				"title": "Information", 
 				"epoxy": "Epoxy"
 			},
+			"links": {
+				"title": "Links",
+				"competitions": "Competitions",
+				"events": "Events",
+				"forums": "Forums",
+				"general": "General",
+				"guidance": "Guidance",
+				"manufacturers": "Manufacturers",
+				"organizations": "Organizations",
+				"vendors": "Vendors"
+			},
 			"tools": {
 				"flightInfo": "Flight Info",
 				"flightPath": "Flight Path",
