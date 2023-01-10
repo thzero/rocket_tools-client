@@ -24,7 +24,8 @@
 		"search": "Search",
 		"select": "Select",
 		"submit": "Submit",
-		"top": "Top"
+		"top": "Top",
+		"use": "Use"
 	},
 	"charts": {
 		"flightInfo": {
@@ -81,8 +82,10 @@
 					"motorTubeBodyTube": "Greater than Body Tube ID"
 				},
 				"thrust2Weight": {
-					"thrustAverageInitial": "Less than or equal Thrust Average",
+					"thrustAverageInitial": "Less than or equal Thrust Initial",
 					"thrustAveragePeak": "Greater than or equal Thrust Peak",
+					"thrustInitialAverage": "Less than or equal Thrust Average",
+					"thrustInitialPeak": "Less than or equal Thrust Peak",
 					"thrustPeakAverage": "Less than or equal Thrust Average",
 					"thrustPeakInitial": "Less than or equal Thrust Initial"
 				}
@@ -612,9 +615,9 @@
 				},
 				"foam": {
 					"title": "Foam Volume for Fin Cans",
+					"desc": "Calculations of required volume of expanding foam for a given fin can dimensions.",
 					"brand": "Brand",
 					"calculated": "Calculated Foam Volumes",
-					"desc": "Calculations of required volume of expanding foam for a given fin can dimensions.",
 					"density": "Density",
 					"expansion": "Expsansion",
 					"foamWeight": "Foam Weight",
@@ -626,7 +629,11 @@
 				},
 				"thrust2Weight": {
 					"title": "Thrust to Weight",
-					"desc": "",
+					"desc": "Utility to determine thrust to weight ratios for rockets and different motors, either manually entered or from ThrustCurve.org.",
+					"motorData1": "Motor One",
+					"motorData2": "Motor Two",
+					"motorData3": "Motor Three",
+					"motorData4": "Motor Four",
 					"calculated": "Calculated Thrust to Weight Ratio",
 					"mass": "Rocket Weight",
 					"mass_hint": "Weight of the rocket fully loaded including engines.",
