@@ -384,7 +384,15 @@ export default {
 			errorTimer,
 			formatNumber,
 			handleListener,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAccelerationDefaultId,
+			measurementUnitsAreaDefaultId,
+			measurementUnitsFluidDefaultId,
+			measurementUnitsDistanceDefaultId,
+			measurementUnitsLengthDefaultId,
+			measurementUnitsVelocityDefaultId,
+			measurementUnitsVolumeDefaultId,
+			measurementUnitsWeightDefaultId,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
@@ -517,7 +525,7 @@ export default {
 
 			serviceStore.dispatcher.setFlightPathStyle(correlationIdI, style);
 
-			setNotify(correlationIdI, 'messages.saved');
+			// setNotify(correlationIdI, 'messages.saved');
 		};
 		const flightPathExport = () => {
 			try {
@@ -624,33 +632,6 @@ export default {
 				// this.output = JSON.stringify(flightPathResponse.results, null, 2);
 				output.value = flightPathResponse.results.flightPath;
 
-				// const style = {
-				// 	id: flightPathProcessor.value,
-				// 	path: {
-				// 		flight: {
-				// 			color: flightPathStylePathFlightColor.value
-				// 		},
-				// 		ground: {
-				// 			color: flightPathStylePathGroundColor.value
-				// 		}
-				// 	},
-				// 	pin: {
-				// 		launch: {
-				// 			color: flightPathStylePinLaunchColor.value
-				// 		},
-				// 		maxAltitude: {
-				// 			color: flightPathStylePinMaxAltitudeColor.value
-				// 		},
-				// 		maxVelocity: {
-				// 			color: flightPathStylePinMaxVelocityColor.value
-				// 		},
-				// 		touchdown: {
-				// 			color: flightPathStylePinTouchdownColor.value
-				// 		}
-				// 	}
-				// };
-
-				// serviceStore.dispatcher.setFlightPathStyle(correlationIdI, style);
 				flightPathStyleSave(correlationIdI);
 
 				serviceStore.dispatcher.setFlightDate(correlationIdI, flightDate.value);
@@ -710,14 +691,8 @@ export default {
 			flightLocation.value = serviceStore.getters.getFlightLocation();
 
 			flightPathMeasurementUnitsId.value = serviceStore.getters.getFlightMeasurementUnits();
-			// if (String.isNullOrEmpty(flightPathMeasurementUnitsId.value))
-			// 	flightPathMeasurementUnitsId.value = AppUtility.measurementUnitsId(correlationId, settings.value);
 			flightPathMeasurementUnitsDistanceId.value = serviceStore.getters.getFlightMeasurementUnitsDistance();
-			// if (String.isNullOrEmpty(flightPathMeasurementUnitsDistanceId.value))
-			// 	flightPathMeasurementUnitsDistanceId.value = AppUtility.measurementUnitDistanceId(correlationId, settings.value);
 			flightPathMeasurementUnitsVelocityId.value = serviceStore.getters.getFlightMeasurementUnitsVelocity();
-			// if (String.isNullOrEmpty(flightPathMeasurementUnitsVelocityId.value))
-			// 	flightPathMeasurementUnitsVelocityId.value = AppUtility.measurementUnitVelocityId(correlationId, settings.value);
 
 			flightPathMeasurementUnitsOutputId.value = serviceStore.getters.getFlightMeasurementUnits();
 			if (String.isNullOrEmpty(flightPathMeasurementUnitsOutputId.value))

@@ -468,7 +468,15 @@ export default {
 			errorTimer,
 			formatNumber,
 			handleListener,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAccelerationDefaultId,
+			measurementUnitsAreaDefaultId,
+			measurementUnitsFluidDefaultId,
+			measurementUnitsDistanceDefaultId,
+			measurementUnitsLengthDefaultId,
+			measurementUnitsVelocityDefaultId,
+			measurementUnitsVolumeDefaultId,
+			measurementUnitsWeightDefaultId,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
@@ -620,8 +628,8 @@ export default {
 			if (notify)
 				setNotify(correlationId(), 'messages.reset');
 		};
-		const flightInfoStyleSave = () => {
-			const correlationIdI = correlationId();
+		const flightInfoStyleSave = (correlationIdI) => {
+			// const correlationIdI = correlationId();
 			if (String.isNullOrEmpty(flightInfoProcessor.value))
 				return;
 
@@ -661,9 +669,9 @@ export default {
 				}
 			};
 
-			serviceStore.setFlightInfoStyle(correlationIdI, style);
+			serviceStore.dispatcher.setFlightInfoStyle(correlationIdI, style);
 
-			setNotify(correlationIdI, 'messages.saved');
+			// setNotify(correlationIdI, 'messages.saved');
 		};
 		const flightInfoExport = (correlationId) => {
 			try {
@@ -816,6 +824,8 @@ export default {
 					serviceStore.dispatcher.setFlightMeasurementUnits(correlationIdI, flightInfoMeasurementUnitsId.value);
 					serviceStore.dispatcher.setFlightTitle(correlationIdI, flightTitle.value);
 
+					flightInfoStyleSave(correlationIdI);
+
 					setNotify(correlationIdI, 'messages.processed');
 
 					buttons.value.export.disabled = false;
@@ -893,7 +903,15 @@ export default {
 			errorTimer,
 			formatNumber,
 			handleListener,
-			measurementUnits,
+			measurementUnitsId,
+			measurementUnitsAccelerationDefaultId,
+			measurementUnitsAreaDefaultId,
+			measurementUnitsFluidDefaultId,
+			measurementUnitsDistanceDefaultId,
+			measurementUnitsLengthDefaultId,
+			measurementUnitsVelocityDefaultId,
+			measurementUnitsVolumeDefaultId,
+			measurementUnitsWeightDefaultId,
 			notifyColor,
 			notifyMessage,
 			notifySignal,
