@@ -311,7 +311,7 @@ export default {
 			reset(false);
 
 			calculationData.value = serviceToolsFoam.initialize(correlationId());
-			lengthMeasurementUnitId.value = measurementUnitsLength.value;
+			lengthMeasurementUnitId.value = measurementUnitsLengthDefaultId.value;
 		});
 
 		return {

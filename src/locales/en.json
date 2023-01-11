@@ -250,6 +250,7 @@
 					"max_launch_rod_timespan_hint": "Max. time spent accelerating on the launch rod.",
 					"motor": "Motor",
 					"motor_hint": "Select rocket motor.",
+					"specifications": "Motor Specifications",
 					"thrust": "Thrust (Newtons)",
 					"thrust_average": "Average",
 					"thrust_average_hint": "Average thrust of the engine.",
