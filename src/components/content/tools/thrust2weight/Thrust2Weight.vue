@@ -62,7 +62,7 @@
 											:validation="validation"
 											:hide-details="true"
 											:readonly="true"
-											:label=" $t('forms.content.tools.thrust2Weight.thrust') + ' 1'"
+											:label="$t('forms.content.tools.thrust2Weight.specifications') + ' 1'"
 										/>
 									</v-col>
 								</v-row>
@@ -118,7 +118,7 @@
 											v-model="motorData2"
 											:validation="validation"
 											:hide-details="true"
-											:label=" $t('forms.content.tools.thrust2Weight.thrust') + ' 2'"
+											:label="$t('forms.content.tools.thrust2Weight.specifications') + ' 2'"
 										/>
 									</v-col>
 								</v-row>
@@ -177,7 +177,7 @@
 											v-model="motorData3"
 											:validation="validation"
 											:hide-details="true"
-											:label=" $t('forms.content.tools.thrust2Weight.thrust') + ' 3'"
+											:label="$t('forms.content.tools.thrust2Weight.specifications') + ' 3'"
 										/>
 									</v-col>
 								</v-row>
@@ -236,7 +236,7 @@
 											v-model="motorData4"
 											:validation="validation"
 											:hide-details="true"
-											:label=" $t('forms.content.tools.thrust2Weight.thrust') + ' 4'"
+											:label="$t('forms.content.tools.thrust2Weight.specifications') + ' 4'"
 										/>
 									</v-col>
 								</v-row>
@@ -312,27 +312,34 @@
 						<v-row dense class="pb-2" v-if="calculationResults.calculated">
 							<v-col>
 								<v-row class="pb-2" dense>
-									<v-col cols="4">
+									<v-col cols="3">
+										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.specifications') }}</span>
+									</v-col>
+									<v-col cols="3">
 										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_initial') }}</span>
 									</v-col>
-									<v-col cols="4">
+									<v-col cols="3">
 										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_peak') }}</span>
 									</v-col>
-									<v-col cols="4">
+									<v-col cols="3">
 										<span class="text-bold">{{ $t('forms.content.tools.thrust2Weight.thrust_average') }}</span>
 									</v-col>
 								</v-row>
 								<v-row 
 									class="pb-2" dense
-									v-for="item of calculationResults.data"
+									v-for="(item, index) in calculationResults.data"
+									:key="index"
 								>
-									<v-col cols="4">
+									<v-col cols="3">
+										<span>{{ index+1 }}</span>
+									</v-col>
+									<v-col cols="3">
 										<span>{{ (calculationResults['initial' + item.key]) + ' '  + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
-									<v-col cols="4">
+									<v-col cols="3">
 										<span v-if="calculationResults['peak' + item.key]">{{ (calculationResults.peak) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
-									<v-col cols="4">
+									<v-col cols="3">
 										<span v-if="calculationResults['average' + item.key]">{{ (calculationResults.average) + ' ' + $t('strings.content.tools.thrust2Weight.to') }}</span>
 									</v-col>
 								</v-row>
@@ -824,7 +831,7 @@ const thrustInitialAverageI = (value, average) => {
 		return true;
 	if (String.isNullOrEmpty(average))
 		return true;
-	return (value > Number(average));
+	return (value <= Number(average));
 }
 const thrustInitialAverage1 = (value, siblings, vm) => {
 	return thrustInitialAverageI(Number(value), siblings.thrustAverage1);
@@ -844,7 +851,7 @@ const thrustInitialPeakI = (value, peak) => {
 		return true;
 	if (String.isNullOrEmpty(peak))
 		return true;
-	return (value > Number(peak));
+	return (value <= Number(peak));
 }
 const thrustInitialPeak1 = (value, siblings, vm) => {
 	return thrustInitialPeakI(Number(value), siblings.thrustPeak1);
